@@ -1,10 +1,10 @@
 <?php
 
-namespace SprykerFeature\Client\Customer;
+namespace SprykerFeature\Client\Customer\Service;
 
 use Generated\Shared\Transfer\CustomerAddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use SprykerEngine\Client\Kernel\AbstractClient;
+use SprykerEngine\Client\Kernel\Service\AbstractClient;
 
 /**
  * @method CustomerDependencyContainer getDependencyContainer()

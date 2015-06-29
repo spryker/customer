@@ -1,11 +1,11 @@
 <?php
 
-namespace SprykerFeature\Client\Customer;
+namespace SprykerFeature\Client\Customer\Service;
 
-use SprykerEngine\Client\Kernel\AbstractDependencyContainer;
-use SprykerFeature\Client\Customer\Model\Customer;
+use SprykerEngine\Client\Kernel\Service\AbstractDependencyContainer;
+use SprykerFeature\Client\Customer\Service\Model\Customer;
 use Generated\Yves\Ide\FactoryAutoCompletion\Customer as CustomerFactory;
-use SprykerFeature\Client\ZedRequest\Provider\ZedClientProvider;
+use SprykerFeature\Client\ZedRequest\Service\Provider\ZedClientProvider;
 
 /**
  * @method CustomerFactory getFactory()
