@@ -1,12 +1,12 @@
 <?php
 
-namespace SprykerFeature\Client\Customer\Model;
+namespace SprykerFeature\Client\Customer\Service\Model;
 
 use Generated\Shared\Transfer\CustomerAddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use SprykerFeature\Client\ZedRequest\Provider\ZedClientProvider;
+use SprykerFeature\Client\ZedRequest\Service\Provider\ZedClientProvider;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use SprykerFeature\Client\ZedRequest\Client\Response;
+use SprykerFeature\Client\ZedRequest\Service\Client\Response;
 
 class Customer
 {
