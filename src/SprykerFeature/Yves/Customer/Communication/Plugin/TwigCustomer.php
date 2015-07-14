@@ -4,18 +4,18 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Yves\Customer\Plugin;
+namespace SprykerFeature\Yves\Customer\Communication\Plugin;
 
 use SprykerFeature\Yves\Twig\Dependency\Plugin\TwigFunctionPluginInterface;
 use Silex\Application;
-use SprykerEngine\Yves\Kernel\AbstractPlugin;
+use SprykerEngine\Yves\Kernel\Communication\AbstractPlugin;
 use Twig_SimpleFunction;
-use SprykerFeature\Yves\Customer\CustomerDependencyContainer;
+use SprykerFeature\Yves\Customer\Communication\CustomerDependencyContainer;
 
 /**
  * @method CustomerDependencyContainer getDependencyContainer()
  */
-class TwigCustomerPlugin extends AbstractPlugin implements TwigFunctionPluginInterface
+class TwigCustomer extends AbstractPlugin implements TwigFunctionPluginInterface
 {
 
     /**

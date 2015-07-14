@@ -4,7 +4,7 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Yves\Customer\Provider;
+namespace SprykerFeature\Yves\Customer\Communication\Provider;
 
 use SprykerEngine\Shared\Config;
 use SprykerEngine\Shared\Kernel\Factory\FactoryInterface;
@@ -13,7 +13,7 @@ use SprykerFeature\Shared\Customer\CustomerConfig;
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider as SilexSecurityServiceProvider;
 use Generated\Zed\Ide\AutoCompletion;
-use SprykerFeature\Yves\Customer\Handler\AjaxAuthenticationHandler;
+use SprykerFeature\Yves\Customer\Communication\Handler\AjaxAuthenticationHandler;
 
 class SecurityServiceProvider extends SilexSecurityServiceProvider
 {

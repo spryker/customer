@@ -4,7 +4,7 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Yves\Customer\Model;
+namespace SprykerFeature\Yves\Customer\Communication\Model;
 
 use Silex\Application;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

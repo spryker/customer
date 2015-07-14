@@ -4,14 +4,14 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Yves\Customer;
+namespace SprykerFeature\Yves\Customer\Communication;
 
 use SprykerEngine\Yves\Kernel\AbstractDependencyContainer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use SprykerFeature\Yves\Customer\Provider\SecurityServiceProvider;
-use SprykerFeature\Yves\Customer\Provider\UserProvider;
+use SprykerFeature\Yves\Customer\Communication\Provider\SecurityServiceProvider;
+use SprykerFeature\Yves\Customer\Communication\Provider\UserProvider;
 use Silex\Application;
-use SprykerFeature\Yves\Customer\Model\Customer;
+use SprykerFeature\Yves\Customer\Communication\Model\Customer;
 
 /**
  * @method \Generated\Yves\Ide\FactoryAutoCompletion\Customer getFactory()
