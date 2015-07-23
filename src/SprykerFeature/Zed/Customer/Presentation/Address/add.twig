@@ -1,9 +1,8 @@
 {% extends '@Gui/Layout/layout.twig' %}
 
-{% set widget_title = 'Customers' %}
+{% set widget_title = 'Add new address' %}
 
 {% block head_title widget_title | trans %}
-
 {% block section_title widget_title | trans %}
 
 {% block content %}
@@ -11,12 +10,12 @@
     {% embed '@Gui/Partials/widget.twig' %}
 
         {% block widget_header_content %}
-            <a href="/customer/add" class="btn btn-sm btn-primary ">{{ 'Add a new customer' | trans }}</a>
+            <a href="/customer/address/?id_customer={{ id_customer }}" class="btn btn-sm btn-primary">{{ 'Back to Manage Addresses' | trans }}</a>
         {% endblock %}
 
         {% block widget_content %}
 
-            {{ customerTable | raw }}
+            {{ form(form) }}
 
         {% endblock %}
 
