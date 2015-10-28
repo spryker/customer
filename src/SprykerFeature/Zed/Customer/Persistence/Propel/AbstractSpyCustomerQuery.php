@@ -6,10 +6,10 @@
 
 namespace SprykerFeature\Zed\Customer\Persistence\Propel;
 
-use SprykerFeature\Zed\Customer\Persistence\Propel\Base\SpyCustomerAddress as BaseSpyCustomerAddress;
+use Orm\Zed\Customer\Persistence\Base\SpyCustomerQuery as BaseSpyCustomerQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'spy_customer_address' table.
+ * Skeleton subclass for performing query and update operations on the 'spy_customer' table.
  *
  *
  *
@@ -18,7 +18,7 @@ use SprykerFeature\Zed\Customer\Persistence\Propel\Base\SpyCustomerAddress as Ba
  * long as it does not already exist in the output directory.
  *
  */
-class SpyCustomerAddress extends BaseSpyCustomerAddress
+abstract class AbstractSpyCustomerQuery extends BaseSpyCustomerQuery
 {
 
 }

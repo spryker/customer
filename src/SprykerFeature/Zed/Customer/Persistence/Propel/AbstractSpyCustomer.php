@@ -6,7 +6,7 @@
 
 namespace SprykerFeature\Zed\Customer\Persistence\Propel;
 
-use SprykerFeature\Zed\Customer\Persistence\Propel\Base\SpyCustomer as BaseSpyCustomer;
+use Orm\Zed\Customer\Persistence\Base\SpyCustomer as BaseSpyCustomer;
 
 /**
  * Skeleton subclass for representing a row from the 'spy_customer' table.
@@ -18,7 +18,7 @@ use SprykerFeature\Zed\Customer\Persistence\Propel\Base\SpyCustomer as BaseSpyCu
  * long as it does not already exist in the output directory.
  *
  */
-class SpyCustomer extends BaseSpyCustomer
+abstract class AbstractSpyCustomer extends BaseSpyCustomer
 {
 
 }
