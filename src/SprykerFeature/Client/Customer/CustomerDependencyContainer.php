@@ -4,16 +4,16 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Client\Customer\Service;
+namespace SprykerFeature\Client\Customer;
 
-use SprykerFeature\Client\Customer\Service\Session\CustomerSession;
-use SprykerFeature\Client\Customer\Service\Zed\CustomerStub;
-use SprykerEngine\Client\Kernel\Service\AbstractServiceDependencyContainer;
+use SprykerFeature\Client\Customer\Session\CustomerSession;
+use SprykerFeature\Client\Customer\Zed\CustomerStub;
+use SprykerEngine\Client\Kernel\AbstractDependencyContainer;
 use SprykerFeature\Client\Customer\CustomerDependencyProvider;
-use SprykerFeature\Client\Customer\Service\Session\CustomerSessionInterface;
-use SprykerFeature\Client\Customer\Service\Zed\CustomerStubInterface;
+use SprykerFeature\Client\Customer\Session\CustomerSessionInterface;
+use SprykerFeature\Client\Customer\Zed\CustomerStubInterface;
 
-class CustomerDependencyContainer extends AbstractServiceDependencyContainer
+class CustomerDependencyContainer extends AbstractDependencyContainer
 {
 
     /**

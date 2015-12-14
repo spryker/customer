@@ -3,37 +3,37 @@
 /**
  * (c) Spryker Systems GmbH copyright protected
  */
-
-namespace SprykerFeature\Client\Customer\Service;
+namespace SprykerFeature\Client\Customer\Zed;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
+use SprykerFeature\Client\ZedRequest\Client\Response;
 
-interface CustomerClientInterface
+interface CustomerStubInterface
 {
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return bool
-     */
-    public function hasCustomerWithEmailAndPassword(CustomerTransfer $customerTransfer);
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return CustomerTransfer|null
-     */
-    public function findCustomerWithEmailAndPassword(CustomerTransfer $customerTransfer);
 
     /**
      * @param CustomerTransfer $customerTransfer
      *
      * @return CustomerResponseTransfer
      */
-    public function registerCustomer(CustomerTransfer $customerTransfer);
+    public function hasCustomerWithEmailAndPassword(CustomerTransfer $customerTransfer);
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return CustomerResponseTransfer
+     */
+    public function forgotPassword(CustomerTransfer $customerTransfer);
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return CustomerResponseTransfer
+     */
+    public function restorePassword(CustomerTransfer $customerTransfer);
 
     /**
      * @param CustomerTransfer $customerTransfer
@@ -45,87 +45,44 @@ interface CustomerClientInterface
     /**
      * @param CustomerTransfer $customerTransfer
      *
-     * @return CustomerTransfer
+     * @return CustomerResponseTransfer
      */
-    public function forgotPassword(CustomerTransfer $customerTransfer);
+    public function register(CustomerTransfer $customerTransfer);
 
     /**
      * @param CustomerTransfer $customerTransfer
      *
      * @return CustomerTransfer
      */
-    public function restorePassword(CustomerTransfer $customerTransfer);
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return CustomerTransfer
-     */
-    public function deleteCustomer(CustomerTransfer $customerTransfer);
-
-    /**
-     * @return CustomerTransfer
-     */
-    public function getCustomer();
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return CustomerTransfer
-     */
-    public function setCustomer(CustomerTransfer $customerTransfer);
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return CustomerTransfer
-     */
-    public function login(CustomerTransfer $customerTransfer);
-
-    /**
-     * @return mixed
-     */
-    public function logout();
-
-    /**
-     * @return bool
-     */
-    public function isLoggedIn();
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return AddressesTransfer
-     */
-    public function getAddresses(CustomerTransfer $customerTransfer);
-
-    /**
-     * @param CustomerTransfer $customerTransfer
-     *
-     * @return CustomerTransfer
-     */
-    public function getCustomerByEmail(CustomerTransfer $customerTransfer);
+    public function get(CustomerTransfer $customerTransfer);
 
     /**
      * @param CustomerTransfer $customerTransfer
      *
      * @return CustomerResponseTransfer
      */
-    public function updateCustomer(CustomerTransfer $customerTransfer);
+    public function update(CustomerTransfer $customerTransfer);
 
     /**
      * @param CustomerTransfer $customerTransfer
      *
      * @return CustomerResponseTransfer
      */
-    public function updateCustomerPassword(CustomerTransfer $customerTransfer);
+    public function updatePassword(CustomerTransfer $customerTransfer);
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return Response
+     */
+    public function delete(CustomerTransfer $customerTransfer);
 
     /**
      * @param AddressTransfer $addressTransfer
      *
      * @return AddressTransfer
      */
-    public function getAddress(AddressTransfer $addressTransfer);
+    public function createAddress(AddressTransfer $addressTransfer);
 
     /**
      * @param AddressTransfer $addressTransfer
@@ -153,7 +110,14 @@ interface CustomerClientInterface
      *
      * @return AddressTransfer
      */
-    public function createAddress(AddressTransfer $addressTransfer);
+    public function getAddress(AddressTransfer $addressTransfer);
+
+    /**
+     * @param CustomerTransfer $customerTransfer
+     *
+     * @return AddressesTransfer
+     */
+    public function getAddresses(CustomerTransfer $customerTransfer);
 
     /**
      * @param AddressTransfer $addressTransfer
@@ -163,17 +127,17 @@ interface CustomerClientInterface
     public function deleteAddress(AddressTransfer $addressTransfer);
 
     /**
-     * @param AddressTransfer $addressTransfer
+     * @param AddressTransfer $AddressTransfer
      *
      * @return AddressTransfer
      */
-    public function setDefaultShippingAddress(AddressTransfer $addressTransfer);
+    public function setDefaultBillingAddress(AddressTransfer $AddressTransfer);
 
     /**
-     * @param AddressTransfer $addressTransfer
+     * @param AddressTransfer $AddressTransfer
      *
      * @return AddressTransfer
      */
-    public function setDefaultBillingAddress(AddressTransfer $addressTransfer);
+    public function setDefaultShippingAddress(AddressTransfer $AddressTransfer);
 
 }
