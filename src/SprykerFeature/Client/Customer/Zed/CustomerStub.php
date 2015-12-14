@@ -4,14 +4,14 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Client\Customer\Service\Zed;
+namespace SprykerFeature\Client\Customer\Zed;
 
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use SprykerFeature\Client\ZedRequest\Service\Client\Response;
-use SprykerFeature\Client\ZedRequest\Service\ZedRequestClient;
+use SprykerFeature\Client\ZedRequest\Client\Response;
+use SprykerFeature\Client\ZedRequest\ZedRequestClient;
 
 class CustomerStub implements CustomerStubInterface
 {

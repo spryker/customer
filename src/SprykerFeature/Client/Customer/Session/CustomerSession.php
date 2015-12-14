@@ -4,10 +4,10 @@
  * (c) Spryker Systems GmbH copyright protected
  */
 
-namespace SprykerFeature\Client\Customer\Service\Session;
+namespace SprykerFeature\Client\Customer\Session;
 
 use Generated\Shared\Transfer\CustomerTransfer;
-use SprykerFeature\Client\Session\Service\SessionClientInterface;
+use SprykerFeature\Client\Session\SessionClientInterface;
 
 class CustomerSession implements CustomerSessionInterface
 {
