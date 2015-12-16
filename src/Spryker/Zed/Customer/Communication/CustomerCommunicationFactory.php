@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormInterface;
 /**
  * @method CustomerQueryContainerInterface getQueryContainer()
  */
-class CustomerDependencyContainer extends AbstractCommunicationFactory
+class CustomerCommunicationFactory extends AbstractCommunicationFactory
 {
 
     /**

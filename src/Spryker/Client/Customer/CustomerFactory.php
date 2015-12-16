@@ -13,7 +13,7 @@ use Spryker\Client\Customer\CustomerDependencyProvider;
 use Spryker\Client\Customer\Session\CustomerSessionInterface;
 use Spryker\Client\Customer\Zed\CustomerStubInterface;
 
-class CustomerDependencyContainer extends AbstractFactory
+class CustomerFactory extends AbstractFactory
 {
 
     /**

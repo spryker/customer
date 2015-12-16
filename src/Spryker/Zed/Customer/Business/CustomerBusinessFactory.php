@@ -20,7 +20,7 @@ use Spryker\Zed\SequenceNumber\Business\SequenceNumberFacade;
 /**
  * @method CustomerConfig getConfig()
  */
-class CustomerDependencyContainer extends AbstractBusinessFactory
+class CustomerBusinessFactory extends AbstractBusinessFactory
 {
 
     /**
