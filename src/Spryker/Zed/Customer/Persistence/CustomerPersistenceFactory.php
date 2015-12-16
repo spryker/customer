@@ -10,7 +10,7 @@ use Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 
-class CustomerDependencyContainer extends AbstractPersistenceFactory
+class CustomerPersistenceFactory extends AbstractPersistenceFactory
 {
 
     /**
