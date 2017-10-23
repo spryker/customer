@@ -9,17 +9,17 @@ namespace Spryker\Zed\Customer\Dependency\Plugin;
 
 use Generated\Shared\Transfer\CustomerTransfer;
 
-interface CustomerAnonymizerPluginInterface
+interface CustomerTransferExpanderPluginInterface
 {
     /**
      * Specification
-     *  - process anonymization on related to customer subject
+     * - Expands the provided customer transfer object's data and returns the modified object.
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function process(CustomerTransfer $customerTransfer);
+    public function expandTransfer(CustomerTransfer $customerTransfer);
 }
