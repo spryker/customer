@@ -5,10 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Customer\Business\Exception;
+namespace Spryker\Yves\Customer;
 
-use Exception;
+use Spryker\Yves\Kernel\AbstractBundleConfig;
 
-class CountryNotFoundException extends Exception
+class CustomerConfig extends AbstractBundleConfig
 {
 }
