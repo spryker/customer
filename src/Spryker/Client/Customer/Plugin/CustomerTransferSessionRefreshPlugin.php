@@ -12,16 +12,16 @@ use Spryker\Client\Customer\Dependency\Plugin\CustomerSessionGetPluginInterface;
 use Spryker\Client\Kernel\AbstractPlugin;
 
 /**
- * @deprecated Use CustomerTransferSessionRefreshPlugin instead.
- *
  * @method \Spryker\Client\Customer\CustomerClientInterface getClient()
  */
-class CustomerTransferRefreshPlugin extends AbstractPlugin implements CustomerSessionGetPluginInterface
+class CustomerTransferSessionRefreshPlugin extends AbstractPlugin implements CustomerSessionGetPluginInterface
 {
     /**
      * {@inheritdoc}
-     * - Retrieves customer by provided id.
-     * - Retrieves the fresh customer data from persistence and invalidates the already existing data in session.
+     * - Executed if customer marked as dirty.
+     * - Marks customer as not dirty.
+     * - Retrieves customer by either provided id, email or restore password key.
+     * - Expands the provided CustomerTransfer with persistence and stores it to session.
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
@@ -29,8 +29,9 @@ class CustomerTransferRefreshPlugin extends AbstractPlugin implements CustomerSe
      */
     public function execute(CustomerTransfer $customerTransfer)
     {
-        if ($customerTransfer && $customerTransfer->getIsDirty()) {
-            $customerTransfer = $this->getClient()->getCustomerById($customerTransfer->getIdCustomer());
+        if ($customerTransfer->getIsDirty()) {
+            $customerTransfer = $this->getClient()->getCustomerByEmail($customerTransfer);
+            $customerTransfer->setIsDirty(false);
             $this->getClient()->setCustomer($customerTransfer);
         }
     }
