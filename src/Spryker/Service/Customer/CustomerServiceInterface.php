@@ -10,6 +10,9 @@ namespace Spryker\Service\Customer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
+/**
+ * @deprecated Remove service layer after multiple shipment will be released.
+ */
 interface CustomerServiceInterface
 {
     /**
