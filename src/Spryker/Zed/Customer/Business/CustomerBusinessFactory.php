@@ -21,6 +21,7 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 /**
  * @method \Spryker\Zed\Customer\CustomerConfig getConfig()
  * @method \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface getQueryContainer()
+ * @method \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface getRepository()
  */
 class CustomerBusinessFactory extends AbstractBusinessFactory
 {
@@ -49,7 +50,12 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
      */
     public function createAddress()
     {
-        return new Address($this->getQueryContainer(), $this->getCountryFacade(), $this->getLocaleFacade());
+        return new Address(
+            $this->getQueryContainer(),
+            $this->getCountryFacade(),
+            $this->getLocaleFacade(),
+            $this->getRepository()
+        );
     }
 
     /**
