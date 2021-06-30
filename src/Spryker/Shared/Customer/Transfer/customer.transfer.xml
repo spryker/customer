@@ -111,6 +111,7 @@
         <property name="filter" type="Filter"/>
         <property name="customers" type="Customer[]" singular="customer"/>
         <property name="pagination" type="Pagination"/>
+        <property name="criteria" type="CustomerCriteria" />
     </transfer>
 
     <transfer name="Quote">
@@ -193,6 +194,8 @@
 
     <transfer name="CustomerCriteria">
         <property name="customerReference" type="string"/>
+        <property name="idCustomer" type="int" />
         <property name="withExpanders" type="bool"/>
+        <property name="gender" type="int" />
     </transfer>
 </transfers>

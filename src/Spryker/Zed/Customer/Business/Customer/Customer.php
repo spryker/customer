@@ -525,18 +525,22 @@ class Customer implements CustomerInterface
         }
 
         $customerResponseTransfer = $this->createCustomerResponseTransfer();
-        $customerResponseTransfer->setCustomerTransfer($customerTransfer);
 
         $customerEntity = $this->getCustomer($customerTransfer);
         $customerEntity->fromArray($customerTransfer->modifiedToArray());
+
+        $customerResponseTransfer->setCustomerTransfer($customerTransfer->fromArray($customerEntity->toArray(), true));
 
         if ($customerTransfer->getLocale() !== null) {
             $this->addLocaleByLocaleName($customerEntity, $customerTransfer->getLocale()->getLocaleName());
         }
 
-        $customerResponseTransfer = $this->validateCustomerEmail($customerResponseTransfer, $customerEntity);
-        if (!$customerResponseTransfer->getIsSuccess()) {
-            return $customerResponseTransfer;
+        if ($customerTransfer->getEmail()) {
+            $customerResponseTransfer = $this->validateCustomerEmail($customerResponseTransfer, $customerEntity);
+
+            if (!$customerResponseTransfer->getIsSuccess()) {
+                return $customerResponseTransfer;
+            }
         }
 
         if ($customerTransfer->getSendPasswordToken()) {

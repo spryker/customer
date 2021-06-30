@@ -30,6 +30,16 @@ use Spryker\Zed\Propel\PropelFilterCriteria;
  */
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
+    /** @var array  */
+    protected const SORT_KEYS_MAP = [
+        'firstName' => SpyCustomerTableMap::COL_FIRST_NAME,
+        'lastName' => SpyCustomerTableMap::COL_LAST_NAME,
+        'email' => SpyCustomerTableMap::COL_EMAIL,
+        'customerReference' => SpyCustomerTableMap::COL_CUSTOMER_REFERENCE,
+        'salutation' => SpyCustomerTableMap::COL_SALUTATION,
+        'registered' => SpyCustomerTableMap::COL_REGISTERED,
+    ];
+
     /**
      * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
      *
@@ -40,6 +50,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         $customerQuery = $this->getFactory()
             ->createSpyCustomerQuery();
 
+        $customerQuery = $this->applyCriteriaToQuery($customerQuery, $customerCollectionTransfer->getCriteria());
         $customerQuery = $this->applyFilterToQuery($customerQuery, $customerCollectionTransfer->getFilter());
         $customerQuery = $this->applyPagination($customerQuery, $customerCollectionTransfer->getPagination());
         $customerQuery->setFormatter(ArrayFormatter::class);
@@ -105,13 +116,16 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
      */
     protected function applyFilterToQuery(SpyCustomerQuery $spyCustomerQuery, ?FilterTransfer $filterTransfer): SpyCustomerQuery
     {
-        $criteria = new Criteria();
         if ($filterTransfer !== null) {
-            $criteria = (new PropelFilterCriteria($filterTransfer))
-                ->toCriteria();
-        }
+            if ($filterTransfer->getOrderBy() && isset(static::SORT_KEYS_MAP[$filterTransfer->getOrderBy()])) {
+                $filterTransfer->setOrderBy(static::SORT_KEYS_MAP[$filterTransfer->getOrderBy()]);
+            }
 
-        $spyCustomerQuery->mergeWith($criteria);
+            $spyCustomerQuery->mergeWith(
+                (new PropelFilterCriteria($filterTransfer))
+                    ->toCriteria()
+            );
+        }
 
         return $spyCustomerQuery;
     }
@@ -272,6 +286,10 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             $customerQuery->filterByCustomerReference($customerCriteriaTransfer->getCustomerReference());
         }
 
+        if ($customerCriteriaTransfer->getIdCustomer()) {
+            $customerQuery->filterByIdCustomer($customerCriteriaTransfer->getIdCustomer());
+        }
+
         $customerEntity = $customerQuery->findOne();
 
         if ($customerEntity === null) {
@@ -321,5 +339,24 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
 
         return $query;
+    }
+
+    /**
+     * @param \Orm\Zed\Customer\Persistence\SpyCustomerQuery $customerQuery
+     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer|null $customerCriteriaTransfer
+     *
+     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
+     */
+    protected function applyCriteriaToQuery(SpyCustomerQuery $customerQuery, ?CustomerCriteriaTransfer $customerCriteriaTransfer): SpyCustomerQuery
+    {
+        if (!$customerCriteriaTransfer) {
+            return $customerQuery;
+        }
+
+        if($customerCriteriaTransfer->getGender() !== null) {
+            $customerQuery->filterByGender((int)$customerCriteriaTransfer->getGender());
+        }
+
+        return $customerQuery;
     }
 }
