@@ -55,13 +55,13 @@ class CustomerReader implements CustomerReaderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
+     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
      *
      * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
      */
-    public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
+    public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
     {
-        $customerCollectionTransfer = $this->customerRepository->getCustomerCollection($customerCollectionTransfer);
+        $customerCollectionTransfer = $this->customerRepository->getCustomerCollection($customerCriteriaTransfer);
         $customerCollectionTransfer = $this->hydrateCustomersWithAddresses($customerCollectionTransfer);
 
         return $customerCollectionTransfer;

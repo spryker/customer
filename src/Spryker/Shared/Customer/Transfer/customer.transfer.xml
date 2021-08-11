@@ -143,6 +143,8 @@
     </transfer>
 
     <transfer name="Pagination">
+        <property name="limit" type="int"/>
+        <property name="offset" type="int" />
         <property name="page" type="int"/>
         <property name="maxPerPage" type="int"/>
         <property name="nbResults" type="int"/>
@@ -193,9 +195,23 @@
     </transfer>
 
     <transfer name="CustomerCriteria">
-        <property name="customerReference" type="string"/>
-        <property name="idCustomer" type="int" />
-        <property name="withExpanders" type="bool"/>
-        <property name="gender" type="int" />
+        <property name="customerConditions" type="CustomerConditions" />
+        <property name="sortCollection" type="SortCollection"/>
+        <property name="pagination" type="Pagination" />
     </transfer>
+
+    <transfer name="CustomerConditions">
+        <property name="genders" type="int[]" singular="gender" />
+        <property name="ids" type="int[]" singular="id" />
+    </transfer>
+
+    <transfer name="SortCollection">
+        <property name="sorts" type="Sort[]" singular="sort" />
+    </transfer>
+
+    <transfer name="Sort">
+        <property name="field" type="string"/>
+        <property name="orderByAsc" type="bool"/>
+    </transfer>
+
 </transfers>

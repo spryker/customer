@@ -32,15 +32,15 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
+     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
      *
      * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
      */
-    public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
+    public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
     {
         return $this->getFactory()
             ->createCustomerReader()
-            ->getCustomerCollection($customerCollectionTransfer);
+            ->getCustomerCollection($customerCriteriaTransfer);
     }
 
     /**

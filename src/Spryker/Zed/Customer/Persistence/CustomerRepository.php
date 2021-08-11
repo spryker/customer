@@ -12,25 +12,27 @@ use Generated\Shared\Transfer\AddressCriteriaFilterTransfer;
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
+use Generated\Shared\Transfer\CustomerConditionsTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Generated\Shared\Transfer\FilterTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
+use Generated\Shared\Transfer\SortCollectionTransfer;
 use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Formatter\ArrayFormatter;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
-use Spryker\Zed\Propel\PropelFilterCriteria;
 
 /**
  * @method \Spryker\Zed\Customer\Persistence\CustomerPersistenceFactory getFactory()
  */
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
-    /** @var array  */
+    /**
+     * @var array
+     */
     protected const SORT_KEYS_MAP = [
         'firstName' => SpyCustomerTableMap::COL_FIRST_NAME,
         'lastName' => SpyCustomerTableMap::COL_LAST_NAME,
@@ -41,18 +43,20 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
     ];
 
     /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
+     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
      *
      * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
      */
-    public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
+    public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
     {
         $customerQuery = $this->getFactory()
             ->createSpyCustomerQuery();
 
-        $customerQuery = $this->applyCriteriaToQuery($customerQuery, $customerCollectionTransfer->getCriteria());
-        $customerQuery = $this->applyFilterToQuery($customerQuery, $customerCollectionTransfer->getFilter());
-        $customerQuery = $this->applyPagination($customerQuery, $customerCollectionTransfer->getPagination());
+        $customerCollectionTransfer = new CustomerCollectionTransfer();
+
+        $customerQuery = $this->applyCriteriaToQuery($customerQuery, $customerCriteriaTransfer->getCustomerConditions());
+        $customerQuery = $this->applySortToQuery($customerQuery, $customerCriteriaTransfer->getSortCollection());
+        $customerQuery = $this->applyPagination($customerQuery, $customerCriteriaTransfer->getPagination());
         $customerQuery->setFormatter(ArrayFormatter::class);
         $this->hydrateCustomerListWithCustomers($customerCollectionTransfer, $customerQuery->find()->getData());
 
@@ -110,21 +114,24 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     /**
      * @param \Orm\Zed\Customer\Persistence\SpyCustomerQuery $spyCustomerQuery
-     * @param \Generated\Shared\Transfer\FilterTransfer|null $filterTransfer
+     * @param \Generated\Shared\Transfer\SortCollectionTransfer|null $sortCollectionTransfer
      *
      * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
      */
-    protected function applyFilterToQuery(SpyCustomerQuery $spyCustomerQuery, ?FilterTransfer $filterTransfer): SpyCustomerQuery
+    protected function applySortToQuery(SpyCustomerQuery $spyCustomerQuery, ?SortCollectionTransfer $sortCollectionTransfer): SpyCustomerQuery
     {
-        if ($filterTransfer !== null) {
-            if ($filterTransfer->getOrderBy() && isset(static::SORT_KEYS_MAP[$filterTransfer->getOrderBy()])) {
-                $filterTransfer->setOrderBy(static::SORT_KEYS_MAP[$filterTransfer->getOrderBy()]);
-            }
+        if ($sortCollectionTransfer !== null) {
+            foreach ($sortCollectionTransfer->getSorts() as $sort) {
+                if (isset(static::SORT_KEYS_MAP[$sort->getField()])) {
+                    if ($sort->getOrderByAsc()) {
+                        $spyCustomerQuery->addAscendingOrderByColumn(static::SORT_KEYS_MAP[$sort->getField()]);
 
-            $spyCustomerQuery->mergeWith(
-                (new PropelFilterCriteria($filterTransfer))
-                    ->toCriteria()
-            );
+                        continue;
+                    }
+
+                    $spyCustomerQuery->addDescendingOrderByColumn(static::SORT_KEYS_MAP[$sort->getField()]);
+                }
+            }
         }
 
         return $spyCustomerQuery;
@@ -138,32 +145,19 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
      */
     protected function applyPagination(SpyCustomerQuery $spyCustomerQuery, ?PaginationTransfer $paginationTransfer = null): SpyCustomerQuery
     {
-        if (empty($paginationTransfer)) {
+        if ($paginationTransfer === null) {
             return $spyCustomerQuery;
         }
 
-        $page = $paginationTransfer
-            ->requirePage()
-            ->getPage();
+        if($paginationTransfer->getLimit()) {
+            $spyCustomerQuery->setLimit($paginationTransfer->getLimit());
+        }
 
-        $maxPerPage = $paginationTransfer
-            ->requireMaxPerPage()
-            ->getMaxPerPage();
+        if($paginationTransfer->getOffset()) {
+            $spyCustomerQuery->setOffset($paginationTransfer->getOffset());
+        }
 
-        $paginationModel = $spyCustomerQuery->paginate($page, $maxPerPage);
-
-        $paginationTransfer->setNbResults($paginationModel->getNbResults());
-        $paginationTransfer->setFirstIndex($paginationModel->getFirstIndex());
-        $paginationTransfer->setLastIndex($paginationModel->getLastIndex());
-        $paginationTransfer->setFirstPage($paginationModel->getFirstPage());
-        $paginationTransfer->setLastPage($paginationModel->getLastPage());
-        $paginationTransfer->setNextPage($paginationModel->getNextPage());
-        $paginationTransfer->setPreviousPage($paginationModel->getPreviousPage());
-
-        /** @var \Orm\Zed\Customer\Persistence\SpyCustomerQuery $customerQuery */
-        $customerQuery = $paginationModel->getQuery();
-
-        return $customerQuery;
+        return $spyCustomerQuery;
     }
 
     /**
@@ -343,18 +337,22 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     /**
      * @param \Orm\Zed\Customer\Persistence\SpyCustomerQuery $customerQuery
-     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer|null $customerCriteriaTransfer
+     * @param \Generated\Shared\Transfer\CustomerConditionsTransfer|null $customerConditionsTransfer
      *
      * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
      */
-    protected function applyCriteriaToQuery(SpyCustomerQuery $customerQuery, ?CustomerCriteriaTransfer $customerCriteriaTransfer): SpyCustomerQuery
+    protected function applyCriteriaToQuery(SpyCustomerQuery $customerQuery, ?CustomerConditionsTransfer $customerConditionsTransfer): SpyCustomerQuery
     {
-        if (!$customerCriteriaTransfer) {
+        if (!$customerConditionsTransfer) {
             return $customerQuery;
         }
 
-        if($customerCriteriaTransfer->getGender() !== null) {
-            $customerQuery->filterByGender((int)$customerCriteriaTransfer->getGender());
+        if ($customerConditionsTransfer->getGenders()) {
+            $customerQuery->filterByGender_In($customerConditionsTransfer->getGenders());
+        }
+
+        if ($customerConditionsTransfer->getIds()) {
+            $customerQuery->filterByIdCustomer_In(array_map('intval', $customerConditionsTransfer->getIds()));
         }
 
         return $customerQuery;
