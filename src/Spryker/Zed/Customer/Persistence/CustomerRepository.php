@@ -352,7 +352,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
 
         if ($customerConditionsTransfer->getIds()) {
-            $customerQuery->filterByIdCustomer_In(array_map('intval', $customerConditionsTransfer->getIds()));
+            $customerQuery->filterByCustomerReference_In($customerConditionsTransfer->getIds());
         }
 
         return $customerQuery;

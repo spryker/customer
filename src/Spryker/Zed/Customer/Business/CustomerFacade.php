@@ -48,6 +48,71 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
+     */
+    public function getApiFirstCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
+    {
+        return $this->getFactory()->createCustomerReader()->getCustomerCollection($customerCriteriaTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $customerReference
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
+     */
+    public function updateApiFirstCustomer(string $customerReference, CustomerTransfer $customerTransfer): CustomerResponseTransfer
+    {
+        $customerTransfer->setCustomerReference($customerReference);
+
+        return $this->getFactory()
+            ->createCustomer()
+            ->update($customerTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
+     */
+    public function createApiFirstCustomer(CustomerTransfer $customerTransfer): CustomerResponseTransfer
+    {
+        return $this->getFactory()
+            ->createCustomer()
+            ->add($customerTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $customerReference
+     *
+     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
+     */
+    public function deleteApiFirstCustomer(string $customerReference): CustomerResponseTransfer
+    {
+        $this->getFactory()->createCustomerAnonymizer()->processByReference($customerReference);
+
+        return (new CustomerResponseTransfer())->setIsSuccess(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string $email
      *
      * @return bool

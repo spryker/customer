@@ -74,6 +74,20 @@ class CustomerAnonymizer implements CustomerAnonymizerInterface
     }
 
     /**
+     * @param string $customerReference
+     *
+     * @return void
+     */
+    public function processByReference(string $customerReference)
+    {
+        $customerTransfer = $this->customerModel->findByReference($customerReference);
+
+        $this->handleDatabaseTransaction(function () use ($customerTransfer) {
+            $this->processTransaction($customerTransfer);
+        });
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return void

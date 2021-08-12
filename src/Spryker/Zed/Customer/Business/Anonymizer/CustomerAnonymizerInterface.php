@@ -17,4 +17,11 @@ interface CustomerAnonymizerInterface
      * @return void
      */
     public function process(CustomerTransfer $customerTransfer);
+
+    /**
+     * @param string $customerReference
+     *
+     * @return void
+     */
+    public function processByReference(string $customerReference);
 }
