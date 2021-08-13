@@ -23,21 +23,9 @@ interface CustomerFacadeInterface
 {
     /**
      * Specification:
-     *  - Retrieves customers from database using filtration and pagination.
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
-    public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer;
-
-    /**
-     * Specification:
      *  - API-First:
      *      - This function takes one data transfer object as input that is called <DomainEntity>CriteriaTransfer. This transfer object is divided into 3 parts
-     *              - CustomerConditions object defines filtering filters and values
+     *              - <DomainEntity>Conditions object defines filtering filters and values
      *              - Pagination defines PaginationTransfer.limit and PaginationTransfer.offset
      *              - SortCollection defines sorting direction and fields by array of SortTransfer
      *                  - SortTransfer.field defines what field will be sorted by
@@ -51,7 +39,7 @@ interface CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
      */
-    public function getApiFirstCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer;
+    public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer;
 
     /**
      * Specification:
@@ -71,7 +59,7 @@ interface CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function updateApiFirstCustomer(string $customerReference, CustomerTransfer $customerTransfer): CustomerResponseTransfer;
+    public function updateCustomer(string $customerReference, CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 
     /**
      * Specification:
@@ -87,7 +75,7 @@ interface CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function createApiFirstCustomer(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
+    public function createCustomer(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 
     /**
      * Specification:
@@ -104,7 +92,7 @@ interface CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function deleteApiFirstCustomer(string $customerReference): CustomerResponseTransfer;
+    public function deleteCustomer(string $customerReference): CustomerResponseTransfer;
 
     /**
      * Specification:
@@ -214,18 +202,6 @@ interface CustomerFacadeInterface
 
     /**
      * Specification:
-     * - Deletes a customer by either customer ID, customer email, or password restoration key.
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return bool
-     */
-    public function deleteCustomer(CustomerTransfer $customerTransfer);
-
-    /**
-     * Specification:
      * - Retrieves customer information with customer addresses by customer ID from persistent storage.
      *
      * @api
@@ -247,25 +223,6 @@ interface CustomerFacadeInterface
      * @return \Generated\Shared\Transfer\CustomerTransfer|null
      */
     public function findCustomerById(CustomerTransfer $customerTransfer);
-
-    /**
-     * Specification:
-     * - Updates password if NewPassword property is set in provided transfer object:
-     * - Validates customer password according configuration.
-     * - Validates provided current plain text password using persistent storage.
-     * - Encrypts provided plain text password before update.
-     * - Identifies customer by either customer ID, customer email, or password restoration key.
-     * - Validates customer email information.
-     * - Updates customer data which is set in provided transfer object (including password property - dismantles newPassword property).
-     * - Sends password restoration email if SendPasswordToken property is set in the provided transfer object.
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
-    public function updateCustomer(CustomerTransfer $customerTransfer);
 
     /**
      * Specification:

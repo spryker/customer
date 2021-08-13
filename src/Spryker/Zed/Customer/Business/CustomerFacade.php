@@ -38,22 +38,6 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      */
     public function getCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
     {
-        return $this->getFactory()
-            ->createCustomerReader()
-            ->getCustomerCollection($customerCriteriaTransfer);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
-    public function getApiFirstCustomerCollection(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerCollectionTransfer
-    {
         return $this->getFactory()->createCustomerReader()->getCustomerCollection($customerCriteriaTransfer);
     }
 
@@ -67,7 +51,7 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function updateApiFirstCustomer(string $customerReference, CustomerTransfer $customerTransfer): CustomerResponseTransfer
+    public function updateCustomer(string $customerReference, CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         $customerTransfer->setCustomerReference($customerReference);
 
@@ -85,7 +69,7 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function createApiFirstCustomer(CustomerTransfer $customerTransfer): CustomerResponseTransfer
+    public function createCustomer(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         return $this->getFactory()
             ->createCustomer()
@@ -101,7 +85,7 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
-    public function deleteApiFirstCustomer(string $customerReference): CustomerResponseTransfer
+    public function deleteCustomer(string $customerReference): CustomerResponseTransfer
     {
         $this->getFactory()->createCustomerAnonymizer()->processByReference($customerReference);
 
@@ -229,22 +213,6 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return bool
-     */
-    public function deleteCustomer(CustomerTransfer $customerTransfer)
-    {
-        return $this->getFactory()
-            ->createCustomer()
-            ->delete($customerTransfer);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
      * @return \Generated\Shared\Transfer\CustomerTransfer|null
      */
     public function findCustomerById(CustomerTransfer $customerTransfer)
@@ -268,22 +236,6 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
         return $this->getFactory()
             ->createCustomer()
             ->get($customerTransfer);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
-    public function updateCustomer(CustomerTransfer $customerTransfer)
-    {
-        return $this->getFactory()
-            ->createCustomer()
-            ->update($customerTransfer);
     }
 
     /**
