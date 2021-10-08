@@ -195,6 +195,8 @@
     </transfer>
 
     <transfer name="CustomerCriteria">
+        <property name="customerReference" type="string"/>
+        <property name="withExpanders" type="bool"/>
         <property name="customerConditions" type="CustomerConditions" />
         <property name="sortCollection" type="SortCollection"/>
         <property name="pagination" type="Pagination" />
@@ -214,4 +216,15 @@
         <property name="orderByAsc" type="bool"/>
     </transfer>
 
+    <transfer name="AuthorizationRequest">
+        <property name="identity" type="AuthorizationIdentity"/>
+        <property name="entity" type="AuthorizationEntity"/>
+    </transfer>
+
+    <transfer name="AuthorizationIdentity">
+        <property name="identifier" type="string"/>
+    </transfer>
+
+    <transfer name="AuthorizationEntity">
+    </transfer>
 </transfers>
