@@ -30,6 +30,7 @@ class ViewController extends AbstractController
      * @var string
      */
     protected const URL_CUSTOMER_LIST_PAGE = '/customer';
+
     /**
      * @var string
      */
@@ -44,7 +45,7 @@ class ViewController extends AbstractController
     {
         $idCustomer = $request->get(CustomerConstants::PARAM_ID_CUSTOMER);
 
-        if (empty($idCustomer)) {
+        if (!$idCustomer) {
             return $this->redirectResponse(static::URL_CUSTOMER_LIST_PAGE);
         }
 
@@ -119,7 +120,7 @@ class ViewController extends AbstractController
     {
         $subRequest = clone $request;
         $subRequest->setMethod(Request::METHOD_POST);
-        /** @var array $customerTransfer */
+        /** @phpstan-var array $customerTransfer */
         $subRequest->request->set(static::PARAM_CUSTOMER, $customerTransfer);
 
         $responseData = [];

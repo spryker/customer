@@ -26,6 +26,7 @@ class AddressTable extends AbstractTable
      * @var string
      */
     public const DEFAULT_BILLING_ADDRESS = 'default_billing_address';
+
     /**
      * @var string
      */
@@ -89,11 +90,11 @@ class AddressTable extends AbstractTable
             SpyCustomerAddressTableMap::COL_COMPANY => 'Company',
             SpyCustomerAddressTableMap::COL_ZIP_CODE => 'Zip Code',
             SpyCustomerAddressTableMap::COL_CITY => 'City',
-            self::COL_COMPANY => 'Country',
-            self::ACTIONS => 'Actions',
+            static::COL_COMPANY => 'Country',
+            static::ACTIONS => 'Actions',
         ]);
 
-        $config->addRawColumn(self::ACTIONS);
+        $config->addRawColumn(static::ACTIONS);
         $config->addRawColumn(SpyCustomerAddressTableMap::COL_ADDRESS1);
 
         $config->setSortable([
@@ -129,7 +130,7 @@ class AddressTable extends AbstractTable
         $query = $this->customerQueryContainer->queryAddresses()
             ->filterByFkCustomer($this->idCustomer)
             ->leftJoinCountry('country')
-            ->withColumn('country.name', self::COL_COMPANY);
+            ->withColumn('country.name', static::COL_COMPANY);
         $lines = $this->runQuery($query, $config);
 
         $customer = $this->customerQueryContainer->queryCustomers()->findOneByIdCustomer($this->idCustomer);
@@ -138,11 +139,11 @@ class AddressTable extends AbstractTable
         if ($customer !== null) {
             $customer = $customer->toArray();
 
-            $defaultBillingAddress = !empty($customer[self::DEFAULT_BILLING_ADDRESS]) ? $customer[self::DEFAULT_BILLING_ADDRESS] : false;
-            $defaultShippingAddress = !empty($customer[self::DEFAULT_SHIPPING_ADDRESS]) ? $customer[self::DEFAULT_SHIPPING_ADDRESS] : false;
+            $defaultBillingAddress = !empty($customer[static::DEFAULT_BILLING_ADDRESS]) ? $customer[static::DEFAULT_BILLING_ADDRESS] : false;
+            $defaultShippingAddress = !empty($customer[static::DEFAULT_SHIPPING_ADDRESS]) ? $customer[static::DEFAULT_SHIPPING_ADDRESS] : false;
         }
 
-        if (!empty($lines)) {
+        if ($lines) {
             foreach ($lines as $key => $value) {
                 $id = !empty($value[SpyCustomerAddressTableMap::COL_ID_CUSTOMER_ADDRESS]) ? $value[SpyCustomerAddressTableMap::COL_ID_CUSTOMER_ADDRESS] : false;
 
@@ -155,9 +156,9 @@ class AddressTable extends AbstractTable
                 }
 
                 $address = $this->utilSanitize->escapeHtml($lines[$key][SpyCustomerAddressTableMap::COL_ADDRESS1]);
-                $lines[$key][SpyCustomerAddressTableMap::COL_ADDRESS1] = (!empty($tags) ? implode('&nbsp;', $tags) . '&nbsp;' : '') . $address;
+                $lines[$key][SpyCustomerAddressTableMap::COL_ADDRESS1] = ($tags ? implode('&nbsp;', $tags) . '&nbsp;' : '') . $address;
 
-                $lines[$key][self::ACTIONS] = $this->buildLinks($value);
+                $lines[$key][static::ACTIONS] = $this->buildLinks($value);
             }
         }
 
@@ -183,7 +184,7 @@ class AddressTable extends AbstractTable
                     CustomerConstants::PARAM_ID_CUSTOMER_ADDRESS => $idCustomerAddress,
                     CustomerConstants::PARAM_ID_CUSTOMER => $this->idCustomer,
                 ]),
-                'Edit'
+                'Edit',
             );
         }
 

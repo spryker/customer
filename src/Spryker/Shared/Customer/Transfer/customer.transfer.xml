@@ -61,7 +61,7 @@
         <property name="newPassword" type="string"/>
         <property name="billingAddress" type="Address[]" singular="billingAddress"/>
         <property name="shippingAddress" type="Address[]" singular="shippingAddress"/>
-        <property name="addresses" type="Addresses" singular="address"/>
+        <property name="addresses" type="Addresses"/>
         <property name="defaultBillingAddress" type="string"/>
         <property name="defaultShippingAddress" type="string"/>
         <property name="createdAt" type="string"/>
@@ -164,6 +164,7 @@
 
     <transfer name="Locale">
         <property name="localeName" type="string"/>
+        <property name="idLocale" type="int"/>
     </transfer>
 
     <transfer name="Button">
@@ -227,4 +228,13 @@
 
     <transfer name="AuthorizationEntity">
     </transfer>
+
+    <transfer name="Store">
+        <property name="name" type="string"/>
+    </transfer>
+
+    <transfer name="CountryCollection">
+        <property name="countries" type="Country[]" singular="countries"/>
+    </transfer>
+
 </transfers>

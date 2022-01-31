@@ -23,6 +23,7 @@ class CustomerUpdateForm extends CustomerForm
      * @var string
      */
     public const FIELD_DEFAULT_BILLING_ADDRESS = 'default_billing_address';
+
     /**
      * @var string
      */
@@ -42,12 +43,12 @@ class CustomerUpdateForm extends CustomerForm
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(self::OPTION_ADDRESS_CHOICES);
+        $resolver->setRequired(static::OPTION_ADDRESS_CHOICES);
     }
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */
@@ -56,8 +57,8 @@ class CustomerUpdateForm extends CustomerForm
         parent::buildForm($builder, $options);
 
         $this
-            ->addDefaultBillingAddressField($builder, $options[self::OPTION_ADDRESS_CHOICES])
-            ->addDefaultShippingAddressField($builder, $options[self::OPTION_ADDRESS_CHOICES]);
+            ->addDefaultBillingAddressField($builder, $options[static::OPTION_ADDRESS_CHOICES])
+            ->addDefaultShippingAddressField($builder, $options[static::OPTION_ADDRESS_CHOICES]);
     }
 
     /**
@@ -67,7 +68,7 @@ class CustomerUpdateForm extends CustomerForm
      */
     protected function addEmailField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_EMAIL, EmailType::class, [
+        $builder->add(static::FIELD_EMAIL, EmailType::class, [
             'label' => 'Email',
             'constraints' => $this->createEmailConstraints(),
             'disabled' => 'disabled',
@@ -84,7 +85,7 @@ class CustomerUpdateForm extends CustomerForm
      */
     protected function addDefaultBillingAddressField(FormBuilderInterface $builder, array $choices)
     {
-        $builder->add(self::FIELD_DEFAULT_BILLING_ADDRESS, ChoiceType::class, [
+        $builder->add(static::FIELD_DEFAULT_BILLING_ADDRESS, ChoiceType::class, [
             'label' => 'Billing Address',
             'placeholder' => 'Select one',
             'choices' => array_flip($choices),
@@ -102,7 +103,7 @@ class CustomerUpdateForm extends CustomerForm
      */
     protected function addDefaultShippingAddressField(FormBuilderInterface $builder, array $choices)
     {
-        $builder->add(self::FIELD_DEFAULT_SHIPPING_ADDRESS, ChoiceType::class, [
+        $builder->add(static::FIELD_DEFAULT_SHIPPING_ADDRESS, ChoiceType::class, [
             'label' => 'Shipping Address',
             'placeholder' => 'Select one',
             'choices' => array_flip($choices),
