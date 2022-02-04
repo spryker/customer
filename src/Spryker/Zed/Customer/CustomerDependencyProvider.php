@@ -14,6 +14,7 @@ use Spryker\Zed\Customer\Dependency\Facade\CustomerToCountryBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToMailBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToSequenceNumberBridge;
+use Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeBridge;
 use Spryker\Zed\Customer\Dependency\Service\CustomerToUtilDateTimeServiceBridge;
 use Spryker\Zed\Customer\Dependency\Service\CustomerToUtilSanitizeServiceBridge;
 use Spryker\Zed\Customer\Dependency\Service\CustomerToUtilValidateServiceBridge;
@@ -29,36 +30,49 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
      * @var string
      */
     public const FACADE_SEQUENCE_NUMBER = 'FACADE_SEQUENCE_NUMBER';
+
     /**
      * @var string
      */
     public const FACADE_COUNTRY = 'FACADE_COUNTRY';
+
     /**
      * @var string
      */
     public const FACADE_LOCALE = 'FACADE_LOCALE';
+
     /**
      * @var string
      */
     public const FACADE_MAIL = 'FACADE_MAIL';
 
     /**
+     * @var string
+     */
+    public const FACADE_STORE = 'FACADE_STORE';
+
+    /**
      * @deprecated Use SERVICE_UTIL_DATE_TIME instead.
+     *
      * @var string
      */
     public const SERVICE_DATE_FORMATTER = 'SERVICE_DATE_FORMATTER';
+
     /**
      * @var string
      */
     public const SERVICE_UTIL_VALIDATE = 'SERVICE_UTIL_VALIDATE';
+
     /**
      * @var string
      */
     public const SERVICE_UTIL_SANITIZE = 'SERVICE_UTIL_SANITIZE';
+
     /**
      * @var string
      */
     public const SERVICE_UTIL_DATE_TIME = 'SERVICE_UTIL_DATE_TIME';
+
     /**
      * @var string
      */
@@ -66,6 +80,7 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
 
     /**
      * @uses \Spryker\Zed\Http\Communication\Plugin\Application\HttpApplicationPlugin::SERVICE_SUB_REQUEST
+     *
      * @var string
      */
     protected const SERVICE_SUB_REQUEST = 'sub_request';
@@ -84,14 +99,17 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
      * @var string
      */
     public const PLUGINS_CUSTOMER_ANONYMIZER = 'PLUGINS_CUSTOMER_ANONYMIZER';
+
     /**
      * @var string
      */
     public const PLUGINS_CUSTOMER_TRANSFER_EXPANDER = 'PLUGINS_CUSTOMER_TRANSFER_EXPANDER';
+
     /**
      * @var string
      */
     public const PLUGINS_POST_CUSTOMER_REGISTRATION = 'PLUGINS_POST_CUSTOMER_REGISTRATION';
+
     /**
      * @var string
      */
@@ -113,7 +131,7 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addCountryFacade($container);
         $container = $this->addMailFacade($container);
         $container = $this->addLocaleQueryConainer($container);
-        $container = $this->addStore($container);
+        $container = $this->addStoreFacade($container);
         $container = $this->addCustomerAnonymizerPlugins($container);
         $container = $this->addUtilValidateService($container);
         $container = $this->addLocaleFacade($container);
@@ -133,7 +151,7 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = $this->addCountryFacade($container);
         $container = $this->addDateFormatterService($container);
-        $container = $this->addStore($container);
+        $container = $this->addStoreFacade($container);
         $container = $this->addUtilSanitizeService($container);
         $container = $this->addUtilDateTimeService($container);
         $container = $this->addLocaleFacade($container);
@@ -394,6 +412,20 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::SERVICE_CUSTOMER, function (Container $container): CustomerServiceInterface {
             return $container->getLocator()->customer()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStoreFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_STORE, function (Container $container) {
+            return new CustomerToStoreFacadeBridge($container->getLocator()->store()->facade());
         });
 
         return $container;

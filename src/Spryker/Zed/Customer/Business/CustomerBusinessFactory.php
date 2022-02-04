@@ -28,10 +28,12 @@ use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\SequenceCustomerPasswor
 use Spryker\Zed\Customer\Business\Model\CustomerOrderSaver as ObsoleteCustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Model\PreConditionChecker;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGenerator;
+use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface;
 use Spryker\Zed\Customer\Business\Sales\CustomerOrderHydrator;
 use Spryker\Zed\Customer\Business\StrategyResolver\OrderSaverStrategyResolver;
 use Spryker\Zed\Customer\Business\StrategyResolver\OrderSaverStrategyResolverInterface;
 use Spryker\Zed\Customer\CustomerDependencyProvider;
+use Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -56,10 +58,10 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->createEmailValidator(),
             $this->getMailFacade(),
             $this->getLocaleQueryContainer(),
-            $this->getStore(),
+            $this->getLocaleFacade(),
             $this->createCustomerExpander(),
             $this->createCustomerPasswordPolicyValidator(),
-            $this->getPostCustomerRegistrationPlugins()
+            $this->getPostCustomerRegistrationPlugins(),
         );
 
         return $customer;
@@ -74,7 +76,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->getEntityManager(),
             $this->getRepository(),
             $this->createAddress(),
-            $this->createCustomerExpander()
+            $this->createCustomerExpander(),
         );
     }
 
@@ -141,14 +143,14 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->getCountryFacade(),
             $this->getLocaleFacade(),
             $this->createCustomerExpander(),
-            $this->getRepository()
+            $this->getRepository(),
         );
     }
 
     /**
      * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToCountryInterface
      */
-    protected function getCountryFacade()
+    public function getCountryFacade()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_COUNTRY);
     }
@@ -156,7 +158,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface
      */
-    protected function getMailFacade()
+    public function getMailFacade()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_MAIL);
     }
@@ -164,7 +166,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface
      */
-    protected function getLocaleFacade()
+    public function getLocaleFacade()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_LOCALE);
     }
@@ -172,18 +174,19 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface
      */
-    protected function createCustomerReferenceGenerator()
+    public function createCustomerReferenceGenerator(): CustomerReferenceGeneratorInterface
     {
         return new CustomerReferenceGenerator(
             $this->getSequenceNumberFacade(),
-            $this->getConfig()->getCustomerReferenceDefaults()
+            $this->getStoreFacade(),
+            $this->getConfig(),
         );
     }
 
     /**
      * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToSequenceNumberInterface
      */
-    protected function getSequenceNumberFacade()
+    public function getSequenceNumberFacade()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_SEQUENCE_NUMBER);
     }
@@ -214,7 +217,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return new CustomerOrderSaverWithMultiShippingAddress(
             $this->createCustomer(),
             $this->createAddress(),
-            $this->getCustomerService()
+            $this->getCustomerService(),
         );
     }
 
@@ -235,7 +238,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->getQueryContainer(),
             $this->createCustomer(),
             $this->createAddress(),
-            $this->getCustomerAnonymizerPlugins()
+            $this->getCustomerAnonymizerPlugins(),
         );
     }
 
@@ -250,17 +253,9 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\Locale\Persistence\LocaleQueryContainerInterface
      */
-    protected function getLocaleQueryContainer()
+    public function getLocaleQueryContainer()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::QUERY_CONTAINER_LOCALE);
-    }
-
-    /**
-     * @return \Spryker\Shared\Kernel\Store
-     */
-    protected function getStore()
-    {
-        return $this->getProvidedDependency(CustomerDependencyProvider::STORE);
     }
 
     /**
@@ -269,25 +264,25 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     public function createCustomerOrderHydrator()
     {
         return new CustomerOrderHydrator(
-            $this->createCustomer()
+            $this->createCustomer(),
         );
     }
 
     /**
      * @return \Spryker\Zed\Customer\Business\Customer\EmailValidatorInterface
      */
-    protected function createEmailValidator()
+    public function createEmailValidator()
     {
         return new EmailValidator(
             $this->getQueryContainer(),
-            $this->getUtilValidateService()
+            $this->getUtilValidateService(),
         );
     }
 
     /**
      * @return \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilValidateServiceInterface
      */
-    protected function getUtilValidateService()
+    public function getUtilValidateService()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::SERVICE_UTIL_VALIDATE);
     }
@@ -295,7 +290,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return array<\Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterface>
      */
-    protected function getCustomerTransferExpanderPlugins()
+    public function getCustomerTransferExpanderPlugins()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_TRANSFER_EXPANDER);
     }
@@ -314,7 +309,7 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     public function createCustomerExpander()
     {
         return new CustomerExpander(
-            $this->getCustomerTransferExpanderPlugins()
+            $this->getCustomerTransferExpanderPlugins(),
         );
     }
 
@@ -344,5 +339,13 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     public function getCustomerService(): CustomerServiceInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::SERVICE_CUSTOMER);
+    }
+
+    /**
+     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface
+     */
+    public function getStoreFacade(): CustomerToStoreFacadeInterface
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_STORE);
     }
 }

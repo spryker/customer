@@ -34,26 +34,32 @@ class CustomerAddressFacadeTest extends Unit
      * @var string
      */
     protected const TESTER_EMAIL = 'tester@spryker.com';
+
     /**
      * @var string
      */
     protected const TESTER_PASSWORD = 'testpassworD1$';
+
     /**
      * @var string
      */
     protected const TESTER_NAME = 'Tester';
+
     /**
      * @var string
      */
     protected const TESTER_CITY = 'Testcity';
+
     /**
      * @var string
      */
     protected const TESTER_ADDRESS1 = 'Testerstreet 23';
+
     /**
      * @var string
      */
     protected const TESTER_ZIP_CODE = '42';
+
     /**
      * @var int
      */
@@ -142,8 +148,8 @@ class CustomerAddressFacadeTest extends Unit
         $customerTransfer = $this->createTestCustomer();
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setEmail($customerTransfer->getEmail());
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
         $addressTransfer->setFkCustomer($customerTransfer->getIdCustomer());
         $addressTransfer = $this->customerFacade->createAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
@@ -198,8 +204,8 @@ class CustomerAddressFacadeTest extends Unit
         $customerTransfer = $this->createTestCustomer();
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setEmail($customerTransfer->getEmail());
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
         $addressTransfer = $this->customerFacade->createAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
     }
@@ -212,8 +218,8 @@ class CustomerAddressFacadeTest extends Unit
         $customerTransfer = $this->createTestCustomer();
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setEmail($customerTransfer->getEmail());
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
         $addressTransfer = $this->customerFacade->createAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
 
@@ -222,7 +228,7 @@ class CustomerAddressFacadeTest extends Unit
         $addresses = $customerTransfer->getAddresses()->getAddresses();
         $addressTransfer = $addresses[0];
 
-        $addressTransfer->setCity(self::TESTER_CITY);
+        $addressTransfer->setCity(static::TESTER_CITY);
         $addressTransfer->setFkCustomer($customerTransfer->getIdCustomer());
         $addressTransfer = $this->customerFacade->updateAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
@@ -237,8 +243,8 @@ class CustomerAddressFacadeTest extends Unit
         $customerTransfer = $this->createTestCustomer();
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setEmail($customerTransfer->getEmail());
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
         $addressTransfer->setFkCustomer($customerTransfer->getIdCustomer());
         $addressTransfer = $this->customerFacade->createAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
@@ -307,6 +313,117 @@ class CustomerAddressFacadeTest extends Unit
     }
 
     /**
+     * @return void
+     */
+    public function testGetAddressReturnsAddressByProvidedAddressIdWhenCustomerIdNotSpecified(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createTestCustomer();
+        $addressTransfer = $this->createTestAddress($customerTransfer);
+        $addressTransfer->setCustomerId(null);
+
+        // Act
+        $addressTransfer = $this->customerFacade->getAddress($addressTransfer);
+
+        // Assert
+        $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetAddressReturnsFirstAddressOfCustomerWhenNoDefaultAddress(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createTestCustomer();
+        $addressTransfer = $this->createTestAddress($customerTransfer);
+
+        // Act
+        $addressTransfer = $this->customerFacade->getAddress($addressTransfer);
+
+        // Assert
+        $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetAddressTrowsAddressNotFoundExceptionWhenAddressIdAndCustomerIdNotPassed(): void
+    {
+        // Arrange
+        $addressTransfer = new AddressTransfer();
+
+        // Assert
+        $this->expectException(AddressNotFoundException::class);
+        $this->expectExceptionMessage('Address not found for ID `` (and optional customer ID ``).');
+
+        // Act
+        $this->customerFacade->getAddress($addressTransfer);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetDefaultBillingAddressReturnsFirstAddressOfCustomerWhenNoDefaultAddress(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createCustomerWithAddress();
+
+        // Act
+        $addressTransfer = $this->customerFacade->getDefaultBillingAddress($customerTransfer);
+
+        // Assert
+        $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetDefaultBillingAddressTrowsAddressNotFoundExceptionWhenCustomerDontHaveAddress(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createTestCustomer();
+
+        // Assert
+        $this->expectException(AddressNotFoundException::class);
+        $this->expectExceptionMessage("Address not found for ID `` (and optional customer ID `{$customerTransfer->getIdCustomer()}`).");
+
+        // Act
+        $this->customerFacade->getDefaultBillingAddress($customerTransfer);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetDefaultShippingAddressReturnsFirstAddressOfCustomerWhenNoDefaultAddress(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createCustomerWithAddress();
+
+        // Act
+        $addressTransfer = $this->customerFacade->getDefaultShippingAddress($customerTransfer);
+
+        // Assert
+        $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetDefaultShippingAddressTrowsAddressNotFoundExceptionWhenCustomerDontHaveAddress(): void
+    {
+        // Arrange
+        $customerTransfer = $this->createTestCustomer();
+
+        // Assert
+        $this->expectException(AddressNotFoundException::class);
+        $this->expectExceptionMessage("Address not found for ID `` (and optional customer ID `{$customerTransfer->getIdCustomer()}`).");
+
+        // Act
+        $this->customerFacade->getDefaultShippingAddress($customerTransfer);
+    }
+
+    /**
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
     protected function createCustomerWithAddress(): CustomerTransfer
@@ -314,8 +431,8 @@ class CustomerAddressFacadeTest extends Unit
         $customerTransfer = $this->createTestCustomer();
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setEmail($customerTransfer->getEmail());
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
         $addressTransfer->setFkCustomer($customerTransfer->getIdCustomer());
         $addressTransfer = $this->customerFacade->createAddress($addressTransfer);
         $this->assertNotNull($addressTransfer);
@@ -341,8 +458,8 @@ class CustomerAddressFacadeTest extends Unit
     protected function createTestCustomerTransfer(): CustomerTransfer
     {
         $customerTransfer = new CustomerTransfer();
-        $customerTransfer->setEmail(self::TESTER_EMAIL);
-        $customerTransfer->setPassword(self::TESTER_PASSWORD);
+        $customerTransfer->setEmail(static::TESTER_EMAIL);
+        $customerTransfer->setPassword(static::TESTER_PASSWORD);
 
         return $customerTransfer;
     }
@@ -381,12 +498,12 @@ class CustomerAddressFacadeTest extends Unit
     {
         $addressTransfer = new AddressTransfer();
         $addressTransfer->setFkCustomer($customerTransfer->getIdCustomer());
-        $addressTransfer->setEmail(self::TESTER_EMAIL);
-        $addressTransfer->setFirstName(self::TESTER_NAME);
-        $addressTransfer->setLastName(self::TESTER_NAME);
-        $addressTransfer->setAddress1(self::TESTER_ADDRESS1);
-        $addressTransfer->setCity(self::TESTER_CITY);
-        $addressTransfer->setZipCode(self::TESTER_ZIP_CODE);
+        $addressTransfer->setEmail(static::TESTER_EMAIL);
+        $addressTransfer->setFirstName(static::TESTER_NAME);
+        $addressTransfer->setLastName(static::TESTER_NAME);
+        $addressTransfer->setAddress1(static::TESTER_ADDRESS1);
+        $addressTransfer->setCity(static::TESTER_CITY);
+        $addressTransfer->setZipCode(static::TESTER_ZIP_CODE);
 
         return $addressTransfer;
     }

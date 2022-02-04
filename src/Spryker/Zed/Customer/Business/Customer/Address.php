@@ -104,20 +104,24 @@ class Address implements AddressInterface
     }
 
     /**
-     * @param int $idAddress
+     * @param int|null $idAddress
      * @param int|null $idCustomer
      *
      * @throws \Spryker\Zed\Customer\Business\Exception\AddressNotFoundException
      *
      * @return \Generated\Shared\Transfer\AddressTransfer
      */
-    protected function getAddressTransferById($idAddress, $idCustomer = null)
+    protected function getAddressTransferById(?int $idAddress = null, ?int $idCustomer = null): AddressTransfer
     {
-        $addressCriteriaFilterTransfer = (new AddressCriteriaFilterTransfer())
-            ->setIdCustomerAddress($idAddress)
-            ->setFkCustomer($idCustomer);
+        $addressTransfer = null;
 
-        $addressTransfer = $this->customerRepository->findAddressByCriteria($addressCriteriaFilterTransfer);
+        if ($idAddress || $idCustomer) {
+            $addressCriteriaFilterTransfer = (new AddressCriteriaFilterTransfer())
+                ->setIdCustomerAddress($idAddress)
+                ->setFkCustomer($idCustomer);
+
+            $addressTransfer = $this->customerRepository->findAddressByCriteria($addressCriteriaFilterTransfer);
+        }
 
         if ($addressTransfer === null) {
             throw new AddressNotFoundException(sprintf('Address not found for ID `%s` (and optional customer ID `%s`).', $idAddress, $idCustomer));
@@ -137,10 +141,10 @@ class Address implements AddressInterface
 
         if ($addressTransfer !== null) {
             $addressTransfer->setIsDefaultBilling(
-                $this->isDefaultAddress($addressTransfer->getIdCustomerAddress(), $customerEntity->getDefaultBillingAddress())
+                $this->isDefaultAddress($addressTransfer->getIdCustomerAddress(), $customerEntity->getDefaultBillingAddress()),
             );
             $addressTransfer->setIsDefaultShipping(
-                $this->isDefaultAddress($addressTransfer->getIdCustomerAddress(), $customerEntity->getDefaultShippingAddress())
+                $this->isDefaultAddress($addressTransfer->getIdCustomerAddress(), $customerEntity->getDefaultShippingAddress()),
             );
         }
     }
@@ -221,7 +225,7 @@ class Address implements AddressInterface
             throw new AddressNotFoundException(sprintf(
                 'Address not found for ID `%s` and customer email `%s`.',
                 $addressTransfer->getIdCustomerAddress(),
-                $customer->getEmail()
+                $customer->getEmail(),
             ));
         }
 
@@ -249,7 +253,7 @@ class Address implements AddressInterface
             throw new AddressNotFoundException(sprintf(
                 'Address not found for ID `%s` and customer email `%s`.',
                 $addressTransfer->getIdCustomerAddress(),
-                $customer->getEmail()
+                $customer->getEmail(),
             ));
         }
 
@@ -333,7 +337,7 @@ class Address implements AddressInterface
             throw new CustomerNotFoundException(sprintf(
                 'Customer not found for email `%s` or ID `%s`.',
                 $addressTransfer->getEmail(),
-                $addressTransfer->getFkCustomer()
+                $addressTransfer->getFkCustomer(),
             ));
         }
 
@@ -392,7 +396,7 @@ class Address implements AddressInterface
             throw new CustomerNotFoundException(sprintf(
                 'Customer not found for email `%s` or ID `%s`.',
                 $customerTransfer->getEmail(),
-                $customerTransfer->getIdCustomer()
+                $customerTransfer->getIdCustomer(),
             ));
         }
 
@@ -419,7 +423,7 @@ class Address implements AddressInterface
         $customerEntity = $this->getCustomerFromCustomerTransfer($customerTransfer);
         $idAddress = $customerEntity->getDefaultShippingAddress();
 
-        return $this->getAddressTransferById($idAddress);
+        return $this->getAddressTransferById($idAddress, $customerEntity->getIdCustomer());
     }
 
     /**
@@ -432,7 +436,7 @@ class Address implements AddressInterface
         $customerEntity = $this->getCustomerFromCustomerTransfer($customerTransfer);
         $idAddress = $customerEntity->getDefaultBillingAddress();
 
-        return $this->getAddressTransferById($idAddress);
+        return $this->getAddressTransferById($idAddress, $customerEntity->getIdCustomer());
     }
 
     /**
@@ -460,7 +464,7 @@ class Address implements AddressInterface
         $entity = $this->queryContainer
             ->queryAddressForCustomer(
                 $addressTransfer->getIdCustomerAddress(),
-                $customer->getEmail()
+                $customer->getEmail(),
             )
             ->findOne();
 
@@ -468,7 +472,7 @@ class Address implements AddressInterface
             throw new AddressNotFoundException(sprintf(
                 'Address not found for ID `%s` and customer email `%s`.',
                 $addressTransfer->getIdCustomerAddress(),
-                $customer->getEmail()
+                $customer->getEmail(),
             ));
         }
 
@@ -501,9 +505,9 @@ class Address implements AddressInterface
     protected function retrieveFkCountry(AddressTransfer $addressTransfer)
     {
         $fkCountry = $addressTransfer->getFkCountry();
-        if (empty($fkCountry)) {
+        if (!$fkCountry) {
             $iso2Code = $addressTransfer->getIso2Code();
-            if (empty($iso2Code) === false) {
+            if ($iso2Code) {
                 $countryTransfer = $this->countryFacade->getCountryByIso2Code($iso2Code);
                 $fkCountry = $countryTransfer->getIdCountry();
             } else {
@@ -635,7 +639,7 @@ class Address implements AddressInterface
             throw new AddressNotFoundException(sprintf(
                 'Address not found for ID `%s` and customer email `%s`.',
                 $addressTransfer->getIdCustomerAddress(),
-                $customer->getEmail()
+                $customer->getEmail(),
             ));
         }
 

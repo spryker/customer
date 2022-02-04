@@ -37,10 +37,12 @@ class CustomerForm extends AbstractType
      * @var string
      */
     public const OPTION_SALUTATION_CHOICES = 'salutation_choices';
+
     /**
      * @var string
      */
     public const OPTION_GENDER_CHOICES = 'gender_choices';
+
     /**
      * @var string
      */
@@ -50,42 +52,52 @@ class CustomerForm extends AbstractType
      * @var string
      */
     public const FIELD_EMAIL = 'email';
+
     /**
      * @var string
      */
     public const FIELD_SALUTATION = 'salutation';
+
     /**
      * @var string
      */
     public const FIELD_FIRST_NAME = 'first_name';
+
     /**
      * @var string
      */
     public const FIELD_LAST_NAME = 'last_name';
+
     /**
      * @var string
      */
     public const FIELD_GENDER = 'gender';
+
     /**
      * @var string
      */
     public const FIELD_SEND_PASSWORD_TOKEN = 'send_password_token';
+
     /**
      * @var string
      */
     public const FIELD_ID_CUSTOMER = 'id_customer';
+
     /**
      * @var string
      */
     public const FIELD_COMPANY = 'company';
+
     /**
      * @var string
      */
     public const FIELD_PHONE = 'phone';
+
     /**
      * @var string
      */
     public const FIELD_DATE_OF_BIRTH = 'date_of_birth';
+
     /**
      * @var string
      */
@@ -106,14 +118,14 @@ class CustomerForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(self::OPTION_SALUTATION_CHOICES);
-        $resolver->setRequired(self::OPTION_GENDER_CHOICES);
-        $resolver->setRequired(self::OPTION_LOCALE_CHOICES);
+        $resolver->setRequired(static::OPTION_SALUTATION_CHOICES);
+        $resolver->setRequired(static::OPTION_GENDER_CHOICES);
+        $resolver->setRequired(static::OPTION_LOCALE_CHOICES);
     }
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return void
      */
@@ -122,10 +134,10 @@ class CustomerForm extends AbstractType
         $this
             ->addIdCustomerField($builder)
             ->addEmailField($builder)
-            ->addSalutationField($builder, $options[self::OPTION_SALUTATION_CHOICES])
+            ->addSalutationField($builder, $options[static::OPTION_SALUTATION_CHOICES])
             ->addFirstNameField($builder)
             ->addLastNameField($builder)
-            ->addGenderField($builder, $options[self::OPTION_GENDER_CHOICES])
+            ->addGenderField($builder, $options[static::OPTION_GENDER_CHOICES])
             ->addDateOfBirthField($builder)
             ->addPhoneField($builder)
             ->addCompanyField($builder)
@@ -140,7 +152,7 @@ class CustomerForm extends AbstractType
      */
     protected function addIdCustomerField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_ID_CUSTOMER, HiddenType::class);
+        $builder->add(static::FIELD_ID_CUSTOMER, HiddenType::class);
 
         return $this;
     }
@@ -152,7 +164,7 @@ class CustomerForm extends AbstractType
      */
     protected function addEmailField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_EMAIL, EmailType::class, [
+        $builder->add(static::FIELD_EMAIL, EmailType::class, [
             'label' => 'Email',
             'constraints' => $this->createEmailConstraints(),
         ]);
@@ -168,7 +180,7 @@ class CustomerForm extends AbstractType
      */
     protected function addSalutationField(FormBuilderInterface $builder, array $choices)
     {
-        $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
+        $builder->add(static::FIELD_SALUTATION, ChoiceType::class, [
             'label' => 'Salutation',
             'placeholder' => 'Select one',
             'choices' => array_flip($choices),
@@ -187,7 +199,7 @@ class CustomerForm extends AbstractType
      */
     protected function addFirstNameField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
+        $builder->add(static::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'First Name',
             'constraints' => $this->getTextFieldConstraints(),
         ]);
@@ -202,7 +214,7 @@ class CustomerForm extends AbstractType
      */
     protected function addLastNameField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_LAST_NAME, TextType::class, [
+        $builder->add(static::FIELD_LAST_NAME, TextType::class, [
             'label' => 'Last Name',
             'constraints' => $this->getTextFieldConstraints(),
         ]);
@@ -218,7 +230,7 @@ class CustomerForm extends AbstractType
      */
     protected function addGenderField(FormBuilderInterface $builder, array $choices)
     {
-        $builder->add(self::FIELD_GENDER, ChoiceType::class, [
+        $builder->add(static::FIELD_GENDER, ChoiceType::class, [
             'label' => 'Gender',
             'placeholder' => 'Select one',
             'choices' => array_flip($choices),
@@ -235,7 +247,7 @@ class CustomerForm extends AbstractType
      */
     protected function addSendPasswordField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_SEND_PASSWORD_TOKEN, CheckboxType::class, [
+        $builder->add(static::FIELD_SEND_PASSWORD_TOKEN, CheckboxType::class, [
             'label' => 'Send password token through email',
             'required' => false,
         ]);
@@ -375,7 +387,7 @@ class CustomerForm extends AbstractType
             },
             function ($dateAsObject) {
                 return $dateAsObject;
-            }
+            },
         );
     }
 
@@ -394,7 +406,7 @@ class CustomerForm extends AbstractType
                 if ($localeAsInt !== null) {
                     return $this->getFactory()->getLocaleFacadePublic()->getLocaleById($localeAsInt);
                 }
-            }
+            },
         );
     }
 

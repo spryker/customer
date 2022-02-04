@@ -22,7 +22,6 @@ use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Propel\Runtime\Collection\ObjectCollection;
 use Spryker\Service\UtilText\UtilTextService;
 use Spryker\Shared\Customer\Code\Messages;
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface;
 use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface;
 use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
@@ -30,6 +29,7 @@ use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorI
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestoredPasswordConfirmationMailTypePlugin;
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestorePasswordMailTypePlugin;
 use Spryker\Zed\Customer\CustomerConfig;
+use Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface;
 use Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface;
 use Spryker\Zed\Locale\Persistence\LocaleQueryContainerInterface;
@@ -44,6 +44,7 @@ class Customer implements CustomerInterface
      * @var int
      */
     protected const BCRYPT_FACTOR = 12;
+
     /**
      * @var string
      */
@@ -53,10 +54,12 @@ class Customer implements CustomerInterface
      * @var string
      */
     protected const GLOSSARY_KEY_CONFIRM_EMAIL_LINK_INVALID_OR_USED = 'customer.error.confirm_email_link.invalid_or_used';
+
     /**
      * @var string
      */
     protected const GLOSSARY_KEY_CUSTOMER_AUTHORIZATION_VALIDATE_EMAIL_ADDRESS = 'customer.authorization.validate_email_address';
+
     /**
      * @var string
      */
@@ -93,11 +96,6 @@ class Customer implements CustomerInterface
     protected $localeQueryContainer;
 
     /**
-     * @var \Spryker\Shared\Kernel\Store
-     */
-    protected $store;
-
-    /**
      * @var \Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface
      */
     protected $customerExpander;
@@ -113,13 +111,18 @@ class Customer implements CustomerInterface
     protected $customerPasswordPolicyValidator;
 
     /**
+     * @var \Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface
+     */
+    protected $localeFacade;
+
+    /**
      * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface $customerReferenceGenerator
      * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
      * @param \Spryker\Zed\Customer\Business\Customer\EmailValidatorInterface $emailValidator
      * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface $mailFacade
      * @param \Spryker\Zed\Locale\Persistence\LocaleQueryContainerInterface $localeQueryContainer
-     * @param \Spryker\Shared\Kernel\Store $store
+     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface $localeFacade
      * @param \Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface $customerExpander
      * @param \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface $customerPasswordPolicyValidator
      * @param array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\PostCustomerRegistrationPluginInterface> $postCustomerRegistrationPlugins
@@ -131,7 +134,7 @@ class Customer implements CustomerInterface
         EmailValidatorInterface $emailValidator,
         CustomerToMailInterface $mailFacade,
         LocaleQueryContainerInterface $localeQueryContainer,
-        Store $store,
+        CustomerToLocaleInterface $localeFacade,
         CustomerExpanderInterface $customerExpander,
         CustomerPasswordPolicyValidatorInterface $customerPasswordPolicyValidator,
         array $postCustomerRegistrationPlugins = []
@@ -142,10 +145,10 @@ class Customer implements CustomerInterface
         $this->emailValidator = $emailValidator;
         $this->mailFacade = $mailFacade;
         $this->localeQueryContainer = $localeQueryContainer;
-        $this->store = $store;
         $this->customerExpander = $customerExpander;
         $this->customerPasswordPolicyValidator = $customerPasswordPolicyValidator;
         $this->postCustomerRegistrationPlugins = $postCustomerRegistrationPlugins;
+        $this->localeFacade = $localeFacade;
     }
 
     /**
@@ -290,7 +293,7 @@ class Customer implements CustomerInterface
             return;
         }
 
-        $localeName = $this->store->getCurrentLocale();
+        $localeName = $this->localeFacade->getCurrentLocaleName();
         $localeEntity = $this->localeQueryContainer->queryLocaleByName($localeName)->findOne();
 
         if ($localeEntity) {
@@ -527,7 +530,7 @@ class Customer implements CustomerInterface
      */
     public function update(CustomerTransfer $customerTransfer)
     {
-        if (!empty($customerTransfer->getNewPassword())) {
+        if ($customerTransfer->getNewPassword()) {
             $customerResponseTransfer = $this->updatePassword(clone $customerTransfer);
 
             if ($customerResponseTransfer->getIsSuccess() === false) {
@@ -595,21 +598,21 @@ class Customer implements CustomerInterface
         if (!$this->emailValidator->isFormatValid($customerEntity->getEmail())) {
             $customerResponseTransfer = $this->addErrorToCustomerResponseTransfer(
                 $customerResponseTransfer,
-                Messages::CUSTOMER_EMAIL_FORMAT_INVALID
+                Messages::CUSTOMER_EMAIL_FORMAT_INVALID,
             );
         }
 
         if (!$this->emailValidator->isEmailAvailableForCustomer($customerEntity->getEmail(), $customerEntity->getIdCustomer())) {
             $customerResponseTransfer = $this->addErrorToCustomerResponseTransfer(
                 $customerResponseTransfer,
-                Messages::CUSTOMER_EMAIL_ALREADY_USED
+                Messages::CUSTOMER_EMAIL_ALREADY_USED,
             );
         }
 
         if (!$this->emailValidator->isEmailLengthValid($customerEntity->getEmail())) {
             $customerResponseTransfer = $this->addErrorToCustomerResponseTransfer(
                 $customerResponseTransfer,
-                Messages::CUSTOMER_EMAIL_TOO_LONG
+                Messages::CUSTOMER_EMAIL_TOO_LONG,
             );
         }
 
@@ -781,7 +784,7 @@ class Customer implements CustomerInterface
             'Customer not found by either ID `%s`, email `%s` or restore password key `%s`.',
             $customerTransfer->getIdCustomer(),
             $customerTransfer->getEmail(),
-            $customerTransfer->getRestorePasswordKey()
+            $customerTransfer->getRestorePasswordKey(),
         ));
     }
 
@@ -874,7 +877,7 @@ class Customer implements CustomerInterface
             return $currentPassword;
         }
 
-        return $this->getPasswordEncoder()->encodePassword($currentPassword, self::BCRYPT_SALT);
+        return $this->getPasswordEncoder()->encodePassword($currentPassword, static::BCRYPT_SALT);
     }
 
     /**
@@ -1000,7 +1003,7 @@ class Customer implements CustomerInterface
     {
         $customerResponseTransfer->setIsSuccess(false);
         $customerResponseTransfer->addError(
-            $this->createErrorCustomerResponseTransfer($message)
+            $this->createErrorCustomerResponseTransfer($message),
         );
 
         return $customerResponseTransfer;
@@ -1028,7 +1031,7 @@ class Customer implements CustomerInterface
                 "%d out of %d emails sent \r%s",
                 ++$index,
                 $customersCount,
-                $index === $customersCount ? PHP_EOL : ''
+                $index === $customersCount ? PHP_EOL : '',
             ));
         }
     }

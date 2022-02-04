@@ -22,6 +22,7 @@ class CustomerConfig extends AbstractBundleConfig
      * @var int
      */
     public const ERROR_CODE_CUSTOMER_ALREADY_REGISTERED = 4001;
+
     /**
      * @var int
      */
@@ -29,13 +30,16 @@ class CustomerConfig extends AbstractBundleConfig
 
     /**
      * @uses \Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRegistrationMailTypePlugin::MAIL_TYPE
+     *
      * @var string
      */
     public const CUSTOMER_REGISTRATION_MAIL_TYPE = 'customer registration mail';
+
     /**
      * @var string
      */
     public const CUSTOMER_REGISTRATION_WITH_CONFIRMATION_MAIL_TYPE = 'customer registration confirmation mail';
+
     /**
      * @var int
      */
@@ -90,16 +94,22 @@ class CustomerConfig extends AbstractBundleConfig
     /**
      * @api
      *
+     * @param string|null $storeName
+     *
      * @return \Generated\Shared\Transfer\SequenceNumberSettingsTransfer
      */
-    public function getCustomerReferenceDefaults()
+    public function getCustomerReferenceDefaults(?string $storeName = null)
     {
+        if (!$storeName) {
+            $storeName = $this->getStoreName();
+        }
+
         $sequenceNumberSettingsTransfer = new SequenceNumberSettingsTransfer();
 
         $sequenceNumberSettingsTransfer->setName(CustomerConstants::NAME_CUSTOMER_REFERENCE);
 
         $sequenceNumberPrefixParts = [];
-        $sequenceNumberPrefixParts[] = Store::getInstance()->getStoreName();
+        $sequenceNumberPrefixParts[] = $storeName;
         $sequenceNumberPrefixParts[] = $this->get(SequenceNumberConstants::ENVIRONMENT_PREFIX, '');
         $prefix = implode($this->getUniqueIdentifierSeparator(), $sequenceNumberPrefixParts) . $this->getUniqueIdentifierSeparator();
         $sequenceNumberSettingsTransfer->setPrefix($prefix);
@@ -233,5 +243,15 @@ class CustomerConfig extends AbstractBundleConfig
     protected function getUniqueIdentifierSeparator()
     {
         return '-';
+    }
+
+    /**
+     * @deprecated Will be removed in the next major without replacement.
+     *
+     * @return string
+     */
+    protected function getStoreName(): string
+    {
+        return Store::getInstance()->getStoreName();
     }
 }

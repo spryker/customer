@@ -24,6 +24,7 @@ class AddController extends AbstractController
      * @var string
      */
     public const MESSAGE_CUSTOMER_CREATE_SUCCESS = 'Customer was created successfully.';
+
     /**
      * @var string
      */
@@ -33,6 +34,7 @@ class AddController extends AbstractController
      * @var string
      */
     public const REDIRECT_URL_DEFAULT = '/customer';
+
     /**
      * @var string
      */
@@ -45,7 +47,7 @@ class AddController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $baseRedirectUrl = urldecode($request->query->get(static::REDIRECT_URL_KEY, static::REDIRECT_URL_DEFAULT));
+        $baseRedirectUrl = urldecode((string)$request->query->get(static::REDIRECT_URL_KEY, static::REDIRECT_URL_DEFAULT));
         $dataProvider = $this->getFactory()->createCustomerFormDataProvider();
 
         $form = $this->getFactory()
@@ -55,8 +57,8 @@ class AddController extends AbstractController
                     $dataProvider->getOptions(),
                     [
                         'action' => (string)Url::generate('/customer/add', [static::REDIRECT_URL_KEY => $baseRedirectUrl]),
-                    ]
-                )
+                    ],
+                ),
             )
             ->handleRequest($request);
 
