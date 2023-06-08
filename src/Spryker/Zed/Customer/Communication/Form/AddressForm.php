@@ -203,6 +203,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'First Name',
+            'sanitize_xss' => true,
             'constraints' => $this->getTextFieldConstraints(),
         ]);
 
@@ -218,6 +219,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_LAST_NAME, TextType::class, [
             'label' => 'Last Name',
+            'sanitize_xss' => true,
             'constraints' => $this->getTextFieldConstraints(),
         ]);
 
@@ -233,6 +235,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_ADDRESS_1, TextType::class, [
             'label' => 'Address line 1',
+            'sanitize_xss' => true,
             'constraints' => [
                 new NotBlank(),
                 new Length(['max' => 255]),
@@ -251,6 +254,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_ADDRESS_2, TextType::class, [
             'label' => 'Address line 2',
+            'sanitize_xss' => true,
             'constraints' => [
                 new Length(['max' => 255]),
             ],
@@ -268,6 +272,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_ADDRESS_3, TextType::class, [
             'label' => 'Address line 3',
+            'sanitize_xss' => true,
             'constraints' => [
                 new Length(['max' => 255]),
             ],
@@ -285,6 +290,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_CITY, TextType::class, [
             'label' => 'City',
+            'sanitize_xss' => true,
             'constraints' => [
                 new NotBlank(),
                 new Length(['max' => 255]),
@@ -303,6 +309,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_ZIP_CODE, TextType::class, [
             'label' => 'Zip Code',
+            'sanitize_xss' => true,
             'constraints' => [
                 new NotBlank(),
                 new Length(['max' => 15]),
@@ -343,6 +350,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_PHONE, TextType::class, [
             'label' => 'Phone',
+            'sanitize_xss' => true,
             'constraints' => [
                 new Length(['max' => 255]),
             ],
@@ -360,6 +368,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_COMPANY, TextType::class, [
             'label' => 'Company',
+            'sanitize_xss' => true,
             'constraints' => [
                 new Length(['max' => 255]),
             ],
@@ -377,6 +386,7 @@ class AddressForm extends AbstractType
     {
         $builder->add(static::FIELD_COMMENT, TextareaType::class, [
             'label' => 'Comment',
+            'sanitize_xss' => true,
             'constraints' => [
                 new Length(['max' => 255]),
             ],
