@@ -10,6 +10,9 @@ namespace Spryker\Client\Customer;
 use Spryker\Client\Customer\CustomerAddress\CustomerAddress;
 use Spryker\Client\Customer\CustomerSecuredPattern\CustomerSecuredPattern;
 use Spryker\Client\Customer\CustomerSecuredPattern\CustomerSecuredPatternInterface;
+use Spryker\Client\Customer\Dependency\Client\CustomerToStorageRedisClientInterface;
+use Spryker\Client\Customer\Invalidation\InvalidationRecordCheckerInterface;
+use Spryker\Client\Customer\Invalidation\StorageInvalidationRecordChecker;
 use Spryker\Client\Customer\Reader\CustomerAccessTokenReader;
 use Spryker\Client\Customer\Reader\CustomerAccessTokenReaderInterface;
 use Spryker\Client\Customer\Session\CustomerSession;
@@ -18,6 +21,8 @@ use Spryker\Client\Customer\Updater\CustomerAddressUpdaterInterface;
 use Spryker\Client\Customer\Zed\CustomerStub;
 use Spryker\Client\CustomerExtension\Dependency\Plugin\AccessTokenAuthenticationHandlerPluginInterface;
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Shared\Customer\KeyGenerator\CustomerInvalidationKeyGenerator;
+use Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface;
 
 /**
  * @method \Spryker\Client\Customer\CustomerConfig getConfig()
@@ -129,5 +134,32 @@ class CustomerFactory extends AbstractFactory
     public function getAccessTokenAuthenticationHandlerPlugin(): AccessTokenAuthenticationHandlerPluginInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGIN_ACCESS_TOKEN_AUTHENTICATION_HANDLER);
+    }
+
+    /**
+     * @return \Spryker\Client\Customer\Dependency\Client\CustomerToStorageRedisClientInterface
+     */
+    public function getStorageRedisClient(): CustomerToStorageRedisClientInterface
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_STORAGE_REDIS);
+    }
+
+    /**
+     * @return \Spryker\Client\Customer\Invalidation\InvalidationRecordCheckerInterface
+     */
+    public function createInvalidationRecordChecker(): InvalidationRecordCheckerInterface
+    {
+        return new StorageInvalidationRecordChecker(
+            $this->getStorageRedisClient(),
+            $this->createInvalidationRecordKeyGenerator(),
+        );
+    }
+
+    /**
+     * @return \Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface
+     */
+    public function createInvalidationRecordKeyGenerator(): KeyGeneratorInterface
+    {
+        return new CustomerInvalidationKeyGenerator();
     }
 }

@@ -10,6 +10,7 @@ namespace Spryker\Zed\Customer;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Spryker\Service\Customer\CustomerServiceInterface;
 use Spryker\Shared\Kernel\ContainerInterface;
+use Spryker\Zed\Customer\Dependency\Client\CustomerToStorageRedisClientBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToCountryBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleBridge;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToMailBridge;
@@ -85,6 +86,11 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     public const SERVICE_CUSTOMER = 'SERVICE_CUSTOMER';
 
     /**
+     * @var string
+     */
+    public const CLIENT_STORAGE_REDIS = 'CLIENT_STORAGE_REDIS';
+
+    /**
      * @uses \Spryker\Zed\Http\Communication\Plugin\Application\HttpApplicationPlugin::SERVICE_SUB_REQUEST
      *
      * @var string
@@ -151,6 +157,7 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addCustomerService($container);
         $container = $this->addCustomerPostDeletePlugins($container);
         $container = $this->addCustomerPreUpdatePlugins($container);
+        $container = $this->addStorageRedisClient($container);
 
         return $container;
     }
@@ -489,5 +496,21 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     protected function getCustomerPreUpdatePlugins(): array
     {
         return [];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStorageRedisClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_STORAGE_REDIS, function (Container $container) {
+            return new CustomerToStorageRedisClientBridge(
+                $container->getLocator()->storageRedis()->client(),
+            );
+        });
+
+        return $container;
     }
 }

@@ -246,4 +246,27 @@
         <property name="permissionMask" type="int"/>
     </transfer>
 
+    <transfer name="CompanyRole">
+        <property name="companyUserCollection" type="CompanyUserCollection"/>
+    </transfer>
+
+    <transfer name="CompanyUserCollection">
+        <property name="companyUsers" type="CompanyUser[]" singular="companyUser"/>
+    </transfer>
+
+    <transfer name="CompanyUser">
+        <property name="customer" type="Customer"/>
+    </transfer>
+
+    <transfer name="CompanyUserResponse">
+        <property name="companyUser" type="CompanyUser"/>
+    </transfer>
+
+    <transfer name="SessionEntityResponse">
+        <property name="isSuccessfull" type="bool"/>
+    </transfer>
+
+    <transfer name="SessionEntityRequest">
+        <property name="idEntity" type="int"/>
+    </transfer>
 </transfers>

@@ -9,6 +9,8 @@ namespace Spryker\Zed\Customer\Business;
 
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Spryker\Service\Customer\CustomerServiceInterface;
+use Spryker\Shared\Customer\KeyGenerator\CustomerInvalidationKeyGenerator;
+use Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface;
 use Spryker\Zed\Customer\Business\Anonymizer\CustomerAnonymizer;
 use Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaverInterface;
@@ -30,6 +32,8 @@ use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\LengthCustomerPasswordP
 use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\SequenceCustomerPasswordPolicy;
 use Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutor;
 use Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface;
+use Spryker\Zed\Customer\Business\Invalidation\CustomerInvalidatorInterface;
+use Spryker\Zed\Customer\Business\Invalidation\StorageCustomerInvalidator;
 use Spryker\Zed\Customer\Business\Model\CustomerOrderSaver as ObsoleteCustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Model\PreConditionChecker;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGenerator;
@@ -420,5 +424,32 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->getRepository(),
             $this->getConfig(),
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\Customer\Business\Invalidation\CustomerInvalidatorInterface
+     */
+    public function createCustomerInvalidator(): CustomerInvalidatorInterface
+    {
+        return new StorageCustomerInvalidator(
+            $this->getStorageRedisClient(),
+            $this->createCustomerInvalidationKeyGenerator(),
+        );
+    }
+
+    /**
+     * @return \Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface
+     */
+    public function createCustomerInvalidationKeyGenerator(): KeyGeneratorInterface
+    {
+        return new CustomerInvalidationKeyGenerator();
+    }
+
+    /**
+     * @return \Spryker\Zed\Customer\Dependency\Client\CustomerToStorageRedisClientInterface
+     */
+    public function getStorageRedisClient()
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_STORAGE_REDIS);
     }
 }

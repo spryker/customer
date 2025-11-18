@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\Customer;
 
+use Spryker\Client\Customer\Dependency\Client\CustomerToStorageRedisClientBridge;
 use Spryker\Client\Customer\Exception\MissingAccessTokenAuthenticationHandlerPluginException;
 use Spryker\Client\CustomerExtension\Dependency\Plugin\AccessTokenAuthenticationHandlerPluginInterface;
 use Spryker\Client\Kernel\AbstractDependencyProvider;
@@ -53,6 +54,11 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
     public const PLUGIN_ACCESS_TOKEN_AUTHENTICATION_HANDLER = 'PLUGIN_ACCESS_TOKEN_AUTHENTICATION_HANDLER';
 
     /**
+     * @var string
+     */
+    public const CLIENT_STORAGE_REDIS = 'CLIENT_STORAGE_REDIS';
+
+    /**
      * @param \Spryker\Client\Kernel\Container $container
      *
      * @return \Spryker\Client\Kernel\Container
@@ -66,6 +72,7 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
         $container = $this->addCustomerSessionSetPlugins($container);
         $container = $this->addCustomerSecuredPatternRulePlugins($container);
         $container = $this->addAccessTokenAuthenticationHandlerPlugin($container);
+        $container = $this->addStorageRedisClient($container);
 
         return $container;
     }
@@ -214,5 +221,19 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
                 AccessTokenAuthenticationHandlerPluginInterface::class,
             ),
         );
+    }
+
+    /**
+     * @param \Spryker\Client\Kernel\Container $container
+     *
+     * @return \Spryker\Client\Kernel\Container
+     */
+    protected function addStorageRedisClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_STORAGE_REDIS, function (Container $container) {
+            return new CustomerToStorageRedisClientBridge($container->getLocator()->storageRedis()->client());
+        });
+
+        return $container;
     }
 }
