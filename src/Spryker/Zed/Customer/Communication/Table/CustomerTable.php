@@ -236,7 +236,7 @@ class CustomerTable extends AbstractTable
         $customerRow[static::COL_CREATED_AT] = $this->utilDateTimeService->formatDateTime($customer->getCreatedAt());
         $customerRow[static::ACTIONS] = $this->buildLinks($customer);
         $customerRow[static::COL_STATUS] = $customer->getRegistered()
-            ? $this->generateLabel('Verified', 'label-info')
+            ? $this->generateLabel('Verified', 'label-success')
             : $this->generateLabel('Unverified', 'label-danger');
 
         return $customerRow;
