@@ -47,13 +47,11 @@ class CustomerCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param int $idCustomer
-     *
      * @return \Spryker\Zed\Customer\Communication\Table\AddressTable
      */
-    public function createCustomerAddressTable($idCustomer)
+    public function createCustomerAddressTable()
     {
-        return new AddressTable($this->getQueryContainer(), $idCustomer, $this->getUtilSanitizeService());
+        return new AddressTable($this->getQueryContainer(), $this->getUtilSanitizeService());
     }
 
     /**

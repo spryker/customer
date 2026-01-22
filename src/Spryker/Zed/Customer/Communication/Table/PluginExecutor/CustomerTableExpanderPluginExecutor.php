@@ -7,27 +7,29 @@
 
 namespace Spryker\Zed\Customer\Communication\Table\PluginExecutor;
 
+use Spryker\Service\Container\Attributes\Stack;
+use Spryker\Zed\Customer\CustomerDependencyProvider;
+
 /**
  * @method \Spryker\Zed\Customer\Communication\CustomerCommunicationFactory getFactory()
  */
 class CustomerTableExpanderPluginExecutor implements CustomerTableExpanderPluginExecutorInterface
 {
     /**
-     * @var array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerTableActionExpanderPluginInterface>
-     */
-    protected $customerTableActionExpanderPlugins;
-
-    /**
      * @param array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerTableActionExpanderPluginInterface> $customerTableActionExpanderPlugins
+     *
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerTableActionExpanderPlugins()
      */
-    public function __construct(array $customerTableActionExpanderPlugins)
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getCustomerTableActionExpanderPlugins',
+        provideToArgument: '$customerTableActionExpanderPlugins',
+    )]
+    public function __construct(protected array $customerTableActionExpanderPlugins)
     {
-        $this->customerTableActionExpanderPlugins = $customerTableActionExpanderPlugins;
     }
 
     /**
-     * @param int $idCustomer
-     *
      * @return array<\Generated\Shared\Transfer\ButtonTransfer>
      */
     public function executeActionExpanderPlugins(int $idCustomer): array

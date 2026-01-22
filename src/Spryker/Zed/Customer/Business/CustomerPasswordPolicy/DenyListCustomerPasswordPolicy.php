@@ -9,8 +9,15 @@ namespace Spryker\Zed\Customer\Business\CustomerPasswordPolicy;
 
 use Generated\Shared\Transfer\CustomerErrorTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Zed\Customer\CustomerConfig;
 
+#[Stack(
+    provideToClass: CustomerPasswordPolicyValidator::class,
+    provideToArgument: '$customerPasswordPolicies',
+    stackPosition: 10,
+    service: 'customer.password_policy_validator',
+)]
 class DenyListCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
 {
     /**

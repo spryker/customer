@@ -59,17 +59,40 @@ class AddressTable extends AbstractTable
 
     /**
      * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $customerQueryContainer
-     * @param int $idCustomer
      * @param \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilSanitizeServiceInterface $utilSanitize
      */
     public function __construct(
         CustomerQueryContainerInterface $customerQueryContainer,
-        $idCustomer,
         CustomerToUtilSanitizeServiceInterface $utilSanitize
     ) {
         $this->customerQueryContainer = $customerQueryContainer;
-        $this->idCustomer = $idCustomer;
         $this->utilSanitize = $utilSanitize;
+    }
+
+    /**
+     * @param int $idCustomer
+     *
+     * @return $this
+     */
+    public function setIdCustomer(int $idCustomer)
+    {
+        $this->idCustomer = $idCustomer;
+
+        return $this;
+    }
+
+    /**
+     * @param int|null $idCustomer
+     *
+     * @return array
+     */
+    public function fetchData(?int $idCustomer = null): array
+    {
+        if ($idCustomer !== null) {
+            $this->idCustomer = $idCustomer;
+        }
+
+        return parent::fetchData();
     }
 
     /**

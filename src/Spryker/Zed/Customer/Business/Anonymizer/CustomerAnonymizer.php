@@ -11,8 +11,10 @@ use DateTime;
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Zed\Customer\Business\Customer\AddressInterface;
 use Spryker\Zed\Customer\Business\Customer\CustomerInterface;
+use Spryker\Zed\Customer\CustomerDependencyProvider;
 use Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface;
 use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
 
@@ -45,7 +47,14 @@ class CustomerAnonymizer implements CustomerAnonymizerInterface
      * @param \Spryker\Zed\Customer\Business\Customer\CustomerInterface $customerModel
      * @param \Spryker\Zed\Customer\Business\Customer\AddressInterface $addressModel
      * @param array $customerAnonymizerPlugins
+     *
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerAnonymizerPlugins()
      */
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getCustomerAnonymizerPlugins',
+        provideToArgument: '$customerAnonymizerPlugins',
+    )]
     public function __construct(
         CustomerQueryContainerInterface $customerQueryContainer,
         CustomerInterface $customerModel,

@@ -22,11 +22,10 @@ class IndexController extends AbstractController
      */
     public function indexAction()
     {
-        $table = $this->getFactory()
-            ->createCustomerTable();
+        $customerTable = $this->getFactory()->createCustomerTable();
 
         return $this->viewResponse([
-            'customerTable' => $table->render(),
+            'customerTable' => $customerTable->render(),
         ]);
     }
 
@@ -35,9 +34,8 @@ class IndexController extends AbstractController
      */
     public function tableAction()
     {
-        $table = $this->getFactory()
-            ->createCustomerTable();
+        $customerTable = $this->getFactory()->createCustomerTable();
 
-        return $this->jsonResponse($table->fetchData());
+        return $this->jsonResponse($customerTable->fetchData());
     }
 }

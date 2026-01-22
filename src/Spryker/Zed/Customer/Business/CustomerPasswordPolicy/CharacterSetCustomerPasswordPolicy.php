@@ -9,8 +9,17 @@ namespace Spryker\Zed\Customer\Business\CustomerPasswordPolicy;
 
 use Generated\Shared\Transfer\CustomerErrorTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Zed\Customer\CustomerConfig;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
+#[Stack(
+    provideToClass: CustomerPasswordPolicyValidator::class,
+    provideToArgument: '$customerPasswordPolicies',
+    stackPosition: 40,
+    service: 'customer.password_policy_validator',
+)]
+#[AsAlias('customer.password_policy_validator')]
 class CharacterSetCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
 {
     /**

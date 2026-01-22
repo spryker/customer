@@ -21,6 +21,7 @@ use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Propel\Runtime\Collection\ObjectCollection;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Service\UtilText\UtilTextService;
 use Spryker\Shared\Customer\Code\Messages;
 use Spryker\Shared\Customer\CustomerConfig as SharedCustomerConfig;
@@ -33,6 +34,7 @@ use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorI
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestoredPasswordConfirmationMailTypePlugin;
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestorePasswordMailTypePlugin;
 use Spryker\Zed\Customer\CustomerConfig;
+use Spryker\Zed\Customer\CustomerDependencyProvider;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface;
 use Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface;
@@ -78,7 +80,14 @@ class Customer implements CustomerInterface
      * @param \Spryker\Zed\Customer\Business\Customer\Checker\PasswordResetExpirationCheckerInterface $passwordResetExpirationChecker
      * @param \Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface $customerPluginExecutor
      * @param array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface> $customerPreUpdatePlugins
+     *
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerPreUpdatePlugins()
      */
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getCustomerPreUpdatePlugins',
+        provideToArgument: '$customerPreUpdatePlugins',
+    )]
     public function __construct(
         protected CustomerQueryContainerInterface $queryContainer,
         protected CustomerReferenceGeneratorInterface $customerReferenceGenerator,
@@ -561,6 +570,8 @@ class Customer implements CustomerInterface
 
         $customerEntity->save();
 
+        $customerTransfer->fromArray($customerEntity->toArray(), true);
+
         return $customerResponseTransfer;
     }
 
@@ -772,7 +783,10 @@ class Customer implements CustomerInterface
     {
         $customerEntity = null;
 
-        if ($customerTransfer->getIdCustomer()) {
+        if ($customerTransfer->getCustomerReference()) {
+            $customerEntity = $this->queryContainer->queryCustomerByReference($customerTransfer->getCustomerReference())
+                ->findOne();
+        } elseif ($customerTransfer->getIdCustomer()) {
             $customerEntity = $this->queryContainer->queryCustomerById($customerTransfer->getIdCustomer())
                 ->findOne();
         } elseif ($customerTransfer->getEmail()) {

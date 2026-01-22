@@ -8,20 +8,23 @@
 namespace Spryker\Zed\Customer\Business\CustomerExpander;
 
 use Generated\Shared\Transfer\CustomerTransfer;
+use Spryker\Service\Container\Attributes\Stack;
+use Spryker\Zed\Customer\CustomerDependencyProvider;
 
 class CustomerExpander implements CustomerExpanderInterface
 {
     /**
-     * @var array<\Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterface>
-     */
-    protected $customerTransferExpanderPlugins;
-
-    /**
      * @param array<\Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterface> $customerTransferExpanderPlugins
+     *
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerTransferExpanderPlugins()
      */
-    public function __construct(array $customerTransferExpanderPlugins)
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getCustomerTransferExpanderPlugins',
+        provideToArgument: '$customerTransferExpanderPlugins',
+    )]
+    public function __construct(protected array $customerTransferExpanderPlugins)
     {
-        $this->customerTransferExpanderPlugins = $customerTransferExpanderPlugins;
     }
 
     /**

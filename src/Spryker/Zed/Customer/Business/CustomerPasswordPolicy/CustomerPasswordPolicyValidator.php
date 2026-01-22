@@ -8,6 +8,7 @@
 namespace Spryker\Zed\Customer\Business\CustomerPasswordPolicy;
 
 use Generated\Shared\Transfer\CustomerResponseTransfer;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Zed\Customer\CustomerConfig;
 
 class CustomerPasswordPolicyValidator implements CustomerPasswordPolicyValidatorInterface
@@ -26,6 +27,10 @@ class CustomerPasswordPolicyValidator implements CustomerPasswordPolicyValidator
      * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
      * @param array<\Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyInterface> $customerPasswordPolicies
      */
+    #[Stack(
+        service: 'customer.password_policy_validator',
+        provideToArgument: '$customerPasswordPolicies',
+    )]
     public function __construct(CustomerConfig $customerConfig, array $customerPasswordPolicies)
     {
         $this->customerPasswordAllowList = $customerConfig->getCustomerPasswordAllowList();

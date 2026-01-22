@@ -8,29 +8,32 @@
 namespace Spryker\Zed\Customer\Business\Executor;
 
 use Generated\Shared\Transfer\CustomerTransfer;
+use Spryker\Service\Container\Attributes\Stack;
+use Spryker\Zed\Customer\CustomerDependencyProvider;
 
 class CustomerPluginExecutor implements CustomerPluginExecutorInterface
 {
     /**
-     * @var list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\PostCustomerRegistrationPluginInterface>
-     */
-    protected array $postCustomerRegistrationPlugins;
-
-    /**
-     * @var list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostDeletePluginInterface>
-     */
-    protected array $customerPostDeletePlugins;
-
-    /**
      * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\PostCustomerRegistrationPluginInterface> $postCustomerRegistrationPlugins
      * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostDeletePluginInterface> $customerPostDeletePlugins
+     *
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getPostCustomerRegistrationPlugins()
+     * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerPostDeletePlugins()
      */
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getPostCustomerRegistrationPlugins',
+        provideToArgument: '$postCustomerRegistrationPlugins',
+    )]
+    #[Stack(
+        dependencyProvider: CustomerDependencyProvider::class,
+        dependencyProviderMethod: 'getCustomerPostDeletePlugins',
+        provideToArgument: '$customerPostDeletePlugins',
+    )]
     public function __construct(
-        array $postCustomerRegistrationPlugins = [],
-        array $customerPostDeletePlugins = []
+        protected array $postCustomerRegistrationPlugins = [],
+        protected array $customerPostDeletePlugins = []
     ) {
-        $this->postCustomerRegistrationPlugins = $postCustomerRegistrationPlugins;
-        $this->customerPostDeletePlugins = $customerPostDeletePlugins;
     }
 
     /**

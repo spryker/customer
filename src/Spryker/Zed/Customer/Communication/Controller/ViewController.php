@@ -66,7 +66,9 @@ class ViewController extends AbstractController
         }
 
         $addressTable = $this->getFactory()
-            ->createCustomerAddressTable($idCustomer);
+            ->createCustomerAddressTable();
+
+        $addressTable->setIdCustomer($idCustomer);
 
         $externalBlocks = $this->renderCustomerDetailBlocks($request, $customerTransfer);
         if ($externalBlocks instanceof RedirectResponse) {
@@ -99,9 +101,9 @@ class ViewController extends AbstractController
         $idCustomer = $this->castId($request->get(CustomerConstants::PARAM_ID_CUSTOMER));
 
         $table = $this->getFactory()
-            ->createCustomerAddressTable($idCustomer);
+            ->createCustomerAddressTable();
 
-        return $this->jsonResponse($table->fetchData());
+        return $this->jsonResponse($table->fetchData($idCustomer));
     }
 
     /**

@@ -10,8 +10,15 @@ namespace Spryker\Zed\Customer\Business\CustomerPasswordPolicy;
 use Generated\Shared\Transfer\CustomerErrorTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
+use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Zed\Customer\CustomerConfig;
 
+#[Stack(
+    provideToClass: CustomerPasswordPolicyValidator::class,
+    provideToArgument: '$customerPasswordPolicies',
+    stackPosition: 20,
+    service: 'customer.password_policy_validator',
+)]
 class LengthCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
 {
     /**
