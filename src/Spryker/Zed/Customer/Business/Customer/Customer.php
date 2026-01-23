@@ -783,11 +783,11 @@ class Customer implements CustomerInterface
     {
         $customerEntity = null;
 
-        if ($customerTransfer->getCustomerReference()) {
-            $customerEntity = $this->queryContainer->queryCustomerByReference($customerTransfer->getCustomerReference())
-                ->findOne();
-        } elseif ($customerTransfer->getIdCustomer()) {
+        if ($customerTransfer->getIdCustomer()) {
             $customerEntity = $this->queryContainer->queryCustomerById($customerTransfer->getIdCustomer())
+                ->findOne();
+        } elseif ($customerTransfer->getCustomerReference()) {
+            $customerEntity = $this->queryContainer->queryCustomerByReference($customerTransfer->getCustomerReference())
                 ->findOne();
         } elseif ($customerTransfer->getEmail()) {
             $customerEntity = $this->queryContainer->queryCustomerByEmail($customerTransfer->getEmail())
