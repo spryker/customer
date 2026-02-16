@@ -160,7 +160,7 @@ class ViewController extends AbstractController
     {
         // symfony/http-foundation: <6.0.0
         if (method_exists(JsonResponse::class, 'create')) {
-            /** @phpstan-var array $customerTransfer */
+            /** @phpstan-ignore argument.type */
             $subRequest->request->set(static::PARAM_CUSTOMER, $customerTransfer);
         }
 

@@ -138,6 +138,7 @@ class Address implements AddressInterface
     {
         $customerEntity = $this->getCustomerFromAddressTransfer($addressTransfer);
 
+        /** @phpstan-ignore notIdentical.alwaysTrue */
         if ($addressTransfer !== null) {
             $addressTransfer->setIsDefaultBilling(
                 $this->isDefaultAddress($addressTransfer->getIdCustomerAddress(), $customerEntity->getDefaultBillingAddress()),

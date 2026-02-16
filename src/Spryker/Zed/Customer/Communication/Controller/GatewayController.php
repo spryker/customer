@@ -211,6 +211,7 @@ class GatewayController extends AbstractGatewayController
         $customerTransfer = $this->getFacade()
             ->updateAddressAndCustomerDefaultAddresses($addressTransfer);
 
+        /** @phpstan-ignore notIdentical.alwaysTrue */
         $isSuccess = ($customerTransfer !== null);
         $this->setSuccess($isSuccess);
 
@@ -227,6 +228,7 @@ class GatewayController extends AbstractGatewayController
         $customerTransfer = $this->getFacade()
             ->createAddressAndUpdateCustomerDefaultAddresses($addressTransfer);
 
+        /** @phpstan-ignore notIdentical.alwaysTrue */
         $isSuccess = ($customerTransfer !== null);
         $this->setSuccess($isSuccess);
 

@@ -68,7 +68,7 @@ class OrderSaverStrategyResolver implements OrderSaverStrategyResolverInterface
     {
         if (
             !isset($this->strategyContainer[static::STRATEGY_KEY_WITHOUT_MULTI_SHIPMENT])
-            || !($this->strategyContainer[static::STRATEGY_KEY_WITHOUT_MULTI_SHIPMENT] instanceof Closure)
+            || !($this->strategyContainer[static::STRATEGY_KEY_WITHOUT_MULTI_SHIPMENT] instanceof Closure) /** @phpstan-ignore instanceof.alwaysTrue */
         ) {
             throw new ContainerKeyNotFoundException($this, static::STRATEGY_KEY_WITHOUT_MULTI_SHIPMENT);
         }
@@ -83,7 +83,7 @@ class OrderSaverStrategyResolver implements OrderSaverStrategyResolverInterface
     {
         if (
             !isset($this->strategyContainer[static::STRATEGY_KEY_WITH_MULTI_SHIPMENT])
-            || !($this->strategyContainer[static::STRATEGY_KEY_WITH_MULTI_SHIPMENT] instanceof Closure)
+            || !($this->strategyContainer[static::STRATEGY_KEY_WITH_MULTI_SHIPMENT] instanceof Closure) /** @phpstan-ignore instanceof.alwaysTrue */
         ) {
             throw new ContainerKeyNotFoundException($this, static::STRATEGY_KEY_WITH_MULTI_SHIPMENT);
         }
