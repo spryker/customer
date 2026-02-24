@@ -1,0 +1,221 @@
+post:
+    salutation:
+        - NotBlank:
+              message: 'Salutation is required'
+        - Choice:
+              choices: ['Mr', 'Mrs', 'Dr', 'Ms', 'n/a']
+              message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+
+    firstName:
+        - NotBlank:
+              message: 'First name is required'
+        - Length:
+              max: 100
+              maxMessage: 'First name cannot exceed {{ limit }} characters'
+
+    lastName:
+        - NotBlank:
+              message: 'Last name is required'
+        - Length:
+              max: 100
+              maxMessage: 'Last name cannot exceed {{ limit }} characters'
+
+    address1:
+        - NotBlank:
+              message: 'Address line 1 is required'
+        - Length:
+              max: 255
+              maxMessage: 'Address line 1 cannot exceed {{ limit }} characters'
+
+    address2:
+        - NotBlank:
+              message: 'Address line 2 is required'
+        - Length:
+              max: 255
+              maxMessage: 'Address line 2 cannot exceed {{ limit }} characters'
+
+    address3:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Address line 3 cannot exceed {{ limit }} characters'
+
+    city:
+        - NotBlank:
+              message: 'City is required'
+        - Length:
+              min: 3
+              max: 255
+              minMessage: 'City must be at least {{ limit }} characters'
+              maxMessage: 'City cannot exceed {{ limit }} characters'
+
+    zipCode:
+        - NotBlank:
+              message: 'ZIP code is required'
+        - Length:
+              max: 15
+              maxMessage: 'ZIP code cannot exceed {{ limit }} characters'
+
+    iso2Code:
+        - NotBlank:
+              message: 'Country code is required'
+        - Length:
+              min: 2
+              max: 2
+              minMessage: 'Country code must be exactly {{ limit }} characters'
+              maxMessage: 'Country code must be exactly {{ limit }} characters'
+
+    phone:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Phone number cannot exceed {{ limit }} characters'
+
+    company:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Company name cannot exceed {{ limit }} characters'
+
+    comment:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Comment cannot exceed {{ limit }} characters'
+
+    isDefaultShipping:
+        - Optional:
+              constraints:
+                  - Type:
+                        type: bool
+                        message: 'isDefaultShipping must be a boolean value'
+
+    isDefaultBilling:
+        - Optional:
+              constraints:
+                  - Type:
+                        type: bool
+                        message: 'isDefaultBilling must be a boolean value'
+
+patch:
+    salutation:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Salutation cannot be blank'
+                  - Choice:
+                        choices: ['Mr', 'Mrs', 'Dr', 'Ms', 'n/a']
+                        message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+
+    firstName:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'First name cannot be blank'
+                  - Length:
+                        max: 100
+                        maxMessage: 'First name cannot exceed {{ limit }} characters'
+
+    lastName:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Last name cannot be blank'
+                  - Length:
+                        max: 100
+                        maxMessage: 'Last name cannot exceed {{ limit }} characters'
+
+    address1:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Address line 1 cannot be blank'
+                  - Length:
+                        max: 255
+                        maxMessage: 'Address line 1 cannot exceed {{ limit }} characters'
+
+    address2:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Address line 2 cannot be blank'
+                  - Length:
+                        max: 255
+                        maxMessage: 'Address line 2 cannot exceed {{ limit }} characters'
+
+    address3:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Address line 3 cannot exceed {{ limit }} characters'
+
+    city:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'City cannot be blank'
+                  - Length:
+                        min: 3
+                        max: 255
+                        minMessage: 'City must be at least {{ limit }} characters'
+                        maxMessage: 'City cannot exceed {{ limit }} characters'
+
+    zipCode:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'ZIP code cannot be blank'
+                  - Length:
+                        max: 15
+                        maxMessage: 'ZIP code cannot exceed {{ limit }} characters'
+
+    iso2Code:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Country code cannot be blank'
+                  - Length:
+                        min: 2
+                        max: 2
+                        minMessage: 'Country code must be exactly {{ limit }} characters'
+                        maxMessage: 'Country code must be exactly {{ limit }} characters'
+
+    phone:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Phone number cannot exceed {{ limit }} characters'
+
+    company:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Company name cannot exceed {{ limit }} characters'
+
+    comment:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Comment cannot exceed {{ limit }} characters'
+
+    isDefaultShipping:
+        - Optional:
+              constraints:
+                  - Type:
+                        type: bool
+                        message: 'isDefaultShipping must be a boolean value'
+
+    isDefaultBilling:
+        - Optional:
+              constraints:
+                  - Type:
+                        type: bool
+                        message: 'isDefaultBilling must be a boolean value'

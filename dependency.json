@@ -1,5 +1,8 @@
 {
     "include": {
         "spryker/transfer": "Provides transfer objects definition with strict types."
+    },
+    "exclude": {
+        "spryker/api-platform": "Should be installed only if ApiPlatform is in use"
     }
 }

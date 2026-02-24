@@ -179,6 +179,7 @@ class Customer implements CustomerInterface
 
         $customerResponseTransfer = $this->createCustomerResponseTransfer();
         $customerResponseTransfer = $this->validateCustomerEmail($customerResponseTransfer, $customerEntity);
+
         if ($customerResponseTransfer->getIsSuccess() !== true) {
             return $customerResponseTransfer;
         }

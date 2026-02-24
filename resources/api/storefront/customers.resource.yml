@@ -1,0 +1,167 @@
+resource:
+    name: Customers
+    shortName: customers
+    description: 'Customer profile management for authenticated users and registration for new customers'
+
+    provider: Spryker\Glue\Customer\Api\Storefront\Provider\CustomersStorefrontProvider
+    processor: Spryker\Glue\Customer\Api\Storefront\Processor\CustomersStorefrontProcessor
+
+    paginationEnabled: true
+    paginationItemsPerPage: 10
+
+    operations:
+        - type: Get
+          description: 'Retrieve customer profile'
+
+        - type: Post
+          description: 'Register a new customer account'
+
+        - type: Patch
+          description: 'Update customer profile'
+
+        - type: Delete
+          description: 'Anonymize customer account (GDPR)'
+
+    includes:
+        - relationshipName: addresses
+          targetResource: CustomersAddresses
+          uriTemplate: /customers/{customerReference}/addresses
+          uriVariableMappings:
+              customerReference: customerReference
+
+    properties:
+        customerReference:
+            type: string
+            identifier: true
+            writable: false
+            readable: true
+            required: true
+            description: 'Unique customer reference identifier'
+            openapiContext:
+                example: 'DE--123'
+
+        email:
+            type: string
+            writable: true
+            readable: true
+            required: true
+            description: "The customer's email address which is also used as username"
+            openapiContext:
+                example: 'thomas.bell@spryker.com'
+
+        salutation:
+            type: string
+            writable: true
+            readable: true
+            required: true
+            description: "The customer's salutation"
+            openapiContext:
+                example: 'Mr'
+                enum: ['Mr', 'Mrs', 'Dr', 'Ms', 'n/a']
+
+        firstName:
+            type: string
+            writable: true
+            readable: true
+            required: true
+            description: "The customer's first name"
+            openapiContext:
+                example: 'Thomas'
+
+        lastName:
+            type: string
+            writable: true
+            readable: true
+            required: true
+            description: "The customer's last name"
+            openapiContext:
+                example: 'Bell'
+
+        gender:
+            type: string
+            writable: true
+            readable: true
+            required: true
+            description: "The customer's gender"
+            openapiContext:
+                example: 'Male'
+                enum: ['Male', 'Female']
+
+        dateOfBirth:
+            type: string
+            writable: true
+            readable: true
+            required: false
+            description: "The customer's date of birth in YYYY-MM-DD format"
+            openapiContext:
+                example: '1990-01-15'
+
+        phone:
+            type: string
+            writable: true
+            readable: true
+            required: false
+            description: "The customer's phone number"
+            openapiContext:
+                example: '+49123456789'
+
+        password:
+            type: string
+            writable: true
+            readable: false
+            required: true
+            description: "The password for the customer's account (write-only)"
+            openapiContext:
+                example: '$SecureP@ssw0rd123#'
+
+        confirmPassword:
+            type: string
+            writable: true
+            readable: false
+            required: true
+            description: 'The repeated password for confirmation (write-only)'
+            openapiContext:
+                example: '$SecureP@ssw0rd123#'
+
+        acceptedTerms:
+            type: boolean
+            writable: true
+            readable: true
+            required: true
+            description: 'Indicator if the customer accepted the terms and conditions'
+            openapiContext:
+                example: true
+
+        addresses:
+            type: array
+            writable: false
+            readable: true
+            required: false
+            description: 'Address of the customer (only present when requested via dedicated customers-addresses API or via include of this resource)'
+
+        createdAt:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Timestamp when the customer was created'
+            openapiContext:
+                example: '2025-01-01T10:00:00+00:00'
+
+        updatedAt:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Timestamp when the customer was last updated'
+            openapiContext:
+                example: '2025-01-15T12:30:00+00:00'
+
+        anonymizedAt:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Timestamp when the customer data was anonymized'
+            openapiContext:
+                example: '2025-12-31T23:59:59+00:00'

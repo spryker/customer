@@ -1,0 +1,119 @@
+post:
+    email:
+        - NotBlank:
+              message: 'Email is required'
+        - Email:
+              message: 'Please provide a valid email address'
+
+    salutation:
+        - NotBlank:
+              message: 'Salutation is required'
+        - Choice:
+              choices: [Mr, Mrs, Dr, Ms, 'n/a']
+              message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+
+    firstName:
+        - NotBlank:
+              message: 'First name is required'
+        - Length:
+              max: 100
+              maxMessage: 'First name cannot exceed {{ limit }} characters'
+
+    lastName:
+        - NotBlank:
+              message: 'Last name is required'
+        - Length:
+              max: 100
+              maxMessage: 'Last name cannot exceed {{ limit }} characters'
+
+    gender:
+        - NotBlank:
+              message: 'Gender is required'
+        - Choice:
+              choices: [Male, Female]
+              message: 'Gender must be either Male or Female'
+
+    password:
+        - NotBlank:
+              message: 'Password is required'
+        - Length:
+              min: 12
+              max: 128
+              minMessage: 'Password must be at least {{ limit }} characters for security'
+              maxMessage: 'Password cannot exceed {{ limit }} characters'
+        - Regex:
+              pattern: '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\_\-\=\+\[\]\{\}\|;:<>.,\/?\\\~])[A-Za-z\d!@#$%^&*()\_\-\=\+\[\]\{\}\|;:<>.,\/?\\\~]+$/'
+              message: 'Your password must include at least one uppercase letter, one lowercase letter, one number, and one special character from the following list: !@#$%^&*()_-+=[]{}|;:<>.,/?\\~. Non-Latin and other special characters are not allowed.'
+        - NotCompromisedPassword:
+              message: 'This password has been compromised in a data breach. Please choose a different password.'
+
+    confirmPassword:
+        - NotBlank:
+              message: 'Password confirmation is required'
+        - Expression:
+              expression: 'this.password == this.confirmPassword'
+              message: 'Passwords do not match'
+
+    acceptedTerms:
+        - NotNull:
+              message: 'You must accept the terms and conditions to register'
+        - IsTrue:
+              message: 'You must accept the terms and conditions to register'
+
+patch:
+    email:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Email cannot be blank'
+                  - Email:
+                        message: 'Please provide a valid email address'
+
+    salutation:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Salutation cannot be blank'
+                  - Choice:
+                        choices: [Mr, Mrs, Dr, Ms, 'n/a']
+                        message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+
+    firstName:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'First name cannot be blank'
+                  - Length:
+                        max: 100
+                        maxMessage: 'First name cannot exceed {{ limit }} characters'
+
+    lastName:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Last name cannot be blank'
+                  - Length:
+                        max: 100
+                        maxMessage: 'Last name cannot exceed {{ limit }} characters'
+
+    gender:
+        - Optional:
+              constraints:
+                  - NotBlank:
+                        message: 'Gender cannot be blank'
+                  - Choice:
+                        choices: [Male, Female]
+                        message: 'Gender must be either Male or Female'
+
+    dateOfBirth:
+        - Optional:
+              constraints:
+                  - Date:
+                        message: 'Please provide a valid date in YYYY-MM-DD format'
+
+    phone:
+        - Optional:
+              constraints:
+                  - Length:
+                        max: 255
+                        maxMessage: 'Phone number cannot exceed {{ limit }} characters'

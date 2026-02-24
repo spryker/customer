@@ -74,7 +74,6 @@ class CustomerAnonymizer implements CustomerAnonymizerInterface
      */
     public function process(CustomerTransfer $customerTransfer)
     {
-        $customerTransfer->requireIdCustomer();
         $customerTransfer = $this->getCustomer($customerTransfer);
 
         $this->handleDatabaseTransaction(function () use ($customerTransfer) {
