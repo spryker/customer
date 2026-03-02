@@ -37,11 +37,6 @@ class CustomerPasswordPolicyValidator implements CustomerPasswordPolicyValidator
         $this->customerPasswordPolicies = $customerPasswordPolicies;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(string $password): CustomerResponseTransfer
     {
         $customerResponseTransfer = (new CustomerResponseTransfer())

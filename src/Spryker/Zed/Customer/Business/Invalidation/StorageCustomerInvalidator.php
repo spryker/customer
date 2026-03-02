@@ -12,10 +12,6 @@ use Spryker\Zed\Customer\Dependency\Client\CustomerToStorageRedisClientInterface
 
 class StorageCustomerInvalidator implements CustomerInvalidatorInterface
 {
-    /**
-     * @param \Spryker\Zed\Customer\Dependency\Client\CustomerToStorageRedisClientInterface $storageRedisClient
-     * @param \Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface $keyGenerator
-     */
     public function __construct(
         protected CustomerToStorageRedisClientInterface $storageRedisClient,
         protected KeyGeneratorInterface $keyGenerator,

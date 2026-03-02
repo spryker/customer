@@ -33,16 +33,8 @@ interface CustomerSessionInterface
      */
     public function setCustomer(CustomerTransfer $customerTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function setCustomerRawData(CustomerTransfer $customerTransfer): CustomerTransfer;
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     public function findCustomerRawData(): ?CustomerTransfer;
 
     /**
@@ -50,8 +42,5 @@ interface CustomerSessionInterface
      */
     public function markCustomerAsDirty();
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string;
 }

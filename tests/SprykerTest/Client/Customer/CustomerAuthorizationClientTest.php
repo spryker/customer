@@ -24,9 +24,6 @@ use Spryker\Client\Customer\Plugin\Authorization\CustomerReferenceMatchingEntity
  */
 class CustomerAuthorizationClientTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testCustomerAuthorizationStrategyPlugin(): void
     {
         // Arrange
@@ -49,9 +46,6 @@ class CustomerAuthorizationClientTest extends Unit
         $this->assertSame($customerAuthorizationStrategyPlugin->getStrategyName(), 'CustomerReferenceMatchingEntityId');
     }
 
-    /**
-     * @return void
-     */
     public function testCustomerAuthorizationStrategyPluginReturnsFalse(): void
     {
         // Arrange

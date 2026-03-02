@@ -71,11 +71,6 @@ class CustomerTable extends AbstractTable
      */
     protected $customerTableExpanderPluginExecutor;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $customerQueryContainer
-     * @param \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilDateTimeServiceInterface $utilDateTimeService
-     * @param \Spryker\Zed\Customer\Communication\Table\PluginExecutor\CustomerTableExpanderPluginExecutorInterface $customerTableExpanderPluginExecutor
-     */
     public function __construct(
         CustomerQueryContainerInterface $customerQueryContainer,
         CustomerToUtilDateTimeServiceInterface $utilDateTimeService,

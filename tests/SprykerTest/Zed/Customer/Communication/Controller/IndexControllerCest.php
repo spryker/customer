@@ -31,19 +31,11 @@ class IndexControllerCest
      */
     protected const STORE_NAME = 'DE';
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function _before(CustomerCommunicationTester $i): void
     {
         $i->setDependency(CustomerDependencyProvider::FACADE_MAIL, $this->getMailFacadeMock());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface
-     */
     protected function getMailFacadeMock(): CustomerToMailInterface
     {
         /** @var \Spryker\Zed\Customer\Dependency\Facade\CustomerToMailInterface $mailFacadeMock */
@@ -52,11 +44,6 @@ class IndexControllerCest
         return $mailFacadeMock;
     }
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function listCustomers(CustomerCommunicationTester $i): void
     {
         $i->amOnPage('/customer');
@@ -64,11 +51,6 @@ class IndexControllerCest
         $i->see('Customers', 'h5');
     }
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function addCustomer(CustomerCommunicationTester $i): void
     {
         if ($this->isDynamicStoreEnabled()) {
@@ -104,11 +86,6 @@ class IndexControllerCest
         $i->seeInFirstRow([2 => $email]);
     }
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function addCustomerWithoutNameAndFail(CustomerCommunicationTester $i): void
     {
         $customerTransfer = $this->getCustomerTransfer();
@@ -141,9 +118,6 @@ class IndexControllerCest
         return $customerBuilder->build();
     }
 
-    /**
-     * @return bool
-     */
     protected function isDynamicStoreEnabled(): bool
     {
         return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');

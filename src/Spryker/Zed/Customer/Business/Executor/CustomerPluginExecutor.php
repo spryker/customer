@@ -36,11 +36,6 @@ class CustomerPluginExecutor implements CustomerPluginExecutorInterface
     ) {
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     public function executePostCustomerRegistrationPlugins(CustomerTransfer $customerTransfer): void
     {
         foreach ($this->postCustomerRegistrationPlugins as $postCustomerRegistrationPlugin) {
@@ -48,11 +43,6 @@ class CustomerPluginExecutor implements CustomerPluginExecutorInterface
         }
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     public function executeCustomerPostDeletePlugins(CustomerTransfer $customerTransfer): void
     {
         foreach ($this->customerPostDeletePlugins as $customerPostDeletePlugin) {

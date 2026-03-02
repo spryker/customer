@@ -9,12 +9,5 @@ namespace Spryker\Zed\Customer\Dependency\Service;
 
 interface CustomerToUtilSanitizeServiceInterface
 {
-    /**
-     * @param string $text
-     * @param bool $double
-     * @param string|null $charset
-     *
-     * @return string
-     */
     public function escapeHtml(string $text, bool $double = true, ?string $charset = null): string;
 }

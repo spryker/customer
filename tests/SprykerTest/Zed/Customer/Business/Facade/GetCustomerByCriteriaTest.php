@@ -24,9 +24,6 @@ use Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterfa
  */
 class GetCustomerByCriteriaTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testGetCustomerByCriteriaShouldFindExistingCustomer(): void
     {
         // Arrange
@@ -51,9 +48,6 @@ class GetCustomerByCriteriaTest extends AbstractCustomerFacadeTest
         $this->assertTrue($customerResponseTransfer->getIsSuccess(), 'Customer must be findable by customer reference');
     }
 
-    /**
-     * @return void
-     */
     public function testGetCustomerByCriteriaShouldFailToFindNonExistingCustomer(): void
     {
         // Arrange
@@ -68,9 +62,6 @@ class GetCustomerByCriteriaTest extends AbstractCustomerFacadeTest
         $this->assertFalse($customerResponseTransfer->getIsSuccess(), 'Non-existing customer must be not findable.');
     }
 
-    /**
-     * @return void
-     */
     public function testGetCustomerByCriteriaShouldRunExpanders(): void
     {
         // Arrange

@@ -36,12 +36,6 @@ class CustomerReader implements CustomerReaderInterface
      */
     protected $customerExpander;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerEntityManagerInterface $customerEntityManager
-     * @param \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface $customerRepository
-     * @param \Spryker\Zed\Customer\Business\Customer\AddressInterface $addressManager
-     * @param \Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface $customerExpander
-     */
     public function __construct(
         CustomerEntityManagerInterface $customerEntityManager,
         CustomerRepositoryInterface $customerRepository,
@@ -54,11 +48,6 @@ class CustomerReader implements CustomerReaderInterface
         $this->customerExpander = $customerExpander;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
     public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
     {
         $customerCollectionTransfer = $this->customerRepository->getCustomerCollection($customerCollectionTransfer);
@@ -67,11 +56,6 @@ class CustomerReader implements CustomerReaderInterface
         return $customerCollectionTransfer;
     }
 
-    /**
-     * @param string $customerReference
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function findCustomerByReference(string $customerReference): CustomerResponseTransfer
     {
         $customerTransfer = $this->customerRepository->findCustomerByReference($customerReference);
@@ -90,11 +74,6 @@ class CustomerReader implements CustomerReaderInterface
         return $customerResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function getCustomerByCriteria(CustomerCriteriaTransfer $customerCriteriaTransfer): CustomerResponseTransfer
     {
         $customerTransfer = $this->customerRepository->findCustomerByCriteria($customerCriteriaTransfer);
@@ -117,11 +96,6 @@ class CustomerReader implements CustomerReaderInterface
             ->setIsSuccess(true);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerListTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
     protected function hydrateCustomersWithAddresses(CustomerCollectionTransfer $customerListTransfer): CustomerCollectionTransfer
     {
         foreach ($customerListTransfer->getCustomers() as $customerTransfer) {

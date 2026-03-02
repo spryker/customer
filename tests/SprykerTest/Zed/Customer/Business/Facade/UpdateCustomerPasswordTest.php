@@ -22,9 +22,6 @@ use Generated\Shared\Transfer\CustomerTransfer;
  */
 class UpdateCustomerPasswordTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testUpdateCustomerPasswordNotUpdatesCustomerPasswordWhenItLessThanMinLength(): void
     {
         // Arrange
@@ -49,9 +46,6 @@ class UpdateCustomerPasswordTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerPasswordShouldNotUpdateCustomerPasswordWhenItLongerThanMaxLength(): void
     {
         // Arrange
@@ -76,9 +70,6 @@ class UpdateCustomerPasswordTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerPasswordShouldUpdateCustomerPasswordWhenItHasCorrectLength(): void
     {
         // Arrange

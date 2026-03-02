@@ -40,18 +40,8 @@ interface AddressInterface
      */
     public function updateAddress(AddressTransfer $addressTransfer);
 
-    /**
-     * @param int $idCustomerAddress
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findCustomerAddressById(int $idCustomerAddress): ?AddressTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findCustomerAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer;
 
     /**

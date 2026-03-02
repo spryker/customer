@@ -82,9 +82,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return $customer;
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Customer\Checker\PasswordResetExpirationCheckerInterface
-     */
     public function createPasswordResetExpirationChecker(): PasswordResetExpirationCheckerInterface
     {
         return new PasswordResetExpirationChecker(
@@ -92,9 +89,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Customer\CustomerReaderInterface
-     */
     public function createCustomerReader(): CustomerReaderInterface
     {
         return new CustomerReader(
@@ -105,9 +99,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface
-     */
     public function createCustomerPluginExecutor(): CustomerPluginExecutorInterface
     {
         return new CustomerPluginExecutor(
@@ -116,9 +107,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface
-     */
     public function createCustomerPasswordPolicyValidator(): CustomerPasswordPolicyValidatorInterface
     {
         return new CustomerPasswordPolicyValidator($this->getConfig(), $this->getCustomerPasswordPolicies());
@@ -137,33 +125,21 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         ];
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyInterface
-     */
     public function createDenyListCustomerPasswordPolicy(): CustomerPasswordPolicyInterface
     {
         return new DenyListCustomerPasswordPolicy($this->getConfig());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyInterface
-     */
     public function createLengthCustomerPasswordPolicy(): CustomerPasswordPolicyInterface
     {
         return new LengthCustomerPasswordPolicy($this->getConfig());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyInterface
-     */
     public function createSequenceCustomerPasswordPolicy(): CustomerPasswordPolicyInterface
     {
         return new SequenceCustomerPasswordPolicy($this->getConfig());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyInterface
-     */
     public function createCharacterSetCustomerPasswordPolicy(): CustomerPasswordPolicyInterface
     {
         return new CharacterSetCustomerPasswordPolicy($this->getConfig());
@@ -207,9 +183,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_LOCALE);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface
-     */
     public function createCustomerReferenceGenerator(): CustomerReferenceGeneratorInterface
     {
         return new CustomerReferenceGenerator(
@@ -245,9 +218,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return new CustomerOrderSaver($this->createCustomer(), $this->createAddress());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaverInterface
-     */
     public function createCheckoutCustomerOrderSaverWithMultiShippingAddress(): CustomerOrderSaverInterface
     {
         return new CustomerOrderSaverWithMultiShippingAddress(
@@ -289,9 +259,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_ANONYMIZER);
     }
 
-    /**
-     * @return \Orm\Zed\Locale\Persistence\SpyLocaleQuery
-     */
     public function getPropelQueryLocale(): SpyLocaleQuery
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::PROPEL_QUERY_LOCALE);
@@ -388,25 +355,16 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return new OrderSaverStrategyResolver($strategyContainer);
     }
 
-    /**
-     * @return \Spryker\Service\Customer\CustomerServiceInterface
-     */
     public function getCustomerService(): CustomerServiceInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::SERVICE_CUSTOMER);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface
-     */
     public function getStoreFacade(): CustomerToStoreFacadeInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_STORE);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Validator\CustomerCheckoutSalutationValidatorInterface
-     */
     public function createCustomerCheckoutSalutationValidator(): CustomerCheckoutSalutationValidatorInterface
     {
         return new CustomerCheckoutSalutationValidator(
@@ -415,9 +373,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Validator\CustomerAddressCheckoutSalutationValidatorInterface
-     */
     public function createCustomerAddressCheckoutSalutationValidator(): CustomerAddressCheckoutSalutationValidatorInterface
     {
         return new CustomerAddressCheckoutSalutationValidator(
@@ -426,9 +381,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\Invalidation\CustomerInvalidatorInterface
-     */
     public function createCustomerInvalidator(): CustomerInvalidatorInterface
     {
         return new StorageCustomerInvalidator(
@@ -437,9 +389,6 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface
-     */
     public function createCustomerInvalidationKeyGenerator(): KeyGeneratorInterface
     {
         return new CustomerInvalidationKeyGenerator();

@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class FindCustomerByReferenceTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testFindCustomerByReference(): void
     {
         // Arrange

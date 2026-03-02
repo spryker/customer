@@ -43,11 +43,6 @@ interface CustomerStubInterface
      */
     public function confirmRegistration(CustomerTransfer $customerTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function confirmCustomerRegistration(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 
     /**
@@ -155,10 +150,5 @@ interface CustomerStubInterface
      */
     public function anonymizeCustomer(CustomerTransfer $customerTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function findCustomerByReference(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 }

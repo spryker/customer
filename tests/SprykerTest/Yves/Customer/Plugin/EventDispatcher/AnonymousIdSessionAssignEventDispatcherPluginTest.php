@@ -33,9 +33,6 @@ class AnonymousIdSessionAssignEventDispatcherPluginTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function testThePluginSetsAnonymousIdToSessionWhenItIsEmpty(): void
     {
         // Arrange
@@ -49,9 +46,6 @@ class AnonymousIdSessionAssignEventDispatcherPluginTest extends Unit
         $this->assertNotEmpty($request->getSession()->get(CustomerConfig::ANONYMOUS_SESSION_KEY));
     }
 
-    /**
-     * @return void
-     */
     public function testThePluginDoesNotSetAnonymousIdToSessionWhenItIsAlreadyInSession(): void
     {
         // Arrange
@@ -65,12 +59,6 @@ class AnonymousIdSessionAssignEventDispatcherPluginTest extends Unit
         $this->assertSame('123', $request->getSession()->get(CustomerConfig::ANONYMOUS_SESSION_KEY), 'The anonymous id should not be changed.');
     }
 
-    /**
-     * @param \Spryker\Shared\EventDispatcherExtension\Dependency\Plugin\EventDispatcherPluginInterface $plugin
-     * @param array $sessionSeed
-     *
-     * @return \Symfony\Component\HttpKernel\Event\RequestEvent
-     */
     protected function dispatchRequestEvent(EventDispatcherPluginInterface $plugin, array $sessionSeed = []): RequestEvent
     {
         $eventDispatcher = new EventDispatcher();

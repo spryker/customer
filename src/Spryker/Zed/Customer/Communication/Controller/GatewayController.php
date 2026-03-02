@@ -46,11 +46,6 @@ class GatewayController extends AbstractGatewayController
             ->confirmRegistration($customerTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function confirmCustomerRegistrationAction(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         return $this->getFacade()->confirmCustomerRegistration($customerTransfer);
@@ -308,11 +303,6 @@ class GatewayController extends AbstractGatewayController
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function findCustomerByReferenceAction(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         return $this->getFacade()->findCustomerByReference($customerTransfer->getCustomerReference());

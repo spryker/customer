@@ -24,9 +24,6 @@ class CustomerToRouterFacadeBridge implements CustomerToRouterFacadeInterface
         $this->routerFacade = $routerFacade;
     }
 
-    /**
-     * @return \Spryker\Zed\Router\Business\Router\ChainRouter
-     */
     public function getBackofficeChainRouter(): ChainRouter
     {
         return $this->routerFacade->getBackofficeChainRouter();

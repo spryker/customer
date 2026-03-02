@@ -38,11 +38,6 @@ class CustomerUpdateForm extends CustomerForm
      */
     public const OPTION_ADDRESS_CHOICES = 'address_choices';
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     *
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -150,9 +145,6 @@ class CustomerUpdateForm extends CustomerForm
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'customer';

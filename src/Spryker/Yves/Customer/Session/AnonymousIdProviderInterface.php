@@ -9,8 +9,5 @@ namespace Spryker\Yves\Customer\Session;
 
 interface AnonymousIdProviderInterface
 {
-    /**
-     * @return string
-     */
     public function generateUniqueId(): string;
 }

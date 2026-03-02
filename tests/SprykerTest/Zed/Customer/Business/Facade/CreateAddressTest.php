@@ -22,9 +22,6 @@ use Generated\Shared\Transfer\AddressTransfer;
  */
 class CreateAddressTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testNewAddress(): void
     {
         // Arrange

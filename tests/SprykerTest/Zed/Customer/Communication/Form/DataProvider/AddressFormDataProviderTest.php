@@ -42,9 +42,6 @@ class AddressFormDataProviderTest extends Unit
      */
     protected const ID_COUNTRY = 1;
 
-    /**
-     * @return void
-     */
     public function testGetOptionReturnRequiredKeys(): void
     {
         // Arrange
@@ -65,9 +62,6 @@ class AddressFormDataProviderTest extends Unit
         );
     }
 
-    /**
-     * @return void
-     */
     public function testGetOptionContriesReturnsCountriesForDynamicStore(): void
     {
         if ($this->tester->isDynamicStoreEnabled() === false) {

@@ -36,10 +36,6 @@ class PreConditionChecker implements PreConditionCheckerInterface
      */
     protected $utilValidateService;
 
-    /**
-     * @param \Spryker\Zed\Customer\Business\Customer\CustomerInterface $customer
-     * @param \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilValidateServiceInterface $utilValidateService
-     */
     public function __construct(CustomerInterface $customer, CustomerToUtilValidateServiceInterface $utilValidateService)
     {
         $this->customer = $customer;

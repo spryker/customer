@@ -28,9 +28,6 @@ class SendPasswordRestoreMailTest extends AbstractCustomerFacadeTest
      */
     protected const TESTER_NON_EXISTING_EMAIL = 'nonexisting@spryker.com';
 
-    /**
-     * @return void
-     */
     public function testForgotPassword(): void
     {
         // Arrange
@@ -45,9 +42,6 @@ class SendPasswordRestoreMailTest extends AbstractCustomerFacadeTest
         $this->assertTrue($customerResponseTransfer->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testRestorePasswordNonExistent(): void
     {
         // Arrange
@@ -61,9 +55,6 @@ class SendPasswordRestoreMailTest extends AbstractCustomerFacadeTest
         $this->assertTrue($customerResponseTransfer->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testSendPasswordRestoreMailAddsLocaleToRestoreLink(): void
     {
         // Arrange

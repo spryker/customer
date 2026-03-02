@@ -23,10 +23,6 @@ class CustomerAddressKeyGenerator implements CustomerAddressKeyGeneratorInterfac
      */
     protected $utilEncodingService;
 
-    /**
-     * @param \Spryker\Service\Customer\CustomerConfig $customerConfig
-     * @param \Spryker\Service\Customer\Dependency\Service\CustomerToUtilEncodingServiceInterface $utilEncodingService
-     */
     public function __construct(
         CustomerConfig $customerConfig,
         CustomerToUtilEncodingServiceInterface $utilEncodingService
@@ -35,11 +31,6 @@ class CustomerAddressKeyGenerator implements CustomerAddressKeyGeneratorInterfac
         $this->utilEncodingService = $utilEncodingService;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return string
-     */
     public function getUniqueAddressKey(AddressTransfer $addressTransfer): string
     {
         $addressKeyData = [];

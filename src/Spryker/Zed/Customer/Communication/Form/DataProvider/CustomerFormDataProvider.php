@@ -30,11 +30,6 @@ class CustomerFormDataProvider extends AbstractCustomerDataProvider
      */
     protected CustomerToStoreFacadeInterface $storeFacade;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $customerQueryContainer
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface $localeFacade
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface $storeFacade
-     */
     public function __construct(
         CustomerQueryContainerInterface $customerQueryContainer,
         CustomerToLocaleInterface $localeFacade,

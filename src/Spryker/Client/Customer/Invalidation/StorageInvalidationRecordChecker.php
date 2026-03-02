@@ -19,11 +19,6 @@ class StorageInvalidationRecordChecker implements InvalidationRecordCheckerInter
     ) {
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return string|null
-     */
     public function findInvalidationRecord(CustomerTransfer $customerTransfer): ?string
     {
         $key = $this->keyGenerator->generateKey($customerTransfer);

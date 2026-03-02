@@ -13,17 +13,11 @@ class AnonymousIdProvider implements AnonymousIdProviderInterface
 {
     protected UtilTextServiceInterface $utilTextService;
 
-    /**
-     * @param \Spryker\Service\UtilText\UtilTextServiceInterface $utilTextService
-     */
     public function __construct(UtilTextServiceInterface $utilTextService)
     {
         $this->utilTextService = $utilTextService;
     }
 
-    /**
-     * @return string
-     */
     public function generateUniqueId(): string
     {
         return 'anonymous-' . $this->utilTextService->generateRandomString(16);

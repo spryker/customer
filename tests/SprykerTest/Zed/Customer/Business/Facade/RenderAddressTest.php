@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class RenderAddressTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testRenderAddress(): void
     {
         // Arrange

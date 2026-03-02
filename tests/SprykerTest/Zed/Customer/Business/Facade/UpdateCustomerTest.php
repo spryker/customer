@@ -37,9 +37,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
      */
     protected const TESTER_NAME = 'Tester';
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerNotUpdatesCustomerWhenPasswordLessThanMinLength(): void
     {
         // Arrange
@@ -64,9 +61,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerShouldNotUpdateCustomerWhenPasswordLongerThanMaxLength(): void
     {
         // Arrange
@@ -169,9 +163,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerShouldUpdateCustomerWhenPasswordHasCorrectLength(): void
     {
         // Arrange
@@ -238,9 +229,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomer(): void
     {
         $customerTransfer = $this->tester->createTestCustomer();
@@ -253,9 +241,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         $this->assertSame(static::TESTER_NAME, $customerTransfer->getLastName());
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerFailsWhenInvalidEmailFormatIsProvided(): void
     {
         // Arrange
@@ -269,9 +254,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         $this->assertFalse($customerResponse->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerUpdatesValidEmail(): void
     {
         // Arrange
@@ -286,9 +268,6 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         $this->assertTrue($customerResponse->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCustomerWithProvidedPasswordShouldSuccessWhenPasswordAreProvided(): void
     {
         // Arrange

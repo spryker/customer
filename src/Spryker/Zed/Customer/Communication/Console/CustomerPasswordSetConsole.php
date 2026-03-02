@@ -47,9 +47,6 @@ class CustomerPasswordSetConsole extends StoreAwareConsole
      */
     protected const ERROR_MESSAGE_STORE = 'Option store should be provided for Dynamic Store environment.';
 
-    /**
-     * @return void
-     */
     protected function configure(): void
     {
         $this
@@ -59,12 +56,6 @@ class CustomerPasswordSetConsole extends StoreAwareConsole
             ->addOption(static::OPTION_NO_TOKEN, null, InputOption::VALUE_NONE, 'Option to send the email to all customers that do not have a token to reset the password.');
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var bool $noToken */
@@ -96,11 +87,6 @@ class CustomerPasswordSetConsole extends StoreAwareConsole
         return static::CODE_SUCCESS;
     }
 
-    /**
-     * @param int $customersCount
-     *
-     * @return \Symfony\Component\Console\Question\ConfirmationQuestion
-     */
     protected function createConfirmationQuestion(int $customersCount): ConfirmationQuestion
     {
         return new ConfirmationQuestion(
@@ -109,11 +95,6 @@ class CustomerPasswordSetConsole extends StoreAwareConsole
         );
     }
 
-    /**
-     * @param bool $noToken
-     *
-     * @return \Generated\Shared\Transfer\CustomerCriteriaFilterTransfer
-     */
     protected function createCustomerCriteriaFilterTransfer(bool $noToken): CustomerCriteriaFilterTransfer
     {
         return (new CustomerCriteriaFilterTransfer())

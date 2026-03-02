@@ -11,11 +11,6 @@ use Generated\Shared\Transfer\StoreTransfer;
 
 interface CustomerToStoreFacadeInterface
 {
-    /**
-     * @param bool $fallbackToDefault
-     *
-     * @return \Generated\Shared\Transfer\StoreTransfer
-     */
     public function getCurrentStore(bool $fallbackToDefault = false): StoreTransfer;
 
     /**
@@ -23,8 +18,5 @@ interface CustomerToStoreFacadeInterface
      */
     public function getAllStores(): array;
 
-    /**
-     * @return bool
-     */
     public function isDynamicStoreEnabled(): bool;
 }

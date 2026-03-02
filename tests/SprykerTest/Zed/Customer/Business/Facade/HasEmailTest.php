@@ -22,9 +22,6 @@ use SprykerTest\Zed\Customer\CustomerBusinessTester;
  */
 class HasEmailTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testHasEmailReturnsFalseWithoutCustomer(): void
     {
         // Act
@@ -34,9 +31,6 @@ class HasEmailTest extends AbstractCustomerFacadeTest
         $this->assertFalse($hasEmail);
     }
 
-    /**
-     * @return void
-     */
     public function testHasEmailReturnsTrueWithCustomer(): void
     {
         // Arrange

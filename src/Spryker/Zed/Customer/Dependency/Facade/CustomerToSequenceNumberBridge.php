@@ -24,11 +24,6 @@ class CustomerToSequenceNumberBridge implements CustomerToSequenceNumberInterfac
         $this->sequenceNumberFacade = $sequenceNumberFacade;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\SequenceNumberSettingsTransfer $sequenceNumberSettings
-     *
-     * @return string
-     */
     public function generate(SequenceNumberSettingsTransfer $sequenceNumberSettings): string
     {
         return $this->sequenceNumberFacade->generate($sequenceNumberSettings);

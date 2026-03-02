@@ -29,10 +29,6 @@ class CustomerOrderSaver implements CustomerOrderSaverInterface
      */
     protected $address;
 
-    /**
-     * @param \Spryker\Zed\Customer\Business\Customer\CustomerInterface $customer
-     * @param \Spryker\Zed\Customer\Business\Customer\AddressInterface $address
-     */
     public function __construct(CustomerInterface $customer, AddressInterface $address)
     {
         $this->customer = $customer;

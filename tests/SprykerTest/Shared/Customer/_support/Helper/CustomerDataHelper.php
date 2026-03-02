@@ -92,11 +92,6 @@ class CustomerDataHelper extends Module
         return $customerResponseTransfer->getCustomerTransfer();
     }
 
-    /**
-     * @param array $override
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function haveConfirmedCustomer(array $override = []): CustomerTransfer
     {
         $customerTransfer = $this->haveCustomer($override);
@@ -104,11 +99,6 @@ class CustomerDataHelper extends Module
         return $this->confirmCustomer($customerTransfer);
     }
 
-    /**
-     * @param array $override
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function haveConfirmedCustomerWithAddress(array $override = []): CustomerTransfer
     {
         $customerTransfer = $this->haveConfirmedCustomer($override);
@@ -145,11 +135,6 @@ class CustomerDataHelper extends Module
         return $customerResponseTransfer->getCustomerTransfer();
     }
 
-    /**
-     * @param string $email
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function confirmCustomerByEmail(string $email): CustomerTransfer
     {
         $customerTransfer = (new CustomerTransfer())->setEmail($email);
@@ -176,11 +161,6 @@ class CustomerDataHelper extends Module
         return $addressTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     protected function ensureCustomerWithReferenceDoesNotExist(CustomerTransfer $customerTransfer): void
     {
         if (!$customerTransfer->getCustomerReference()) {
@@ -194,9 +174,6 @@ class CustomerDataHelper extends Module
         }
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Business\CustomerFacadeInterface
-     */
     public function getCustomerFacade(): CustomerFacadeInterface
     {
         if ($this->config[static::CONFIG_KEY_IS_MAIL_FACADE_MOCK_ENABLED]) {
@@ -227,18 +204,12 @@ class CustomerDataHelper extends Module
         return $this->getLocatorHelper()->getLocator()->customer()->facade();
     }
 
-    /**
-     * @return bool
-     */
     protected function isDefaultCustomerFacadeSufficient(): bool
     {
         return ($this->hasModule('\\' . ContainerHelper::class) && $this->getContainerHelper()->getContainer()->has(static::SERVICE_STORE))
             || $this->getLocatorHelper()->isProjectNamespaceEnabled();
     }
 
-    /**
-     * @return \SprykerTest\Zed\Testify\Helper\Business\BusinessHelper
-     */
     protected function getBusinessHelper(): BusinessHelper
     {
         /** @var \SprykerTest\Zed\Testify\Helper\Business\BusinessHelper $businessHelper */
@@ -247,9 +218,6 @@ class CustomerDataHelper extends Module
         return $businessHelper;
     }
 
-    /**
-     * @return \Spryker\Zed\Mail\Business\MailFacadeInterface
-     */
     protected function getMailFacadeMock(): MailFacadeInterface
     {
         /** @var \Spryker\Zed\Mail\Business\MailFacadeInterface $mailFacadeMock */
@@ -258,11 +226,6 @@ class CustomerDataHelper extends Module
         return $mailFacadeMock;
     }
 
-    /**
-     * @param array $seed
-     *
-     * @return \Generated\Shared\Transfer\CountryTransfer
-     */
     protected function haveCountry(array $seed = []): CountryTransfer
     {
         $countryTransferBuilder = new CountryBuilder($seed);
@@ -272,9 +235,6 @@ class CustomerDataHelper extends Module
             ->getCountryByIso2Code($countryTransfer->getIso2Code());
     }
 
-    /**
-     * @return void
-     */
     protected function setDefaultConfig(): void
     {
         $this->config = [static::CONFIG_KEY_IS_MAIL_FACADE_MOCK_ENABLED => true];

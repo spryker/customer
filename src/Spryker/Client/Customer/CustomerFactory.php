@@ -60,9 +60,6 @@ class CustomerFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\Customer\Reader\CustomerAccessTokenReaderInterface
-     */
     public function createCustomerAccessTokenReader(): CustomerAccessTokenReaderInterface
     {
         return new CustomerAccessTokenReader(
@@ -70,9 +67,6 @@ class CustomerFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\Customer\Updater\CustomerAddressUpdaterInterface
-     */
     public function createCustomerAddressUpdater(): CustomerAddressUpdaterInterface
     {
         return new CustomerAddressUpdater(
@@ -104,9 +98,6 @@ class CustomerFactory extends AbstractFactory
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_DEFAULT_ADDRESS_CHANGE);
     }
 
-    /**
-     * @return \Spryker\Client\Customer\CustomerSecuredPattern\CustomerSecuredPatternInterface
-     */
     public function createCustomerSecuredPattern(): CustomerSecuredPatternInterface
     {
         return new CustomerSecuredPattern($this->getConfig(), $this->getCustomerSecuredPatternRulePlugins());
@@ -128,25 +119,16 @@ class CustomerFactory extends AbstractFactory
         return $this->getProvidedDependency(CustomerDependencyProvider::SERVICE_SESSION);
     }
 
-    /**
-     * @return \Spryker\Client\CustomerExtension\Dependency\Plugin\AccessTokenAuthenticationHandlerPluginInterface
-     */
     public function getAccessTokenAuthenticationHandlerPlugin(): AccessTokenAuthenticationHandlerPluginInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGIN_ACCESS_TOKEN_AUTHENTICATION_HANDLER);
     }
 
-    /**
-     * @return \Spryker\Client\Customer\Dependency\Client\CustomerToStorageRedisClientInterface
-     */
     public function getStorageRedisClient(): CustomerToStorageRedisClientInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_STORAGE_REDIS);
     }
 
-    /**
-     * @return \Spryker\Client\Customer\Invalidation\InvalidationRecordCheckerInterface
-     */
     public function createInvalidationRecordChecker(): InvalidationRecordCheckerInterface
     {
         return new StorageInvalidationRecordChecker(
@@ -155,9 +137,6 @@ class CustomerFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface
-     */
     public function createInvalidationRecordKeyGenerator(): KeyGeneratorInterface
     {
         return new CustomerInvalidationKeyGenerator();

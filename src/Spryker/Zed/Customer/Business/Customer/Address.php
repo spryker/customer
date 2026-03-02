@@ -49,13 +49,6 @@ class Address implements AddressInterface
      */
     protected $customerRepository;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $queryContainer
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToCountryInterface $countryFacade
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToLocaleInterface $localeFacade
-     * @param \Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface $customerExpander
-     * @param \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface $customerRepository
-     */
     public function __construct(
         CustomerQueryContainerInterface $queryContainer,
         CustomerToCountryInterface $countryFacade,
@@ -187,21 +180,11 @@ class Address implements AddressInterface
         return $this->entityToAddressTransfer($addressEntity);
     }
 
-    /**
-     * @param int $idCustomerAddress
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findCustomerAddressById(int $idCustomerAddress): ?AddressTransfer
     {
         return $this->customerRepository->findCustomerAddressById($idCustomerAddress);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findCustomerAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer
     {
         return $this->customerRepository->findAddressByAddressData($addressTransfer);
@@ -344,11 +327,6 @@ class Address implements AddressInterface
         return $customer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomer|null
-     */
     protected function findCustomerByIdOrEmail(AddressTransfer $addressTransfer): ?SpyCustomer
     {
         $customerEntity = null;

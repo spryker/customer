@@ -22,9 +22,6 @@ use Generated\Shared\Transfer\AddressTransfer;
  */
 class SetDefaultBillingAddressTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testSetDefaultBillingAddress(): void
     {
         // Arrange

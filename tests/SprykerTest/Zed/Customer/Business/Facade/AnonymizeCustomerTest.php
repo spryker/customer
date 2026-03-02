@@ -22,9 +22,6 @@ use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
  */
 class AnonymizeCustomerTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testAnonymizeCustomer(): void
     {
         // Arrange

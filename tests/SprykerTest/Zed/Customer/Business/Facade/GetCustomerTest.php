@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class GetCustomerTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testGetCustomer(): void
     {
         // Arrange

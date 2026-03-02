@@ -65,9 +65,6 @@ class CustomerCommunicationFactory extends AbstractCommunicationFactory
         return $this->getFormFactory()->create(CustomerForm::class, $data, $options);
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
     public function getCustomerDeleteForm(): FormInterface
     {
         return $this->getFormFactory()->create(CustomerDeleteForm::class);
@@ -179,9 +176,6 @@ class CustomerCommunicationFactory extends AbstractCommunicationFactory
         return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_TABLE_ACTION_EXPANDER);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Communication\Table\PluginExecutor\CustomerTableExpanderPluginExecutorInterface
-     */
     public function createCustomerTableActionPluginExecutor(): CustomerTableExpanderPluginExecutorInterface
     {
         return new CustomerTableExpanderPluginExecutor(
@@ -189,25 +183,16 @@ class CustomerCommunicationFactory extends AbstractCommunicationFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToCountryInterface
-     */
     public function getCountryFacade(): CustomerToCountryInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_COUNTRY);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface
-     */
     public function getStoreFacade(): CustomerToStoreFacadeInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_STORE);
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Facade\CustomerToRouterFacadeInterface
-     */
     public function getRouterFacade(): CustomerToRouterFacadeInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_ROUTER);

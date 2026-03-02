@@ -32,11 +32,6 @@ class CustomerOrderSaverWithMultiShippingAddress extends CustomerOrderSaver
      */
     protected $customerService;
 
-    /**
-     * @param \Spryker\Zed\Customer\Business\Customer\CustomerInterface $customer
-     * @param \Spryker\Zed\Customer\Business\Customer\AddressInterface $address
-     * @param \Spryker\Service\Customer\CustomerServiceInterface $customerService
-     */
     public function __construct(
         CustomerInterface $customer,
         AddressInterface $address,
@@ -63,12 +58,6 @@ class CustomerOrderSaverWithMultiShippingAddress extends CustomerOrderSaver
         }
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
     protected function persistBillingAddress(QuoteTransfer $quoteTransfer, CustomerTransfer $customer): QuoteTransfer
     {
         $billingAddressTransfer = $quoteTransfer->requireBillingAddress()->getBillingAddress();
@@ -83,12 +72,6 @@ class CustomerOrderSaverWithMultiShippingAddress extends CustomerOrderSaver
         return $quoteTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customer
-     *
-     * @return void
-     */
     protected function persistShippingAddress(ItemTransfer $itemTransfer, CustomerTransfer $customer): void
     {
         $shipmentTransfer = $itemTransfer->requireShipment()->getShipment();
@@ -102,12 +85,6 @@ class CustomerOrderSaverWithMultiShippingAddress extends CustomerOrderSaver
         $shipmentTransfer->setShippingAddress($shippingAddressTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer
-     */
     protected function processNewUniqueCustomerAddress(
         AddressTransfer $addressTransfer,
         CustomerTransfer $customer
@@ -127,12 +104,6 @@ class CustomerOrderSaverWithMultiShippingAddress extends CustomerOrderSaver
         return $addressTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     * @param string $addressTransferKey
-     *
-     * @return bool
-     */
     protected function isAddressNewAndUnique(AddressTransfer $addressTransfer, string $addressTransferKey): bool
     {
         return $addressTransfer->getIdCustomerAddress() !== null

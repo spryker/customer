@@ -22,11 +22,6 @@ class CustomerToUtilValidateServiceBridge implements CustomerToUtilValidateServi
         $this->utilValidateService = $utilValidateService;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return bool
-     */
     public function isEmailFormatValid(string $email): bool
     {
         return $this->utilValidateService->isEmailFormatValid($email);

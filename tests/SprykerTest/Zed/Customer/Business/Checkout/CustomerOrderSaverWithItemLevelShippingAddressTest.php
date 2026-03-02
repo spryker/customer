@@ -36,9 +36,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -119,9 +116,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
         );
     }
 
-    /**
-     * @return array
-     */
     public function saveCustomerOrderWithItemLevelShippingAddressAndAddressSavingIsNotSkipped(): array
     {
         return [
@@ -131,9 +125,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
         ];
     }
 
-    /**
-     * @return array
-     */
     public function saveCustomerOrderWithQuoteLevelShippingAddressAndAddressSavingIsSkipped(): array
     {
         return [
@@ -142,9 +133,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getQuoteWithOneItemAndBillingAddresAndItemLevelShippingAddress(): array
     {
         $quoteTransfer = (new QuoteBuilder())
@@ -163,9 +151,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
         return [$quoteTransfer, new SaveOrderTransfer(), 2];
     }
 
-    /**
-     * @return array
-     */
     public function getQuoteWithTwoItemBillingAddresAndItemLevelShippingAddress(): array
     {
         $quoteTransfer = (new QuoteBuilder())
@@ -191,9 +176,6 @@ class CustomerOrderSaverWithItemLevelShippingAddressTest extends Unit
         return [$quoteTransfer, new SaveOrderTransfer(), 3];
     }
 
-    /**
-     * @return array
-     */
     public function getQuoteWithThreeItemsAndTwoDifferentAddresses(): array
     {
         $addressTransfer1 = (new AddressBuilder())->build();

@@ -84,12 +84,6 @@ class AddController extends AbstractController
         ]);
     }
 
-    /**
-     * @param string $baseRedirectUrl
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customer
-     *
-     * @return string
-     */
     protected function getSuccessRedirectUrl(string $baseRedirectUrl, CustomerTransfer $customer): string
     {
         $redirectUrl = Url::parse($baseRedirectUrl);

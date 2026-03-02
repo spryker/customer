@@ -143,9 +143,6 @@ abstract class AbstractCustomerFacadeTest extends Unit
      */
     protected CustomerBusinessTester $tester;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -178,12 +175,6 @@ abstract class AbstractCustomerFacadeTest extends Unit
         $this->tester->setDependency(CustomerDependencyProvider::SERVICE_UTIL_VALIDATE, $serviceMock);
     }
 
-    /**
-     * @param string $errorMessage
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return bool
-     */
     protected function hasErrorInCustomerResponseTransfer(string $errorMessage, CustomerResponseTransfer $customerResponseTransfer): bool
     {
         $errorTransfers = $customerResponseTransfer->getErrors()->getIterator();
@@ -195,12 +186,6 @@ abstract class AbstractCustomerFacadeTest extends Unit
         return $errorTransfers->current()->getMessage() === $errorMessage;
     }
 
-    /**
-     * @param string $message
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return bool
-     */
     protected function hasMessageInCustomerResponseTransfer(string $message, CustomerResponseTransfer $customerResponseTransfer): bool
     {
         $messageTransfer = $customerResponseTransfer->getMessage();
@@ -211,12 +196,6 @@ abstract class AbstractCustomerFacadeTest extends Unit
         return $messageTransfer->getValue() === $message;
     }
 
-    /**
-     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface|null $transfer
-     * @param bool $hasEmail
-     *
-     * @return \Spryker\Zed\Customer\Business\CustomerFacade
-     */
     protected function getFacade(?TransferInterface $transfer = null, bool $hasEmail = true): CustomerFacade
     {
         $customerFacade = new CustomerFacade();

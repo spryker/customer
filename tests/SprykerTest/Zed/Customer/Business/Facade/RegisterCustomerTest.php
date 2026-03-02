@@ -31,9 +31,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
      */
     protected const VALUE_HAS_SEQUENCE_VALID_PASSWORD = '4sxjjvrt';
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomer(): void
     {
         // Arrange
@@ -46,9 +43,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->assertNotNull($customerResponseTransfer->getCustomerTransfer()->getRegistrationKey());
     }
 
-    /**
-     * @return void
-     */
     public function testExecutesPostCustomerRegistrationPlugins(): void
     {
         // Arrange
@@ -66,9 +60,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->tester->getCustomerFacade()->registerCustomer($customerTransfer);
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerWithAlreadyExistingEmail(): void
     {
         // Arrange
@@ -84,9 +75,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->assertFalse($customerResponseTransfer->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerFailsWhenInvalidEmailFormatIsProvided(): void
     {
         // Arrange
@@ -100,9 +88,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->assertFalse($customerResponseTransfer->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerRegistersCustomerWithValidEmail(): void
     {
         // Arrange
@@ -116,9 +101,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->assertTrue($customerResponseTransfer->getIsSuccess());
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerNotRegistersCustomerWhenPasswordLessThanMinLength(): void
     {
         // Arrange
@@ -141,9 +123,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerShouldNotRegisterCustomerWhenPasswordLongerThanMaxLength(): void
     {
         // Arrange
@@ -166,9 +145,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         ));
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerShouldRegisterCustomerWhenPasswordHasCorrectLength(): void
     {
         // Arrange
@@ -340,9 +316,6 @@ class RegisterCustomerTest extends AbstractCustomerFacadeTest
         $this->assertNotNull($customerResponseTransfer->getCustomerTransfer());
     }
 
-    /**
-     * @return void
-     */
     public function testRegisterCustomerAddsConfirmationLinkWithLocale(): void
     {
         // Arrange

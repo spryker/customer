@@ -9,8 +9,5 @@ namespace Spryker\Client\Customer\CustomerSecuredPattern;
 
 interface CustomerSecuredPatternInterface
 {
-    /**
-     * @return string
-     */
     public function getCustomerSecuredPattern(): string;
 }

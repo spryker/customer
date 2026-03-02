@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class DeleteAddressTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testDeleteAddress(): void
     {
         // Arrange
@@ -38,9 +35,6 @@ class DeleteAddressTest extends AbstractCustomerAddressFacadeTest
         $this->assertNotNull($deletedAddress);
     }
 
-    /**
-     * @return void
-     */
     public function testDeleteDefaultAddress(): void
     {
         // Arrange

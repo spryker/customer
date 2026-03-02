@@ -34,11 +34,6 @@ class CustomerTester extends Actor
 {
     use _generated\CustomerTesterActions;
 
-    /**
-     * @param array $sessionSeed
-     *
-     * @return \Symfony\Component\HttpKernel\Event\RequestEvent
-     */
     public function getRequestEvent(array $sessionSeed = []): RequestEvent
     {
         $request = Request::createFromGlobals();
@@ -48,9 +43,6 @@ class CustomerTester extends Actor
         return new RequestEvent($this->getHttpKernelMock(), $request, HttpKernelInterface::MAIN_REQUEST);
     }
 
-    /**
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
-     */
     protected function getHttpKernelMock(): HttpKernelInterface
     {
         /** @var \Symfony\Component\HttpKernel\HttpKernelInterface $httpKernelMock */
@@ -59,11 +51,6 @@ class CustomerTester extends Actor
         return $httpKernelMock;
     }
 
-    /**
-     * @param array $returnedValues
-     *
-     * @return \Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
     protected function getHttpSessionMock(array $returnedValues = []): SessionInterface
     {
         return Stub::makeEmpty(SessionInterface::class, [

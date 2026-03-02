@@ -28,9 +28,6 @@ class CustomerPresentationTester extends Actor
 {
     use _generated\CustomerPresentationTesterActions;
 
-    /**
-     * @param \Codeception\Scenario $scenario
-     */
     public function __construct(Scenario $scenario)
     {
         parent::__construct($scenario);

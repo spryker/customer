@@ -19,9 +19,6 @@ class CustomerStub implements CustomerStubInterface
      */
     protected $zedStub;
 
-    /**
-     * @param \Spryker\Client\ZedRequest\ZedRequestClient $zedStub
-     */
     public function __construct(ZedRequestClient $zedStub)
     {
         $this->zedStub = $zedStub;
@@ -81,11 +78,6 @@ class CustomerStub implements CustomerStubInterface
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function confirmCustomerRegistration(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer */
@@ -289,11 +281,6 @@ class CustomerStub implements CustomerStubInterface
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function findCustomerByReference(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer */

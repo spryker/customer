@@ -25,12 +25,6 @@ class AnonymousIdSessionAssignEventDispatcherPlugin extends AbstractPlugin imple
      */
     protected const LISTENER_PRIORITY = 8;
 
-    /**
-     * @param \Spryker\Shared\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Spryker\Service\Container\ContainerInterface $container
-     *
-     * @return \Spryker\Shared\EventDispatcher\EventDispatcherInterface
-     */
     public function extend(EventDispatcherInterface $eventDispatcher, ContainerInterface $container): EventDispatcherInterface
     {
         $eventDispatcher->addListener(KernelEvents::REQUEST, function (RequestEvent $event) {

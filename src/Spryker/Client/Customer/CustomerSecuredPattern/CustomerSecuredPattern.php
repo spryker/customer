@@ -33,9 +33,6 @@ class CustomerSecuredPattern implements CustomerSecuredPatternInterface
         $this->customerSecuredPatternRulePlugins = $customerSecuredPatternRulePlugins;
     }
 
-    /**
-     * @return string
-     */
     public function getCustomerSecuredPattern(): string
     {
         $customerSecuredPattern = $this->customerConfig->getCustomerSecuredPattern();

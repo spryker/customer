@@ -22,9 +22,6 @@ use Generated\Shared\Transfer\CustomerCollectionTransfer;
  */
 class SendPasswordRestoreMailForCustomerCollectionTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testSendPasswordRestoreMailForCustomerCollectionShouldSetRestorePasswordKey(): void
     {
         // Arrange

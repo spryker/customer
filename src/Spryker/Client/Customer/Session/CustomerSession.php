@@ -116,11 +116,6 @@ class CustomerSession implements CustomerSessionInterface
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function setCustomerRawData(CustomerTransfer $customerTransfer): CustomerTransfer
     {
         $this->sessionClient->set(
@@ -133,9 +128,6 @@ class CustomerSession implements CustomerSessionInterface
         return $customerTransfer;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     public function findCustomerRawData(): ?CustomerTransfer
     {
         $customerTransfer = $this->sessionClient->get(static::SESSION_KEY);
@@ -158,9 +150,6 @@ class CustomerSession implements CustomerSessionInterface
         }
     }
 
-    /**
-     * @return bool
-     */
     protected function hasCustomerTransferCache(): bool
     {
         return static::$customerTransferCache !== null;
@@ -180,27 +169,16 @@ class CustomerSession implements CustomerSessionInterface
         return static::$customerTransferCache;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     protected function cacheCustomerTransfer(CustomerTransfer $customerTransfer): void
     {
         static::$customerTransferCache = $customerTransfer;
     }
 
-    /**
-     * @return void
-     */
     protected function invalidateCustomerTransferCache(): void
     {
         static::$customerTransferCache = null;
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         $customerTransfer = $this->getCustomer();

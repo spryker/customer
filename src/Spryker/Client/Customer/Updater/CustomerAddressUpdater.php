@@ -17,19 +17,11 @@ class CustomerAddressUpdater implements CustomerAddressUpdaterInterface
      */
     protected CustomerSessionInterface $customerSession;
 
-    /**
-     * @param \Spryker\Client\Customer\Session\CustomerSessionInterface $customerSession
-     */
     public function __construct(CustomerSessionInterface $customerSession)
     {
         $this->customerSession = $customerSession;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     public function updateCustomerAddresses(CustomerTransfer $customerTransfer): void
     {
         $currentCustomerTransfer = $this->customerSession->getCustomer();

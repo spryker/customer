@@ -51,9 +51,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
      */
     protected const EXPECTED_ERROR_MESSAGE = 'customer.salutation.invalid';
 
-    /**
-     * @return void
-     */
     public function testValidateWithValidSalutationReturnsTrue(): void
     {
         // Arrange
@@ -86,9 +83,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
         $this->assertCount(0, $checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateWithInvalidSalutationReturnsFalse(): void
     {
         // Arrange
@@ -126,9 +120,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
         $this->assertEquals(static::EXPECTED_ERROR_MESSAGE, $error->getMessage());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateWithEmptySalutationReturnsTrue(): void
     {
         // Arrange
@@ -161,9 +152,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
         $this->assertCount(0, $checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateWithNullSalutationReturnsTrue(): void
     {
         // Arrange
@@ -195,9 +183,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
         $this->assertCount(0, $checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateWithCaseSensitiveSalutation(): void
     {
         // Arrange
@@ -231,9 +216,6 @@ class CustomerCheckoutSalutationValidatorTest extends Unit
         $this->assertCount(1, $checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateWithEmptySalutationsList(): void
     {
         // Arrange

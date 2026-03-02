@@ -23,9 +23,6 @@ use Spryker\Zed\Customer\Business\Exception\AddressNotFoundException;
  */
 class GetAddressTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testGetAddressReturnsAddressByProvidedAddressIdWhenCustomerIdNotSpecified(): void
     {
         // Arrange
@@ -40,9 +37,6 @@ class GetAddressTest extends AbstractCustomerAddressFacadeTest
         $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
     }
 
-    /**
-     * @return void
-     */
     public function testGetAddressReturnsFirstAddressOfCustomerWhenNoDefaultAddress(): void
     {
         // Arrange
@@ -56,9 +50,6 @@ class GetAddressTest extends AbstractCustomerAddressFacadeTest
         $this->assertSame($customerTransfer->getIdCustomer(), $addressTransfer->getFkCustomer());
     }
 
-    /**
-     * @return void
-     */
     public function testGetAddressTrowsAddressNotFoundExceptionWhenAddressIdAndCustomerIdNotPassed(): void
     {
         // Arrange

@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class ConfirmRegistrationTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testConfirmRegistration(): void
     {
         // Arrange

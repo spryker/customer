@@ -30,20 +30,11 @@ class DenyListCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
      */
     protected $customerPasswordDenyList = [];
 
-    /**
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(CustomerConfig $customerConfig)
     {
         $this->customerPasswordDenyList = $customerConfig->getCustomerPasswordDenyList();
     }
 
-    /**
-     * @param string $password
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(string $password, CustomerResponseTransfer $customerResponseTransfer): CustomerResponseTransfer
     {
         if (!in_array($password, $this->customerPasswordDenyList, true)) {
@@ -53,11 +44,6 @@ class DenyListCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
         return $this->addPasswordInDenyListError($customerResponseTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     protected function addPasswordInDenyListError(CustomerResponseTransfer $customerResponseTransfer): CustomerResponseTransfer
     {
         $customerErrorTransfer = (new CustomerErrorTransfer())

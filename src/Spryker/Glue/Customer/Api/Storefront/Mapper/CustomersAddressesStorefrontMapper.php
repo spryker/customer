@@ -17,9 +17,6 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 class CustomersAddressesStorefrontMapper
 {
-    /**
-     * @return \Generated\Api\Storefront\CustomersAddressesStorefrontResource
-     */
     public function mapAddressTransferToResource(AddressTransfer $addressTransfer, CustomerTransfer $customerTransfer): CustomersAddressesStorefrontResource
     {
         $customersStorefrontResource = new CustomersStorefrontResource();
@@ -69,12 +66,6 @@ class CustomersAddressesStorefrontMapper
         return $resources;
     }
 
-    /**
-     * @param \Generated\Api\Storefront\CustomersAddressesStorefrontResource $customersAddressesStorefrontResource
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer
-     */
     public function mapResourceToAddressTransfer(
         CustomersAddressesStorefrontResource $customersAddressesStorefrontResource,
         AddressTransfer $addressTransfer

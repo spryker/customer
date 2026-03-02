@@ -17,19 +17,11 @@ class CustomerAccessTokenReader implements CustomerAccessTokenReaderInterface
      */
     protected $accessTokenAuthenticationHandlerPlugin;
 
-    /**
-     * @param \Spryker\Client\CustomerExtension\Dependency\Plugin\AccessTokenAuthenticationHandlerPluginInterface $accessTokenAuthenticationHandlerPlugin
-     */
     public function __construct(AccessTokenAuthenticationHandlerPluginInterface $accessTokenAuthenticationHandlerPlugin)
     {
         $this->accessTokenAuthenticationHandlerPlugin = $accessTokenAuthenticationHandlerPlugin;
     }
 
-    /**
-     * @param string $accessToken
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function getCustomerByAccessToken(string $accessToken): CustomerResponseTransfer
     {
         return $this->accessTokenAuthenticationHandlerPlugin->getCustomerByAccessToken($accessToken);

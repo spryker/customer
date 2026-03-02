@@ -20,20 +20,11 @@ class PasswordResetExpirationChecker implements PasswordResetExpirationCheckerIn
      */
     protected CustomerConfig $customerConfig;
 
-    /**
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(CustomerConfig $customerConfig)
     {
         $this->customerConfig = $customerConfig;
     }
 
-    /**
-     * @param \Orm\Zed\Customer\Persistence\SpyCustomer$customerEntity
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function checkPasswordResetExpiration(
         SpyCustomer $customerEntity,
         CustomerResponseTransfer $customerResponseTransfer

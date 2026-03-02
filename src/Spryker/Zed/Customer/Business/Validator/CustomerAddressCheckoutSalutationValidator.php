@@ -36,10 +36,6 @@ class CustomerAddressCheckoutSalutationValidator implements CustomerAddressCheck
      */
     protected CustomerConfig $customerConfig;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface $customerRepository
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         CustomerConfig $customerConfig
@@ -48,12 +44,6 @@ class CustomerAddressCheckoutSalutationValidator implements CustomerAddressCheck
         $this->customerConfig = $customerConfig;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
-     *
-     * @return bool
-     */
     public function validate(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): bool
     {
         /** @phpstan-var array<string> $availableSalutations */
@@ -175,12 +165,6 @@ class CustomerAddressCheckoutSalutationValidator implements CustomerAddressCheck
         return true;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
-     * @param string $message
-     *
-     * @return void
-     */
     protected function addErrorToCheckoutResponse(
         CheckoutResponseTransfer $checkoutResponseTransfer,
         string $message

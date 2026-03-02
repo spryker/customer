@@ -15,11 +15,6 @@ use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 
 class CustomerMapper implements CustomerMapperInterface
 {
-    /**
-     * @param array $customer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function mapCustomerEntityToCustomer(array $customer): CustomerTransfer
     {
         $customerTransfer = (new CustomerTransfer())
@@ -43,12 +38,6 @@ class CustomerMapper implements CustomerMapperInterface
         return (new AddressTransfer())->fromArray($customerAddressEntity->toArray(), true);
     }
 
-    /**
-     * @param \Orm\Zed\Customer\Persistence\SpyCustomerAddress $customerAddressEntity
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer
-     */
     public function mapCustomerAddressEntityToAddressTransfer(
         SpyCustomerAddress $customerAddressEntity,
         AddressTransfer $addressTransfer
@@ -70,12 +59,6 @@ class CustomerMapper implements CustomerMapperInterface
         return $addressTransfer;
     }
 
-    /**
-     * @param \Orm\Zed\Country\Persistence\SpyCountry $countryEntity
-     * @param \Generated\Shared\Transfer\CountryTransfer $countryTransfer
-     *
-     * @return \Generated\Shared\Transfer\CountryTransfer
-     */
     public function mapCountryEntityToCountryTransfer(SpyCountry $countryEntity, CountryTransfer $countryTransfer): CountryTransfer
     {
         return $countryTransfer->fromArray($countryEntity->toArray(), true);

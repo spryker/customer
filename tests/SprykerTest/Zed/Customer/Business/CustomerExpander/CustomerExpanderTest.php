@@ -35,9 +35,6 @@ class CustomerExpanderTest extends Unit
      */
     protected CustomerBusinessTester $tester;
 
-    /**
-     * @return void
-     */
     public function testExpandWithNoPluginsReturnsOriginalTransfer(): void
     {
         // Arrange
@@ -52,9 +49,6 @@ class CustomerExpanderTest extends Unit
         $this->assertEquals(CustomerBusinessTester::TESTER_EMAIL, $resultCustomerTransfer->getEmail());
     }
 
-    /**
-     * @return void
-     */
     public function testExpandCustomerTransferWithCustomerAddress(): void
     {
         // Arrange
@@ -76,9 +70,6 @@ class CustomerExpanderTest extends Unit
         $this->assertEquals(CustomerBusinessTester::TESTER_EMAIL, $resultCustomerTransfer->getEmail());
     }
 
-    /**
-     * @return \Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterface
-     */
     protected function createMockCustomerBillingAddressExpanderPlugin(): CustomerTransferExpanderPluginInterface
     {
         $mockPlugin = $this->getMockBuilder(CustomerTransferExpanderPluginInterface::class)

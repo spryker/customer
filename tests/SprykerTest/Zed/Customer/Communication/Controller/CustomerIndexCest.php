@@ -23,11 +23,6 @@ use SprykerTest\Zed\Customer\PageObject\CustomerIndexPage;
  */
 class CustomerIndexCest
 {
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function breadCrumbIsVisible(CustomerCommunicationTester $i): void
     {
         $i->amOnPage(CustomerIndexPage::URL);

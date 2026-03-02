@@ -28,9 +28,6 @@ class RestorePasswordTest extends AbstractCustomerFacadeTest
      */
     protected const PASSWORD_VALIDATION_ON_RESTORE_PASSWORD_ENABLED = true;
 
-    /**
-     * @return void
-     */
     public function testRestoringANonExpiredResetToken(): void
     {
         // Arrange
@@ -48,9 +45,6 @@ class RestorePasswordTest extends AbstractCustomerFacadeTest
         $this->assertCount(0, $customerResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testRestoringAnExpiredResetTokenIsEnabled(): void
     {
         $this->tester->mockConfigMethod(

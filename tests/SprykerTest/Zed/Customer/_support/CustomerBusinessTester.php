@@ -50,13 +50,6 @@ class CustomerBusinessTester extends Actor
      */
     protected const BCRYPT_FACTOR = 12;
 
-    /**
-     * @param string $hash
-     * @param string $rawPassword
-     * @param string $salt
-     *
-     * @return void
-     */
     public function assertPasswordsEqual(string $hash, string $rawPassword, string $salt = ''): void
     {
         if ($this->isSymfonyVersion5() === true) {
@@ -70,9 +63,6 @@ class CustomerBusinessTester extends Actor
         $this->assertTrue($passwordHasher->verify($hash, $rawPassword), 'Passwords are not equal.');
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function createTestCustomerTransfer(): CustomerTransfer
     {
         $customerTransfer = new CustomerTransfer();
@@ -82,9 +72,6 @@ class CustomerBusinessTester extends Actor
         return $customerTransfer;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     public function createTestCustomer(): CustomerTransfer
     {
         $customerTransfer = $this->createTestCustomerTransfer();
@@ -94,13 +81,6 @@ class CustomerBusinessTester extends Actor
         return $customerTransfer;
     }
 
-    /**
-     * @param string $hash
-     * @param string $rawPassword
-     * @param string $salt
-     *
-     * @return void
-     */
     protected function assertPasswordIsEncoded(string $hash, string $rawPassword, string $salt = ''): void
     {
         $passwordEncoder = $this->getPasswordEncoder();
@@ -108,17 +88,11 @@ class CustomerBusinessTester extends Actor
         $this->assertTrue($passwordEncoder->isPasswordValid($hash, $rawPassword, $salt), 'Passwords are not equal.');
     }
 
-    /**
-     * @return \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface
-     */
     protected function getPasswordEncoder(): PasswordEncoderInterface
     {
         return new NativePasswordEncoder(null, null, static::BCRYPT_FACTOR);
     }
 
-    /**
-     * @return \Symfony\Component\PasswordHasher\PasswordHasherInterface
-     */
     protected function createPasswordHasher(): PasswordHasherInterface
     {
         return new NativePasswordHasher(null, null, static::BCRYPT_FACTOR);

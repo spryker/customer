@@ -57,10 +57,6 @@ class AddressTable extends AbstractTable
      */
     protected $utilSanitize;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $customerQueryContainer
-     * @param \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilSanitizeServiceInterface $utilSanitize
-     */
     public function __construct(
         CustomerQueryContainerInterface $customerQueryContainer,
         CustomerToUtilSanitizeServiceInterface $utilSanitize
@@ -81,11 +77,6 @@ class AddressTable extends AbstractTable
         return $this;
     }
 
-    /**
-     * @param int|null $idCustomer
-     *
-     * @return array
-     */
     public function fetchData(?int $idCustomer = null): array
     {
         if ($idCustomer !== null) {

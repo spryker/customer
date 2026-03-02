@@ -73,9 +73,6 @@ abstract class AbstractCustomerAddressFacadeTest extends AbstractCustomerFacadeT
      */
     protected Container $businessLayerDependencies;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -87,9 +84,6 @@ abstract class AbstractCustomerAddressFacadeTest extends AbstractCustomerFacadeT
         $this->customerFacade = $this->tester->getCustomerFacade();
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     protected function createCustomerWithAddress(): CustomerTransfer
     {
         $customerTransfer = $this->tester->createTestCustomer();
@@ -104,11 +98,6 @@ abstract class AbstractCustomerAddressFacadeTest extends AbstractCustomerFacadeT
         return $this->tester->getCustomerFacade()->getCustomer($customerTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer
-     */
     protected function createTestAddress(CustomerTransfer $customerTransfer): AddressTransfer
     {
         $addressTransfer = $this->createTestAddressTransfer($customerTransfer);
@@ -117,11 +106,6 @@ abstract class AbstractCustomerAddressFacadeTest extends AbstractCustomerFacadeT
         return $addressTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer
-     */
     protected function createTestAddressTransfer(CustomerTransfer $customerTransfer): AddressTransfer
     {
         $addressTransfer = new AddressTransfer();

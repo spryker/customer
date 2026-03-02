@@ -45,9 +45,6 @@ class CurrentCustomerDataRequestLogProcessor implements CurrentCustomerDataReque
      */
     protected RequestStack $requestStack;
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
@@ -82,9 +79,6 @@ class CurrentCustomerDataRequestLogProcessor implements CurrentCustomerDataReque
         return $data;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     protected function findCurrentCustomer(): ?CustomerTransfer
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
@@ -111,11 +105,6 @@ class CurrentCustomerDataRequestLogProcessor implements CurrentCustomerDataReque
         return $currentRequestData;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     protected function findCustomerInRequest(Request $request): ?CustomerTransfer
     {
         return $request->getSession()->get(static::SESSION_KEY_CUSTOMER_DATA);

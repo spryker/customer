@@ -17,9 +17,6 @@ use Spryker\Service\Kernel\AbstractServiceFactory;
  */
 class CustomerServiceFactory extends AbstractServiceFactory
 {
-    /**
-     * @return \Spryker\Service\Customer\Address\CustomerAddressKeyGeneratorInterface
-     */
     public function createCustomerAddressKeyGenerator(): CustomerAddressKeyGeneratorInterface
     {
         return new CustomerAddressKeyGenerator(
@@ -28,9 +25,6 @@ class CustomerServiceFactory extends AbstractServiceFactory
         );
     }
 
-    /**
-     * @return \Spryker\Service\Customer\Dependency\Service\CustomerToUtilEncodingServiceInterface
-     */
     public function getCustomerToUtilEncodingService(): CustomerToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::SERVICE_UTIL_ENCODING);

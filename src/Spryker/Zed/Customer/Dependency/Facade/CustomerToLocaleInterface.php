@@ -11,9 +11,6 @@ use Generated\Shared\Transfer\LocaleTransfer;
 
 interface CustomerToLocaleInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\LocaleTransfer
-     */
     public function getCurrentLocale(): LocaleTransfer;
 
     /**
@@ -21,15 +18,7 @@ interface CustomerToLocaleInterface
      */
     public function getLocaleCollection(): array;
 
-    /**
-     * @param int $idLocale
-     *
-     * @return \Generated\Shared\Transfer\LocaleTransfer
-     */
     public function getLocaleById(int $idLocale): LocaleTransfer;
 
-    /**
-     * @return string
-     */
     public function getCurrentLocaleName(): string;
 }

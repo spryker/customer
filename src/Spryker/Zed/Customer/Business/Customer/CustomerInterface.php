@@ -46,11 +46,6 @@ interface CustomerInterface
      */
     public function confirmRegistration(CustomerTransfer $customerTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function confirmCustomerRegistration(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 
     /**
@@ -116,12 +111,6 @@ interface CustomerInterface
      */
     public function findByReference($customerReference);
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
-     * @param \Symfony\Component\Console\Output\OutputInterface|null $output
-     *
-     * @return void
-     */
     public function sendPasswordRestoreMailForCustomerCollection(
         CustomerCollectionTransfer $customerCollectionTransfer,
         ?OutputInterface $output = null

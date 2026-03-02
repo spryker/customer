@@ -11,17 +11,7 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 interface CustomerPluginExecutorInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     public function executePostCustomerRegistrationPlugins(CustomerTransfer $customerTransfer): void;
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
     public function executeCustomerPostDeletePlugins(CustomerTransfer $customerTransfer): void;
 }

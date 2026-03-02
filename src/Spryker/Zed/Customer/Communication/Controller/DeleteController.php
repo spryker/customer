@@ -72,11 +72,6 @@ class DeleteController extends AbstractController
         ]);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function confirmAction(Request $request): RedirectResponse
     {
         $customerDeleteForm = $this->getFactory()->getCustomerDeleteForm();
@@ -110,11 +105,6 @@ class DeleteController extends AbstractController
         return $this->redirectResponse(static::URL_CUSTOMER_LIST_PAGE);
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormInterface $customerDeleteForm
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     protected function createRedirectResponseToCustomerDeletePage(FormInterface $customerDeleteForm): RedirectResponse
     {
         /** @var \Generated\Shared\Transfer\CustomerTransfer|null $customerTransfer */

@@ -35,9 +35,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
      */
     protected const TESTER_INVALID_EMAIL = 'tester<>@spryker.com';
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsDoesNotValidateEmailForRegisteredCustomer(): void
     {
         // Arrange
@@ -57,9 +54,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertFalse($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_INVALID));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsDoesNotCheckUniqueEmailForRegisteredCustomer(): void
     {
         // Arrange
@@ -82,9 +76,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertFalse($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_UNIQUE));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsReturnsErrorIfEmailIsInvalidForGuest(): void
     {
         // Arrange
@@ -103,9 +94,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertTrue($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_INVALID));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsReturnsNoErrorIfEmailIsValidForGuest(): void
     {
         // Arrange
@@ -124,9 +112,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertFalse($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_INVALID));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsDoesNotCheckUniqueEmailForGuest(): void
     {
         // Arrange
@@ -148,9 +133,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertFalse($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_UNIQUE));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsReturnsErrorIfEmailIsInvalidForNewCustomer(): void
     {
         // Arrange
@@ -168,9 +150,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertTrue($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_INVALID));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsReturnsErrorIfEmailIsNotUniqueForNewCustomer(): void
     {
         // Arrange
@@ -191,9 +170,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertTrue($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_UNIQUE));
     }
 
-    /**
-     * @return void
-     */
     public function testCheckOrderPreSaveConditionsReturnsNoErrorIfEmailIsValidAndUniqueForNewCustomer(): void
     {
         // Arrange
@@ -212,12 +188,6 @@ class CheckOrderPreSaveConditionsTest extends AbstractCustomerFacadeTest
         $this->assertFalse($this->hasCheckoutErrorMessage($checkoutResponseTransfer, PreConditionChecker::ERROR_EMAIL_INVALID));
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
-     * @param string $errorMessage
-     *
-     * @return bool
-     */
     protected function hasCheckoutErrorMessage(CheckoutResponseTransfer $checkoutResponseTransfer, string $errorMessage): bool
     {
         foreach ($checkoutResponseTransfer->getErrors() as $errorTransfer) {

@@ -27,10 +27,6 @@ class EmailValidator implements EmailValidatorInterface
      */
     protected CustomerRepositoryInterface $customerRepository;
 
-    /**
-     * @param \Spryker\Zed\Customer\Dependency\Service\CustomerToUtilValidateServiceInterface $utilValidateService
-     * @param \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface $customerRepository
-     */
     public function __construct(
         CustomerToUtilValidateServiceInterface $utilValidateService,
         CustomerRepositoryInterface $customerRepository
@@ -60,11 +56,6 @@ class EmailValidator implements EmailValidatorInterface
         return $this->customerRepository->isEmailAvailableForCustomer($email, $idCustomer);
     }
 
-    /**
-     * @param string $email
-     *
-     * @return bool
-     */
     public function isEmailLengthValid(string $email): bool
     {
         return mb_strlen($email) <= static::COL_EMAIL_MAX_ALLOWED_LENGTH;

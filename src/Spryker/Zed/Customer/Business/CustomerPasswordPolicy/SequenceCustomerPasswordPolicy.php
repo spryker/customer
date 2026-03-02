@@ -30,20 +30,11 @@ class SequenceCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
      */
     protected $customerPasswordSequenceLimit;
 
-    /**
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(CustomerConfig $customerConfig)
     {
         $this->customerPasswordSequenceLimit = $customerConfig->getCustomerPasswordSequenceLimit();
     }
 
-    /**
-     * @param string $password
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(
         string $password,
         CustomerResponseTransfer $customerResponseTransfer

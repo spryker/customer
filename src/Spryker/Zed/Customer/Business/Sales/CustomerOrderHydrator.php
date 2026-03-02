@@ -17,9 +17,6 @@ class CustomerOrderHydrator implements CustomerOrderHydratorInterface
      */
     protected $customer;
 
-    /**
-     * @param \Spryker\Zed\Customer\Business\Customer\CustomerInterface $customer
-     */
     public function __construct(CustomerInterface $customer)
     {
         $this->customer = $customer;

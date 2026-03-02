@@ -11,10 +11,5 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 interface KeyGeneratorInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return string
-     */
     public function generateKey(CustomerTransfer $customerTransfer): string;
 }

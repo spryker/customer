@@ -30,9 +30,6 @@ class CreateAddressWithDuplicateCheckTest extends AbstractCustomerAddressFacadeT
 
     protected string $password = 'catface';
 
-    /**
-     * @return void
-     */
     public function testCreateAddressFromExternalServiceWithExistingAddressDataShouldReuseExistingAddressWhenTheAddressAlreadyExists(): void
     {
         // Arrange
@@ -49,9 +46,6 @@ class CreateAddressWithDuplicateCheckTest extends AbstractCustomerAddressFacadeT
         $this->assertEquals($addressTransfer1->getIdCustomerAddress(), $addressTransfer2->getIdCustomerAddress());
     }
 
-    /**
-     * @return void
-     */
     public function testCreateAddressWithDifferentAddressDataShouldCreateNewAddress(): void
     {
         // Arrange

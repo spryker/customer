@@ -24,10 +24,5 @@ interface EmailValidatorInterface
      */
     public function isEmailAvailableForCustomer($email, $idCustomer);
 
-    /**
-     * @param string $email
-     *
-     * @return bool
-     */
     public function isEmailLengthValid(string $email): bool;
 }

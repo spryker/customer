@@ -282,11 +282,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addSequenceNumberFacade(Container $container): Container
     {
         $container->set(static::FACADE_SEQUENCE_NUMBER, function (Container $container) {
@@ -296,11 +291,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCountryFacade(Container $container): Container
     {
         $container->set(static::FACADE_COUNTRY, function (Container $container) {
@@ -310,11 +300,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addMailFacade(Container $container): Container
     {
         $container->set(static::FACADE_MAIL, function (Container $container) {
@@ -324,11 +309,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addPropelQueryLocale(Container $container): Container
     {
         $container->set(static::PROPEL_QUERY_LOCALE, $container->factory(function (Container $container) {
@@ -338,11 +318,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addDateFormatterService(Container $container): Container
     {
         $container->set(static::SERVICE_DATE_FORMATTER, function (Container $container) {
@@ -366,11 +341,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addSubRequestHandler(Container $container): Container
     {
         $container->set(static::SUB_REQUEST_HANDLER, function (ContainerInterface $container) {
@@ -410,11 +380,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return [];
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCustomerPostDeletePlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_CUSTOMER_POST_DELETE, function () {
@@ -432,11 +397,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return [];
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCustomerService(Container $container): Container
     {
         $container->set(static::SERVICE_CUSTOMER, function (Container $container): CustomerServiceInterface {
@@ -446,11 +406,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addRouterFacade(Container $container): Container
     {
         $container->set(static::FACADE_ROUTER, function (Container $container) {
@@ -462,11 +417,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addStoreFacade(Container $container): Container
     {
         $container->set(static::FACADE_STORE, function (Container $container) {
@@ -476,11 +426,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCustomerPreUpdatePlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_CUSTOMER_PRE_UPDATE, function () {
@@ -498,11 +443,6 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         return [];
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addStorageRedisClient(Container $container): Container
     {
         $container->set(static::CLIENT_STORAGE_REDIS, function (Container $container) {

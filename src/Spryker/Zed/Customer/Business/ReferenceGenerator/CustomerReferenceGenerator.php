@@ -29,11 +29,6 @@ class CustomerReferenceGenerator implements CustomerReferenceGeneratorInterface
      */
     protected $config;
 
-    /**
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToSequenceNumberInterface $sequenceNumberFacade
-     * @param \Spryker\Zed\Customer\Dependency\Facade\CustomerToStoreFacadeInterface $storeFacade
-     * @param \Spryker\Zed\Customer\CustomerConfig $config
-     */
     public function __construct(
         CustomerToSequenceNumberInterface $sequenceNumberFacade,
         CustomerToStoreFacadeInterface $storeFacade,

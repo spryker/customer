@@ -32,11 +32,6 @@ use Spryker\Zed\Propel\PropelFilterCriteria;
  */
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
     public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
     {
         $customerQuery = $this->getFactory()
@@ -50,11 +45,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $customerCollectionTransfer;
     }
 
-    /**
-     * @param string $customerReference
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     public function findCustomerByReference(string $customerReference): ?CustomerTransfer
     {
         $customerEntity = $this->getFactory()->createSpyCustomerQuery()->findOneByCustomerReference($customerReference);
@@ -68,11 +58,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerEntityToCustomer($customerEntity->toArray());
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer
     {
         /** @var \Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery $customerAddressQuery */
@@ -94,12 +79,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerAddressEntityToAddressTransfer($customerAddressEntity, new AddressTransfer());
     }
 
-    /**
-     * @param \Propel\Runtime\Collection\Collection $customerAddressEntities
-     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomerAddress|null
-     */
     protected function getExistingAddressByAddress(Collection $customerAddressEntities, AddressTransfer $addressTransfer): ?SpyCustomerAddress
     {
         /** @var \Orm\Zed\Customer\Persistence\SpyCustomerAddress $customerAddressEntity */
@@ -124,12 +103,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return null;
     }
 
-    /**
-     * @param \Orm\Zed\Customer\Persistence\SpyCustomerQuery $customerQuery
-     * @param \Generated\Shared\Transfer\FilterTransfer|null $filterTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
-     */
     protected function applyFilterToQuery(SpyCustomerQuery $customerQuery, ?FilterTransfer $filterTransfer): SpyCustomerQuery
     {
         $criteria = new Criteria();
@@ -143,12 +116,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $customerQuery;
     }
 
-    /**
-     * @param \Orm\Zed\Customer\Persistence\SpyCustomerQuery $customerQuery
-     * @param \Generated\Shared\Transfer\PaginationTransfer|null $paginationTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
-     */
     protected function applyPagination(SpyCustomerQuery $customerQuery, ?PaginationTransfer $paginationTransfer = null): SpyCustomerQuery
     {
         if (!$paginationTransfer) {
@@ -179,12 +146,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $paginatedCustomerQuery;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerListTransfer
-     * @param array $customers
-     *
-     * @return void
-     */
     public function hydrateCustomerListWithCustomers(CustomerCollectionTransfer $customerListTransfer, array $customers): void
     {
         $customerCollection = new ArrayObject();
@@ -200,11 +161,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         $customerListTransfer->setCustomers($customerCollection);
     }
 
-    /**
-     * @param int $idCustomerAddress
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findCustomerAddressById(int $idCustomerAddress): ?AddressTransfer
     {
         $customerAddressEntity = $this->getFactory()
@@ -221,19 +177,11 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerAddressEntityToAddressTransfer($customerAddressEntity, new AddressTransfer());
     }
 
-    /**
-     * @return array
-     */
     public function getAllSalutations(): array
     {
         return SpyCustomerTableMap::getValueSet(SpyCustomerTableMap::COL_SALUTATION);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCriteriaFilterTransfer $customerCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
-     */
     public function getCustomerCollectionByCriteria(
         CustomerCriteriaFilterTransfer $customerCriteriaFilterTransfer
     ): CustomerCollectionTransfer {
@@ -249,11 +197,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $customerCollectionTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressTransfer|null
-     */
     public function findAddressByCriteria(AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer): ?AddressTransfer
     {
         $addressQuery = $this->buildAddressConditionsByCriteria($addressCriteriaFilterTransfer);
@@ -268,11 +211,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerAddressEntityToAddressTransfer($addressEntity, new AddressTransfer());
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\AddressesTransfer
-     */
     public function getAddressesByCriteria(AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer): AddressesTransfer
     {
         $addressQuery = $this->buildAddressConditionsByCriteria($addressCriteriaFilterTransfer);
@@ -288,11 +226,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return (new AddressesTransfer())->setAddresses(new ArrayObject($addressTransfers));
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCriteriaTransfer $customerCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     public function findCustomerByCriteria(CustomerCriteriaTransfer $customerCriteriaTransfer): ?CustomerTransfer
     {
         $customerQuery = $this->getFactory()->createSpyCustomerQuery();
@@ -316,12 +249,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerEntityToCustomer($customerEntity->toArray());
     }
 
-    /**
-     * @param string $email
-     * @param int|null $exceptIdCustomer
-     *
-     * @return bool
-     */
     public function isEmailAvailableForCustomer(string $email, ?int $exceptIdCustomer): bool
     {
         return $this->getFactory()
@@ -331,11 +258,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->count() === 0;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery
-     */
     protected function buildAddressConditionsByCriteria(
         AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer
     ): SpyCustomerAddressQuery {
@@ -351,11 +273,6 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $addressQuery;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCriteriaFilterTransfer $customerCriteriaFilterTransfer
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
-     */
     protected function queryCustomersByCriteria(
         CustomerCriteriaFilterTransfer $customerCriteriaFilterTransfer
     ): SpyCustomerQuery {

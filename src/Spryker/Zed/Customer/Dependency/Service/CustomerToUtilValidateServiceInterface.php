@@ -9,10 +9,5 @@ namespace Spryker\Zed\Customer\Dependency\Service;
 
 interface CustomerToUtilValidateServiceInterface
 {
-    /**
-     * @param string $email
-     *
-     * @return bool
-     */
     public function isEmailFormatValid(string $email): bool;
 }

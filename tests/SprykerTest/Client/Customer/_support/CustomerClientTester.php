@@ -31,11 +31,6 @@ class CustomerClientTester extends Actor
 {
     use _generated\CustomerClientTesterActions;
 
-    /**
-     * @param array $returnedValues
-     *
-     * @return \Spryker\Client\Session\SessionClientInterface
-     */
     public function getSessionClientMock(array $returnedValues = []): SessionClientInterface
     {
         return Stub::makeEmpty(SessionClientInterface::class, [

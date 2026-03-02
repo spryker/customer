@@ -11,10 +11,5 @@ use Generated\Shared\Transfer\CustomerResponseTransfer;
 
 interface CustomerPasswordPolicyValidatorInterface
 {
-    /**
-     * @param string $password
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(string $password): CustomerResponseTransfer;
 }

@@ -25,29 +25,16 @@ class CustomerToCountryBridge implements CustomerToCountryInterface
         $this->countryFacade = $countryFacade;
     }
 
-    /**
-     * @param string $countryName
-     *
-     * @return \Generated\Shared\Transfer\CountryTransfer
-     */
     public function getPreferredCountryByName(string $countryName): CountryTransfer
     {
         return $this->countryFacade->getPreferredCountryByName($countryName);
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CountryCollectionTransfer
-     */
     public function getAvailableCountries(): CountryCollectionTransfer
     {
         return $this->countryFacade->getAvailableCountries();
     }
 
-    /**
-     * @param string $iso2Code
-     *
-     * @return \Generated\Shared\Transfer\CountryTransfer
-     */
     public function getCountryByIso2Code(string $iso2Code): CountryTransfer
     {
         return $this->countryFacade->getCountryByIso2Code($iso2Code);

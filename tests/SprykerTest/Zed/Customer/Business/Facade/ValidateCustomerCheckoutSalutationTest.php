@@ -28,9 +28,6 @@ use Spryker\Shared\Kernel\Transfer\Exception\NullValueException;
  */
 class ValidateCustomerCheckoutSalutationTest extends AbstractCustomerFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testValidateCustomerCheckoutSalutationShouldReturnSuccessForValidSalutation(): void
     {
         // Arrange
@@ -50,9 +47,6 @@ class ValidateCustomerCheckoutSalutationTest extends AbstractCustomerFacadeTest
         $this->assertEmpty($checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateCustomerCheckoutSalutationShouldReturnSuccessForEmptySalutation(): void
     {
         // Arrange
@@ -69,9 +63,6 @@ class ValidateCustomerCheckoutSalutationTest extends AbstractCustomerFacadeTest
         $this->assertEmpty($checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateCustomerCheckoutSalutationShouldReturnErrorForInvalidSalutation(): void
     {
         // Arrange
@@ -91,9 +82,6 @@ class ValidateCustomerCheckoutSalutationTest extends AbstractCustomerFacadeTest
         $this->assertNotEmpty($checkoutResponseTransfer->getErrors());
     }
 
-    /**
-     * @return void
-     */
     public function testValidateCustomerCheckoutSalutationShouldThrowAnExceptionWhenCustomerIsNotSet(): void
     {
         // Arrange
@@ -133,9 +121,6 @@ class ValidateCustomerCheckoutSalutationTest extends AbstractCustomerFacadeTest
         $this->assertSame($expectedIsValid, !$checkoutResponseTransfer->getErrors()->getArrayCopy());
     }
 
-    /**
-     * @return array
-     */
     protected function getCheckoutCustomerAddressData(): array
     {
         return [

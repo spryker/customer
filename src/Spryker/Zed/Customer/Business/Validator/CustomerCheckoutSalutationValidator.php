@@ -30,10 +30,6 @@ class CustomerCheckoutSalutationValidator implements CustomerCheckoutSalutationV
      */
     protected CustomerConfig $customerConfig;
 
-    /**
-     * @param \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface $customerRepository
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         CustomerConfig $customerConfig
@@ -42,12 +38,6 @@ class CustomerCheckoutSalutationValidator implements CustomerCheckoutSalutationV
         $this->customerConfig = $customerConfig;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
-     *
-     * @return bool
-     */
     public function validate(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): bool
     {
         if ($this->customerSalutationExists($quoteTransfer)) {
@@ -64,11 +54,6 @@ class CustomerCheckoutSalutationValidator implements CustomerCheckoutSalutationV
         return false;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return bool
-     */
     protected function customerSalutationExists(QuoteTransfer $quoteTransfer): bool
     {
         return !$quoteTransfer->getCustomerOrFail()->getSalutation()

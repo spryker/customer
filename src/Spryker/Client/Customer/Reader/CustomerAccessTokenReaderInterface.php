@@ -11,10 +11,5 @@ use Generated\Shared\Transfer\CustomerResponseTransfer;
 
 interface CustomerAccessTokenReaderInterface
 {
-    /**
-     * @param string $accessToken
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function getCustomerByAccessToken(string $accessToken): CustomerResponseTransfer;
 }

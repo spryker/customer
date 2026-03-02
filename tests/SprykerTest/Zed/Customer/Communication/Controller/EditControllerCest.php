@@ -32,21 +32,11 @@ class EditControllerCest
      */
     protected $customer;
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function _before(CustomerCommunicationTester $i): void
     {
         $this->customer = $i->haveCustomer();
     }
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function testIndexAction(CustomerCommunicationTester $i): void
     {
         $url = '/customer/edit?id-customer=' . (int)$this->customer->getIdCustomer();
@@ -55,11 +45,6 @@ class EditControllerCest
         $i->see('Edit Customer', 'h5');
     }
 
-    /**
-     * @param \SprykerTest\Zed\Customer\CustomerCommunicationTester $i
-     *
-     * @return void
-     */
     public function testEditUser(CustomerCommunicationTester $i): void
     {
         $email = $this->customer->getEmail();

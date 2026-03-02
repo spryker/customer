@@ -32,11 +32,6 @@ class CustomerToStorageRedisClientBridge implements CustomerToStorageRedisClient
         return $this->storageRedisClient->get($key);
     }
 
-    /**
-     * @param array $items
-     *
-     * @return void
-     */
     public function setMulti(array $items): void
     {
         $this->storageRedisClient->setMulti($items);

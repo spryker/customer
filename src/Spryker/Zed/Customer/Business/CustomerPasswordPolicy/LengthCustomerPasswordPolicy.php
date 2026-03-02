@@ -46,21 +46,12 @@ class LengthCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
      */
     protected $customerPasswordMinLength;
 
-    /**
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(CustomerConfig $customerConfig)
     {
         $this->customerPasswordMaxLength = $customerConfig->getCustomerPasswordMaxLength();
         $this->customerPasswordMinLength = $customerConfig->getCustomerPasswordMinLength();
     }
 
-    /**
-     * @param string $password
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(string $password, CustomerResponseTransfer $customerResponseTransfer): CustomerResponseTransfer
     {
         $passwordLength = mb_strlen($password);
@@ -75,13 +66,6 @@ class LengthCustomerPasswordPolicy implements CustomerPasswordPolicyInterface
         return $customerResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     * @param string $errorMessage
-     * @param int $messageParameter
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     protected function addErrorMessage(
         CustomerResponseTransfer $customerResponseTransfer,
         string $errorMessage,

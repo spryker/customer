@@ -24,9 +24,6 @@ use Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostDeletePluginInte
  */
 class DeleteCustomerTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testDeleteCustomer(): void
     {
         // Arrange
@@ -39,9 +36,6 @@ class DeleteCustomerTest extends AbstractCustomerAddressFacadeTest
         $this->assertTrue($isSuccess);
     }
 
-    /**
-     * @return void
-     */
     public function testExecutesCustomerPostDeletePlugins(): void
     {
         // Arrange
@@ -59,9 +53,6 @@ class DeleteCustomerTest extends AbstractCustomerAddressFacadeTest
         $this->tester->getCustomerFacade()->deleteCustomer($customerTransfer);
     }
 
-    /**
-     * @return void
-     */
     public function testDeleteCustomerWithDefaultAddresses(): void
     {
         // Arrange

@@ -16,11 +16,6 @@ class CustomerInvalidationKeyGenerator implements KeyGeneratorInterface
      */
     protected const KEY_PATTERN = 'customer:invalidated:%s';
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return string
-     */
     public function generateKey(CustomerTransfer $customerTransfer): string
     {
         return sprintf(static::KEY_PATTERN, $customerTransfer->getIdCustomer());

@@ -24,9 +24,6 @@ class CustomerToLocaleBridge implements CustomerToLocaleInterface
         $this->localeFacade = $localeFacade;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\LocaleTransfer
-     */
     public function getCurrentLocale(): LocaleTransfer
     {
         return $this->localeFacade->getCurrentLocale();
@@ -40,19 +37,11 @@ class CustomerToLocaleBridge implements CustomerToLocaleInterface
         return $this->localeFacade->getLocaleCollection();
     }
 
-    /**
-     * @param int $idLocale
-     *
-     * @return \Generated\Shared\Transfer\LocaleTransfer
-     */
     public function getLocaleById(int $idLocale): LocaleTransfer
     {
         return $this->localeFacade->getLocaleById($idLocale);
     }
 
-    /**
-     * @return string
-     */
     public function getCurrentLocaleName(): string
     {
         return $this->localeFacade->getCurrentLocaleName();

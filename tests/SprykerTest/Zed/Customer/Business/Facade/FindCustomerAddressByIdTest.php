@@ -20,9 +20,6 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
  */
 class FindCustomerAddressByIdTest extends AbstractCustomerAddressFacadeTest
 {
-    /**
-     * @return void
-     */
     public function testCheckAddressExistsByIdCustomerAddressShouldReturnTrueOnExistedAddress(): void
     {
         // Arrange
@@ -39,9 +36,6 @@ class FindCustomerAddressByIdTest extends AbstractCustomerAddressFacadeTest
         $this->assertNotNull($result);
     }
 
-    /**
-     * @return void
-     */
     public function testCheckAddressExistsByIdCustomerAddressShouldReturnFalseOnNonExistedAddress(): void
     {
         // Arrange

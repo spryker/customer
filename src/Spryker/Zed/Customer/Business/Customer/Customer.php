@@ -398,11 +398,6 @@ class Customer implements CustomerInterface
         return $customerResponseTransfer->getCustomerTransfer();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function confirmCustomerRegistration(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         $customerResponseTransfer = (new CustomerResponseTransfer())
@@ -576,12 +571,6 @@ class Customer implements CustomerInterface
         return $customerResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     protected function preValidateCustomerEmail(
         CustomerTransfer $customerTransfer,
         CustomerResponseTransfer $customerResponseTransfer
@@ -906,17 +895,11 @@ class Customer implements CustomerInterface
         return $this->createPasswordHasher()->hash($currentPassword);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface
-     */
     protected function getPasswordEncoder(): PasswordEncoderInterface
     {
         return new NativePasswordEncoder(null, null, static::BCRYPT_FACTOR);
     }
 
-    /**
-     * @return \Symfony\Component\PasswordHasher\PasswordHasherInterface
-     */
     public function createPasswordHasher(): PasswordHasherInterface
     {
         return new NativePasswordHasher(null, null, static::BCRYPT_FACTOR);
@@ -1015,12 +998,6 @@ class Customer implements CustomerInterface
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     * @param string $message
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     protected function addErrorToCustomerResponseTransfer(CustomerResponseTransfer $customerResponseTransfer, string $message): CustomerResponseTransfer
     {
         $customerResponseTransfer->setIsSuccess(false);
@@ -1031,12 +1008,6 @@ class Customer implements CustomerInterface
         return $customerResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerCollectionTransfer $customerCollectionTransfer
-     * @param \Symfony\Component\Console\Output\OutputInterface|null $output
-     *
-     * @return void
-     */
     public function sendPasswordRestoreMailForCustomerCollection(
         CustomerCollectionTransfer $customerCollectionTransfer,
         ?OutputInterface $output = null
@@ -1068,12 +1039,6 @@ class Customer implements CustomerInterface
         return class_exists(AuthenticationProviderManager::class);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     protected function executePreUpdatePlugins(CustomerTransfer $customerTransfer, CustomerResponseTransfer $customerResponseTransfer): CustomerTransfer
     {
         if ($this->shouldSkipPreUpdatePlugins($customerTransfer)) {
@@ -1095,11 +1060,6 @@ class Customer implements CustomerInterface
         return $customerTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return bool
-     */
     protected function shouldSkipPreUpdatePlugins(CustomerTransfer $customerTransfer): bool
     {
         return $customerTransfer->getAnonymizedAt() !== null || $customerTransfer->getIsEditedInBackoffice() === true;

@@ -32,20 +32,11 @@ class CharacterSetCustomerPasswordPolicy implements CustomerPasswordPolicyInterf
      */
     protected $regularExpression;
 
-    /**
-     * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
-     */
     public function __construct(CustomerConfig $customerConfig)
     {
         $this->regularExpression = $customerConfig->getCustomerPasswordCharacterSet();
     }
 
-    /**
-     * @param string $password
-     * @param \Generated\Shared\Transfer\CustomerResponseTransfer $customerResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerResponseTransfer
-     */
     public function validatePassword(string $password, CustomerResponseTransfer $customerResponseTransfer): CustomerResponseTransfer
     {
         if (preg_match($this->regularExpression, $password)) {

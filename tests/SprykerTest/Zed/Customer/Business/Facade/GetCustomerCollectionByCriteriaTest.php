@@ -51,9 +51,6 @@ class GetCustomerCollectionByCriteriaTest extends AbstractCustomerFacadeTest
         );
     }
 
-    /**
-     * @return array
-     */
     protected function getCustomerDataProvider(): array
     {
         return [
@@ -73,9 +70,6 @@ class GetCustomerCollectionByCriteriaTest extends AbstractCustomerFacadeTest
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function getUsersData(): array
     {
         $customer1 = (new CustomerBuilder())->build();
@@ -127,9 +121,6 @@ class GetCustomerCollectionByCriteriaTest extends AbstractCustomerFacadeTest
         });
     }
 
-    /**
-     * @return void
-     */
     public function testGetCustomerCollectionByCriteriaShouldFilterByCustomerIds(): void
     {
         // Arrange

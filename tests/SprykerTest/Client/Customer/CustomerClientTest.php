@@ -29,9 +29,6 @@ class CustomerClientTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function testGetUserIdentifierReturnsTheAnonymousIdFromTheSession(): void
     {
         // Arrange
@@ -52,9 +49,6 @@ class CustomerClientTest extends Unit
         $this->assertSame('anonymous:123', $userIdentifier);
     }
 
-    /**
-     * @return void
-     */
     public function testGetUserIdentifierReturnsTheCustomerReferenceFromTheSession(): void
     {
         // Arrange

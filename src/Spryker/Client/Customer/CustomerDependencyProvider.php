@@ -179,11 +179,6 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Client\Kernel\Container $container
-     *
-     * @return \Spryker\Client\Kernel\Container
-     */
     public function addCustomerSecuredPatternRulePlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_CUSTOMER_SECURED_PATTERN_RULE, function () {
@@ -193,11 +188,6 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Client\Kernel\Container $container
-     *
-     * @return \Spryker\Client\Kernel\Container
-     */
     protected function addAccessTokenAuthenticationHandlerPlugin(Container $container): Container
     {
         $container->set(static::PLUGIN_ACCESS_TOKEN_AUTHENTICATION_HANDLER, function () {
@@ -223,11 +213,6 @@ class CustomerDependencyProvider extends AbstractDependencyProvider
         );
     }
 
-    /**
-     * @param \Spryker\Client\Kernel\Container $container
-     *
-     * @return \Spryker\Client\Kernel\Container
-     */
     protected function addStorageRedisClient(Container $container): Container
     {
         $container->set(static::CLIENT_STORAGE_REDIS, function (Container $container) {

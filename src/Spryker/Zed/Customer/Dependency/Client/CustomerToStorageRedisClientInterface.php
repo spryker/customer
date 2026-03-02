@@ -16,10 +16,5 @@ interface CustomerToStorageRedisClientInterface
      */
     public function get(string $key);
 
-    /**
-     * @param array $items
-     *
-     * @return void
-     */
     public function setMulti(array $items): void;
 }

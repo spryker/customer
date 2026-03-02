@@ -183,11 +183,6 @@ class ViewController extends AbstractController
         return $blockResponse->getContent();
     }
 
-    /**
-     * @param int $idCustomer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|null
-     */
     protected function findCustomerById(int $idCustomer): ?CustomerTransfer
     {
         $customerTransfer = $this->createCustomerTransfer();

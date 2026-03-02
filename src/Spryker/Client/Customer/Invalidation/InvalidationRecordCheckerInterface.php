@@ -11,10 +11,5 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 interface InvalidationRecordCheckerInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return string|null
-     */
     public function findInvalidationRecord(CustomerTransfer $customerTransfer): ?string;
 }

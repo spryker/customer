@@ -27,9 +27,6 @@ class GetAddressesTest extends AbstractCustomerAddressFacadeTest
      */
     protected const TEST_EMAIL_ADDRESS = 'test@email.com';
 
-    /**
-     * @return void
-     */
     public function testGetAddressesHasCountry(): void
     {
         // Arrange
