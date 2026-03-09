@@ -1,55 +1,55 @@
 post:
     email:
         - NotBlank:
-              message: 'Email is required'
+              message: 'validation.not_blank'
         - Email:
-              message: 'Please provide a valid email address'
+              message: 'validation.email'
 
     salutation:
         - NotBlank:
-              message: 'Salutation is required'
+              message: 'validation.not_blank'
         - Choice:
               choices: [Mr, Mrs, Dr, Ms, 'n/a']
-              message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+              message: 'validation.choice'
 
     firstName:
         - NotBlank:
-              message: 'First name is required'
+              message: 'validation.not_blank'
         - Length:
               max: 100
-              maxMessage: 'First name cannot exceed {{ limit }} characters'
+              maxMessage: 'validation.max_length.plural'
 
     lastName:
         - NotBlank:
-              message: 'Last name is required'
+              message: 'validation.not_blank'
         - Length:
               max: 100
-              maxMessage: 'Last name cannot exceed {{ limit }} characters'
+              maxMessage: 'validation.max_length.plural'
 
     gender:
         - NotBlank:
-              message: 'Gender is required'
+              message: 'validation.not_blank'
         - Choice:
               choices: [Male, Female]
-              message: 'Gender must be either Male or Female'
+              message: 'validation.choice'
 
     password:
         - NotBlank:
-              message: 'Password is required'
+              message: 'validation.not_blank'
         - Length:
               min: 12
               max: 128
-              minMessage: 'Password must be at least {{ limit }} characters for security'
-              maxMessage: 'Password cannot exceed {{ limit }} characters'
+              minMessage: 'customer.password.error.min_length'
+              maxMessage: 'customer.password.error.max_length'
         - Regex:
               pattern: '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\_\-\=\+\[\]\{\}\|;:<>.,\/?\\\~])[A-Za-z\d!@#$%^&*()\_\-\=\+\[\]\{\}\|;:<>.,\/?\\\~]+$/'
-              message: 'Your password must include at least one uppercase letter, one lowercase letter, one number, and one special character from the following list: !@#$%^&*()_-+=[]{}|;:<>.,/?\\~. Non-Latin and other special characters are not allowed.'
+              message: 'global.password.invalid_password'
         - NotCompromisedPassword:
               message: 'This password has been compromised in a data breach. Please choose a different password.'
 
     confirmPassword:
         - NotBlank:
-              message: 'Password confirmation is required'
+              message: 'validation.not_blank'
         - Expression:
               expression: 'this.password == this.confirmPassword'
               message: 'Passwords do not match'
@@ -65,45 +65,45 @@ patch:
         - Optional:
               constraints:
                   - NotBlank:
-                        message: 'Email cannot be blank'
+                        message: 'validation.not_blank'
                   - Email:
-                        message: 'Please provide a valid email address'
+                        message: 'validation.email'
 
     salutation:
         - Optional:
               constraints:
                   - NotBlank:
-                        message: 'Salutation cannot be blank'
+                        message: 'validation.not_blank'
                   - Choice:
                         choices: [Mr, Mrs, Dr, Ms, 'n/a']
-                        message: 'Salutation must be one of: Mr, Mrs, Dr, Ms, n/a'
+                        message: 'validation.choice'
 
     firstName:
         - Optional:
               constraints:
                   - NotBlank:
-                        message: 'First name cannot be blank'
+                        message: 'validation.not_blank'
                   - Length:
                         max: 100
-                        maxMessage: 'First name cannot exceed {{ limit }} characters'
+                        maxMessage: 'validation.max_length.plural'
 
     lastName:
         - Optional:
               constraints:
                   - NotBlank:
-                        message: 'Last name cannot be blank'
+                        message: 'validation.not_blank'
                   - Length:
                         max: 100
-                        maxMessage: 'Last name cannot exceed {{ limit }} characters'
+                        maxMessage: 'validation.max_length.plural'
 
     gender:
         - Optional:
               constraints:
                   - NotBlank:
-                        message: 'Gender cannot be blank'
+                        message: 'validation.not_blank'
                   - Choice:
                         choices: [Male, Female]
-                        message: 'Gender must be either Male or Female'
+                        message: 'validation.choice'
 
     dateOfBirth:
         - Optional:
@@ -116,4 +116,4 @@ patch:
               constraints:
                   - Length:
                         max: 255
-                        maxMessage: 'Phone number cannot exceed {{ limit }} characters'
+                        maxMessage: 'validation.max_length.plural'

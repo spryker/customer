@@ -15,12 +15,15 @@ use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 
+/**
+ * Maps between AddressTransfer and CustomersAddressesStorefrontResource
+ * for the storefront customer addresses API.
+ */
 class CustomersAddressesStorefrontMapper
 {
     public function mapAddressTransferToResource(AddressTransfer $addressTransfer, CustomerTransfer $customerTransfer): CustomersAddressesStorefrontResource
     {
-        $customersStorefrontResource = new CustomersStorefrontResource();
-        $customersStorefrontResource->fromArray($customerTransfer->toArray());
+        $customersStorefrontResource = CustomersStorefrontResource::fromArray($customerTransfer->toArray(true, true));
 
         $customersAddressesStorefrontResource = new CustomersAddressesStorefrontResource();
 

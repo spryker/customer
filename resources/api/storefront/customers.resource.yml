@@ -12,15 +12,18 @@ resource:
     operations:
         - type: Get
           description: 'Retrieve customer profile'
+          security: "is_granted('ROLE_USER') and is_granted('CUSTOMER_OWNER', request.attributes.get('customerReference'))"
 
         - type: Post
           description: 'Register a new customer account'
 
         - type: Patch
           description: 'Update customer profile'
+          security: "is_granted('ROLE_USER') and is_granted('CUSTOMER_OWNER', request.attributes.get('customerReference'))"
 
         - type: Delete
           description: 'Anonymize customer account (GDPR)'
+          security: "is_granted('ROLE_USER') and is_granted('CUSTOMER_OWNER', request.attributes.get('customerReference'))"
 
     includes:
         - relationshipName: addresses
