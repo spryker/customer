@@ -8,6 +8,8 @@ resource:
 
     paginationEnabled: false # Addresses are typically small collections per customer
 
+    security: "is_granted('ROLE_USER') and is_granted('CUSTOMER_OWNER', request.attributes.get('customerReference'))"
+
     operations:
         - type: GetCollection
           description: 'Retrieve all addresses for the authenticated customer'
