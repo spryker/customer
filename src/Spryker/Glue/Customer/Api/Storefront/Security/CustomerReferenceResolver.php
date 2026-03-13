@@ -11,16 +11,10 @@ namespace Spryker\Glue\Customer\Api\Storefront\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @inheritDoc
- */
 class CustomerReferenceResolver implements CustomerReferenceResolverInterface
 {
     protected const string CUSTOMER_REFERENCE_KEY = 'customer_reference';
 
-    /**
-     * @inheritDoc
-     */
     public function resolveCustomerReference(UserInterface $user): ?string
     {
         $userIdentifier = $user->getUserIdentifier();

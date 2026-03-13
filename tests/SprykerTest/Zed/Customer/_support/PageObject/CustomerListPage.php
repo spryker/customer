@@ -17,5 +17,5 @@ class CustomerListPage
     /**
      * @var string
      */
-    public const SELECTOR_TABLE = '.dataTables_wrapper';
+    public const SELECTOR_TABLE = '.dt-container';
 }
