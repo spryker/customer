@@ -59,11 +59,8 @@ class CustomerClientTest extends Unit
             ),
         );
 
-        $customerClient = new CustomerClient();
-        $customerClient->setFactory($this->tester->getFactory());
-
         // Act
-        $userIdentifier = $customerClient->getUserIdentifier();
+        $userIdentifier = $this->tester->getClient()->getUserIdentifier();
 
         // Assert
         $this->assertSame('registered:123', $userIdentifier);
