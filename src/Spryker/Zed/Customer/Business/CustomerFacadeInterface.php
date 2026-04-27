@@ -14,6 +14,8 @@ use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
@@ -618,4 +620,20 @@ interface CustomerFacadeInterface
         QuoteTransfer $quoteTransfer,
         CheckoutResponseTransfer $checkoutResponseTransfer
     ): bool;
+
+    /**
+     * Specification:
+     * - Resolves or creates a customer based on the OAuth resource owner data via `OauthCustomerResolveRequest.resourceOwner`.
+     * - Applies the configured authentication strategy plugins (accept_only or create_customer_on_first_login).
+     * - Runs restriction plugins after successful resolution.
+     * - Returns `OauthCustomerResolveResponse.isSuccessful=false` if the customer cannot be resolved or is anonymized.
+     * - Returns `OauthCustomerResolveResponse.isRestricted=true` with messages if a restriction plugin blocks login.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
+     */
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
 }

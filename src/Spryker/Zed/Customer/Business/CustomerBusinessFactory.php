@@ -36,6 +36,11 @@ use Spryker\Zed\Customer\Business\Invalidation\CustomerInvalidatorInterface;
 use Spryker\Zed\Customer\Business\Invalidation\StorageCustomerInvalidator;
 use Spryker\Zed\Customer\Business\Model\CustomerOrderSaver as ObsoleteCustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Model\PreConditionChecker;
+use Spryker\Zed\Customer\Business\Oauth\Resolver\OauthCustomerResolver;
+use Spryker\Zed\Customer\Business\Oauth\Resolver\OauthCustomerResolverInterface;
+use Spryker\Zed\Customer\Business\Oauth\Strategy\AcceptOnlyAuthenticationStrategy;
+use Spryker\Zed\Customer\Business\Oauth\Strategy\AuthenticationStrategyInterface;
+use Spryker\Zed\Customer\Business\Oauth\Strategy\CreateCustomerAuthenticationStrategy;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGenerator;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface;
 use Spryker\Zed\Customer\Business\Sales\CustomerOrderHydrator;
@@ -400,5 +405,48 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     public function getStorageRedisClient()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_STORAGE_REDIS);
+    }
+
+    public function createOauthCustomerResolver(): OauthCustomerResolverInterface
+    {
+        return new OauthCustomerResolver(
+            $this->getOauthCustomerAuthenticationStrategyPlugins(),
+            $this->getOauthCustomerPostResolvePlugins(),
+            $this->getOauthCustomerRestrictionPlugins(),
+        );
+    }
+
+    public function createAcceptOnlyAuthenticationStrategy(): AuthenticationStrategyInterface
+    {
+        return new AcceptOnlyAuthenticationStrategy($this->createCustomer());
+    }
+
+    public function createCreateCustomerAuthenticationStrategy(): AuthenticationStrategyInterface
+    {
+        return new CreateCustomerAuthenticationStrategy($this->createCustomer());
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerAuthenticationStrategyPluginInterface>
+     */
+    public function getOauthCustomerAuthenticationStrategyPlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerPostResolvePluginInterface>
+     */
+    public function getOauthCustomerPostResolvePlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_OAUTH_CUSTOMER_POST_RESOLVE);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerRestrictionPluginInterface>
+     */
+    public function getOauthCustomerRestrictionPlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_OAUTH_CUSTOMER_RESTRICTION);
     }
 }

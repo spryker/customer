@@ -14,6 +14,8 @@ use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
@@ -688,5 +690,21 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
         return $this->getFactory()
             ->createCustomerAddressCheckoutSalutationValidator()
             ->validate($quoteTransfer, $checkoutResponseTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
+     */
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer
+    {
+        return $this->getFactory()
+            ->createOauthCustomerResolver()
+            ->resolveCustomer($oauthCustomerResolveRequestTransfer);
     }
 }

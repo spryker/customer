@@ -79,6 +79,7 @@
         <property name="registered" type="string"/>
         <property name="message" type="string"/>
         <property name="sendPasswordToken" type="bool"/>
+        <property name="skipSendingRegistrationToken" type="bool"/>
         <property name="isGuest" type="bool"/>
         <property name="locale" type="Locale"/>
         <property name="anonymizedAt" type="string"/>
@@ -269,5 +270,46 @@
 
     <transfer name="SessionEntityRequest">
         <property name="idEntity" type="int"/>
+    </transfer>
+
+    <transfer name="ResourceOwner">
+        <property name="id" type="string"/>
+        <property name="provider" type="string"/>
+        <property name="email" type="string"/>
+        <property name="firstName" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="username" type="string"/>
+    </transfer>
+
+    <transfer name="ResourceOwnerRequest">
+        <property name="code" type="string"/>
+        <property name="state" type="string"/>
+    </transfer>
+
+    <transfer name="ResourceOwnerResponse">
+        <property name="resourceOwner" type="ResourceOwner"/>
+        <property name="isSuccessful" type="bool"/>
+        <property name="errorMessage" type="string"/>
+    </transfer>
+
+    <transfer name="OauthCustomerResolveRequest" strict="true">
+        <property name="resourceOwner" type="ResourceOwner"/>
+    </transfer>
+
+    <transfer name="OauthCustomerResolveResponse" strict="true">
+        <property name="customer" type="Customer"/>
+        <property name="isSuccessful" type="bool"/>
+        <property name="isRestricted" type="bool"/>
+        <property name="messages" type="Message[]" singular="message"/>
+    </transfer>
+
+    <transfer name="OauthCustomerRestrictionRequest" strict="true">
+        <property name="customer" type="Customer"/>
+        <property name="resourceOwner" type="ResourceOwner"/>
+    </transfer>
+
+    <transfer name="OauthCustomerRestrictionResponse" strict="true">
+        <property name="isRestricted" type="bool"/>
+        <property name="messages" type="Message[]" singular="message"/>
     </transfer>
 </transfers>

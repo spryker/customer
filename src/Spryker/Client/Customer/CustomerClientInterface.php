@@ -10,6 +10,8 @@ namespace Spryker\Client\Customer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 
 interface CustomerClientInterface
 {
@@ -458,4 +460,20 @@ interface CustomerClientInterface
      * @return string
      */
     public function getUserIdentifier(): string;
+
+    /**
+     * Specification:
+     * - Makes a Zed request to resolve or create a customer from the OAuth resource owner data.
+     * - Applies the configured authentication strategy plugins (accept_only or create_customer_on_first_login).
+     * - Runs restriction plugins in Zed after successful resolution.
+     * - Returns `OauthCustomerResolveResponse.isSuccessful=false` when the customer cannot be resolved.
+     * - Returns `OauthCustomerResolveResponse.isRestricted=true` with messages when a restriction plugin blocks login.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
+     */
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
 }

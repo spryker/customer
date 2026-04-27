@@ -10,6 +10,8 @@ namespace Spryker\Client\Customer\Zed;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 use Spryker\Client\ZedRequest\ZedRequestClient;
 
 class CustomerStub implements CustomerStubInterface
@@ -287,5 +289,16 @@ class CustomerStub implements CustomerStubInterface
         $customerResponseTransfer = $this->zedStub->call('/customer/gateway/find-customer-by-reference', $customerTransfer);
 
         return $customerResponseTransfer;
+    }
+
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer
+    {
+        /** @var \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer $oauthCustomerResolveResponseTransfer */
+        $oauthCustomerResolveResponseTransfer = $this->zedStub->call(
+            '/customer/gateway/resolve-customer',
+            $oauthCustomerResolveRequestTransfer,
+        );
+
+        return $oauthCustomerResolveResponseTransfer;
     }
 }

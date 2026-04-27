@@ -218,7 +218,9 @@ class Customer implements CustomerInterface
         $this->customerPluginExecutor->executePostCustomerRegistrationPlugins($customerTransfer);
         $customerTransfer = $this->customerExpander->expand($customerTransfer);
 
-        $this->sendRegistrationToken($customerTransfer);
+        if (!$customerTransfer->getSkipSendingRegistrationToken()) {
+            $this->sendRegistrationToken($customerTransfer);
+        }
 
         if ($customerTransfer->getSendPasswordToken()) {
             $this->sendPasswordRestoreMail($customerTransfer);

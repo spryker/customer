@@ -10,6 +10,8 @@ namespace Spryker\Zed\Customer\Communication\Controller;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 use Spryker\Zed\Customer\Business\Exception\AddressNotFoundException;
 use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
@@ -306,5 +308,10 @@ class GatewayController extends AbstractGatewayController
     public function findCustomerByReferenceAction(CustomerTransfer $customerTransfer): CustomerResponseTransfer
     {
         return $this->getFacade()->findCustomerByReference($customerTransfer->getCustomerReference());
+    }
+
+    public function resolveCustomerAction(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer
+    {
+        return $this->getFacade()->resolveCustomer($oauthCustomerResolveRequestTransfer);
     }
 }

@@ -10,6 +10,8 @@ namespace Spryker\Client\Customer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 
 /**
@@ -588,5 +590,21 @@ class CustomerClient extends AbstractClient implements CustomerClientInterface
     public function getUserIdentifier(): string
     {
         return $this->getFactory()->createSessionCustomerSession()->getUserIdentifier();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
+     */
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer
+    {
+        return $this->getFactory()
+            ->createZedCustomerStub()
+            ->resolveCustomer($oauthCustomerResolveRequestTransfer);
     }
 }

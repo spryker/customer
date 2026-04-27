@@ -137,6 +137,12 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
      */
     public const SUB_REQUEST_HANDLER = 'SUB_REQUEST_HANDLER';
 
+    public const string PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY = 'PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY';
+
+    public const string PLUGINS_OAUTH_CUSTOMER_POST_RESOLVE = 'PLUGINS_OAUTH_CUSTOMER_POST_RESOLVE';
+
+    public const string PLUGINS_OAUTH_CUSTOMER_RESTRICTION = 'PLUGINS_OAUTH_CUSTOMER_RESTRICTION';
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -158,6 +164,9 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addCustomerPostDeletePlugins($container);
         $container = $this->addCustomerPreUpdatePlugins($container);
         $container = $this->addStorageRedisClient($container);
+        $container = $this->addOauthCustomerAuthenticationStrategyPlugins($container);
+        $container = $this->addOauthCustomerPostResolvePlugins($container);
+        $container = $this->addOauthCustomerRestrictionPlugins($container);
 
         return $container;
     }
@@ -452,5 +461,56 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         });
 
         return $container;
+    }
+
+    protected function addOauthCustomerAuthenticationStrategyPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY, function () {
+            return $this->getOauthCustomerAuthenticationStrategyPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerAuthenticationStrategyPluginInterface>
+     */
+    protected function getOauthCustomerAuthenticationStrategyPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthCustomerPostResolvePlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_CUSTOMER_POST_RESOLVE, function () {
+            return $this->getOauthCustomerPostResolvePlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerPostResolvePluginInterface>
+     */
+    protected function getOauthCustomerPostResolvePlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthCustomerRestrictionPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_CUSTOMER_RESTRICTION, function () {
+            return $this->getOauthCustomerRestrictionPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\OauthCustomerRestrictionPluginInterface>
+     */
+    protected function getOauthCustomerRestrictionPlugins(): array
+    {
+        return [];
     }
 }

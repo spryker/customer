@@ -10,6 +10,8 @@ namespace Spryker\Client\Customer\Zed;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveRequestTransfer;
+use Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer;
 
 interface CustomerStubInterface
 {
@@ -151,4 +153,6 @@ interface CustomerStubInterface
     public function anonymizeCustomer(CustomerTransfer $customerTransfer);
 
     public function findCustomerByReference(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
+
+    public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
 }
