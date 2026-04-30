@@ -1,21 +1,13 @@
 parameters:
     level: 7
     reportUnmatchedIgnoredErrors: false
+    excludePaths:
+        analyseAndScan:
+            # API Platform Storefront classes depend on Generated\Api\Storefront\* resources
+            # which are intentionally excluded from generation
+            # (see config/GlueStorefront/packages/spryker_api_platform.php).
+            - src/Spryker/Glue/Customer/Api
     ignoreErrors:
-#        API Platform Generated resource classes are intentionally excluded from generation
-#        (see config/GlueStorefront/packages/spryker_api_platform.php).
-        - '#invalid type Generated\\Api\\Storefront\\CustomersStorefrontResource\.#'
-        - '#invalid return type Generated\\Api\\Storefront\\CustomersStorefrontResource\.#'
-        - '#unknown class Generated\\Api\\Storefront\\CustomersStorefrontResource\.#'
-        - '#Instantiated class Generated\\Api\\Storefront\\CustomersStorefrontResource not found\.#'
-        - '#invalid type Generated\\Api\\Storefront\\CustomersAddressesStorefrontResource\.#'
-        - '#invalid return type Generated\\Api\\Storefront\\CustomersAddressesStorefrontResource\.#'
-        - '#unknown class Generated\\Api\\Storefront\\CustomersAddressesStorefrontResource\.#'
-        - '#Instantiated class Generated\\Api\\Storefront\\CustomersAddressesStorefrontResource not found\.#'
-        - '#invalid type Generated\\Api\\Storefront\\CustomersConfirmRegistrationStorefrontResource\.#'
-        - '#invalid return type Generated\\Api\\Storefront\\CustomersConfirmRegistrationStorefrontResource\.#'
-        - '#unknown class Generated\\Api\\Storefront\\CustomersConfirmRegistrationStorefrontResource\.#'
-        - '#Instantiated class Generated\\Api\\Storefront\\CustomersConfirmRegistrationStorefrontResource not found\.#'
         - '#Instantiated class .+NativePasswordEncoder not found.#'
         - '#Method .+Customer::getPasswordEncoder\(\) should return .+PasswordEncoderInterface but returns .+NativePasswordEncoder.#'
         - '#Cannot call method format\(\) on DateTime\|string.#'
