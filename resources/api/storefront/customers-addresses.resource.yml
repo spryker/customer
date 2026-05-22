@@ -46,12 +46,6 @@ resource:
           description: 'Delete an address (soft delete)'
           uriTemplate: '/customers/{customerReference}/addresses/{uuid}'
 
-    includableIn:
-        - resource: Customers
-          relationshipName: addresses
-          uriVariableMappings:
-              customerReference: customerReference
-
     properties:
         uuid:
             type: string
