@@ -197,6 +197,14 @@
         <property name="hasAnonymizedAt" type="bool" strict="true"/>
         <property name="restorePasswordKeyExists" type="bool"/>
         <property name="passwordExists" type="bool"/>
+        <property name="searchTerms" type="CustomerCriteriaSearchTerms"/>
+        <property name="limit" type="int"/>
+    </transfer>
+
+    <transfer name="CustomerCriteriaSearchTerms" strict="true">
+        <property name="firstName" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="email" type="string"/>
     </transfer>
 
     <transfer name="AddressCriteriaFilter">

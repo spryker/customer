@@ -9,6 +9,7 @@ namespace SprykerTest\Zed\Customer\Business\Facade;
 
 use Generated\Shared\DataBuilder\CustomerBuilder;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
+use Generated\Shared\Transfer\CustomerCriteriaSearchTermsTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomer;
 
@@ -119,6 +120,147 @@ class GetCustomerCollectionByCriteriaTest extends AbstractCustomerFacadeTest
         $this->tester->addCleanup(function () use ($customerTransfer): void {
             $this->tester->getCustomerFacade()->deleteCustomer($customerTransfer);
         });
+    }
+
+    public function testGetCustomerCollectionByCriteriaFiltersByEmailSearchTerm(): void
+    {
+        // Arrange
+        $matchingCustomer = $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::EMAIL => 'unique_srch_email_match@example.com',
+        ]);
+        $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::EMAIL => 'other_customer@example.com',
+        ]);
+
+        $criteriaFilterTransfer = (new CustomerCriteriaFilterTransfer())
+            ->setSearchTerms(
+                (new CustomerCriteriaSearchTermsTransfer())->setEmail('unique_srch_email'),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCriteria($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertSame(1, $customerCollectionTransfer->getCustomers()->count());
+        $this->assertSame(
+            $matchingCustomer->getIdCustomerOrFail(),
+            $customerCollectionTransfer->getCustomers()->offsetGet(0)->getIdCustomerOrFail(),
+        );
+    }
+
+    public function testGetCustomerCollectionByCriteriaFiltersByFirstNameSearchTerm(): void
+    {
+        // Arrange
+        $matchingCustomer = $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::FIRST_NAME => 'UniqueSrchFirstName',
+        ]);
+        $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::FIRST_NAME => 'OtherFirstName',
+        ]);
+
+        $criteriaFilterTransfer = (new CustomerCriteriaFilterTransfer())
+            ->setSearchTerms(
+                (new CustomerCriteriaSearchTermsTransfer())->setFirstName('UniqueSrchFirst'),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCriteria($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertSame(1, $customerCollectionTransfer->getCustomers()->count());
+        $this->assertSame(
+            $matchingCustomer->getIdCustomerOrFail(),
+            $customerCollectionTransfer->getCustomers()->offsetGet(0)->getIdCustomerOrFail(),
+        );
+    }
+
+    public function testGetCustomerCollectionByCriteriaFiltersByLastNameSearchTerm(): void
+    {
+        // Arrange
+        $matchingCustomer = $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::LAST_NAME => 'UniqueSrchLastName',
+        ]);
+        $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::LAST_NAME => 'OtherLastName',
+        ]);
+
+        $criteriaFilterTransfer = (new CustomerCriteriaFilterTransfer())
+            ->setSearchTerms(
+                (new CustomerCriteriaSearchTermsTransfer())->setLastName('UniqueSrchLast'),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCriteria($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertSame(1, $customerCollectionTransfer->getCustomers()->count());
+        $this->assertSame(
+            $matchingCustomer->getIdCustomerOrFail(),
+            $customerCollectionTransfer->getCustomers()->offsetGet(0)->getIdCustomerOrFail(),
+        );
+    }
+
+    public function testGetCustomerCollectionByCriteriaSearchTermsAreAppliedWithOrLogic(): void
+    {
+        // Arrange
+        $customerMatchedByEmail = $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::EMAIL => 'unique_or_logic_email@example.com',
+            CustomerTransfer::FIRST_NAME => 'RegularFirst',
+        ]);
+        $customerMatchedByFirstName = $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::EMAIL => 'regular_or_logic@example.com',
+            CustomerTransfer::FIRST_NAME => 'UniqueOrLogicFirst',
+        ]);
+        $this->tester->haveCustomer([
+            CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD,
+            CustomerTransfer::EMAIL => 'unrelated_or_logic@example.com',
+            CustomerTransfer::FIRST_NAME => 'UnrelatedFirst',
+        ]);
+
+        $criteriaFilterTransfer = (new CustomerCriteriaFilterTransfer())
+            ->setSearchTerms(
+                (new CustomerCriteriaSearchTermsTransfer())
+                    ->setEmail('unique_or_logic_email')
+                    ->setFirstName('UniqueOrLogicFirst'),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCriteria($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertSame(2, $customerCollectionTransfer->getCustomers()->count());
+
+        $returnedIds = array_map(
+            static fn (CustomerTransfer $customer): int => $customer->getIdCustomerOrFail(),
+            $customerCollectionTransfer->getCustomers()->getArrayCopy(),
+        );
+        $this->assertContains($customerMatchedByEmail->getIdCustomerOrFail(), $returnedIds);
+        $this->assertContains($customerMatchedByFirstName->getIdCustomerOrFail(), $returnedIds);
+    }
+
+    public function testGetCustomerCollectionByCriteriaReturnsEmptyCollectionWhenSearchTermsDoNotMatch(): void
+    {
+        // Arrange
+        $this->tester->haveCustomer([CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD]);
+
+        $criteriaFilterTransfer = (new CustomerCriteriaFilterTransfer())
+            ->setSearchTerms(
+                (new CustomerCriteriaSearchTermsTransfer())->setEmail('nonexistent_xqz_term_12345@example.com'),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCriteria($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertSame(0, $customerCollectionTransfer->getCustomers()->count());
     }
 
     public function testGetCustomerCollectionByCriteriaShouldFilterByCustomerIds(): void

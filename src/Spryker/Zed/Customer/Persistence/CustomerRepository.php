@@ -296,6 +296,27 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             );
         }
 
+        if ($customerCriteriaFilterTransfer->getSearchTerms()) {
+            $orNeeded = false;
+            if ($customerCriteriaFilterTransfer->getSearchTerms()->getEmail()) {
+                $query->filterByEmail(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getEmail()), Criteria::LIKE);
+                $orNeeded = true;
+            }
+            if ($customerCriteriaFilterTransfer->getSearchTerms()->getFirstName()) {
+                if ($orNeeded) {
+                    $query->_or();
+                }
+                $query->filterByFirstName(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getFirstName()), Criteria::LIKE);
+                $orNeeded = true;
+            }
+            if ($customerCriteriaFilterTransfer->getSearchTerms()->getLastName()) {
+                if ($orNeeded) {
+                    $query->_or();
+                }
+                $query->filterByLastName(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getLastName()), Criteria::LIKE);
+            }
+        }
+
         return $query;
     }
 }
