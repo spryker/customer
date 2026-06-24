@@ -18,16 +18,22 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
 class CustomerConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @var int
      */
     public const ERROR_CODE_CUSTOMER_ALREADY_REGISTERED = 4001;
 
     /**
+     * @api
+     *
      * @var int
      */
     public const ERROR_CODE_CUSTOMER_INVALID_EMAIL = 4002;
 
     /**
+     * @api
+     *
      * @uses \Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRegistrationMailTypePlugin::MAIL_TYPE
      *
      * @var string
@@ -35,11 +41,15 @@ class CustomerConfig extends AbstractBundleConfig
     public const CUSTOMER_REGISTRATION_MAIL_TYPE = 'customer registration mail';
 
     /**
+     * @api
+     *
      * @var string
      */
     public const CUSTOMER_REGISTRATION_WITH_CONFIRMATION_MAIL_TYPE = 'customer registration confirmation mail';
 
     /**
+     * @api
+     *
      * @var string
      */
     public const GLOSSARY_KEY_CONFIRM_EMAIL_LINK_INVALID_OR_USED = 'customer.error.confirm_email_link.invalid_or_used';
