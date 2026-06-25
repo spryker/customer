@@ -123,7 +123,7 @@ class Customer implements CustomerInterface
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function get(CustomerTransfer $customerTransfer)
+    public function get(CustomerTransfer $customerTransfer, bool $isSecure = true)
     {
         $customerEntity = $this->getCustomer($customerTransfer);
         $customerTransfer->fromArray($customerEntity->toArray(), true);
@@ -131,6 +131,10 @@ class Customer implements CustomerInterface
         $customerTransfer = $this->attachAddresses($customerTransfer, $customerEntity);
         $customerTransfer = $this->attachLocale($customerTransfer, $customerEntity);
         $customerTransfer = $this->customerExpander->expand($customerTransfer);
+
+        if ($isSecure) {
+            $customerTransfer->setPassword(null);
+        }
 
         return $customerTransfer;
     }
@@ -540,14 +544,16 @@ class Customer implements CustomerInterface
             }
 
             $updatedPasswordCustomerTransfer = $customerResponseTransfer->getCustomerTransfer();
-            $customerTransfer->setNewPassword($updatedPasswordCustomerTransfer->getNewPassword())
-                ->setPassword($updatedPasswordCustomerTransfer->getPassword());
+            $customerTransfer->setNewPassword($updatedPasswordCustomerTransfer->getNewPassword());
         }
 
         $customerResponseTransfer->setCustomerTransfer($customerTransfer);
 
         $customerEntity = $this->getCustomer($customerTransfer);
+        // Password is managed only by updatePassword(); preserve the stored hash across fromArray().
+        $storedPassword = $customerEntity->getPassword();
         $customerEntity->fromArray($customerTransfer->modifiedToArray());
+        $customerEntity->setPassword($storedPassword);
 
         if ($customerTransfer->getLocale() !== null) {
             $this->addLocaleByLocaleName($customerEntity, $customerTransfer->getLocale()->getLocaleName());
@@ -569,6 +575,7 @@ class Customer implements CustomerInterface
         $customerEntity->save();
 
         $customerTransfer->fromArray($customerEntity->toArray(), true);
+        $customerTransfer->setPassword(null);
 
         return $customerResponseTransfer;
     }
@@ -671,6 +678,7 @@ class Customer implements CustomerInterface
         $changedRows = $customerEntity->save();
 
         $customerTransfer->fromArray($customerEntity->toArray(), true);
+        $customerTransfer->setPassword(null);
 
         $customerResponseTransfer
             ->setIsSuccess($changedRows > 0)

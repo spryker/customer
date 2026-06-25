@@ -272,6 +272,7 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
     {
         // Arrange
         $customerTransfer = $this->tester->createTestCustomer();
+        $email = $customerTransfer->getEmail();
         $customerTransfer->setNewPassword(static::TESTER_NEW_PASSWORD);
         $customerTransfer->setPassword(static::TESTER_PASSWORD);
         $customerTransfer->setLastName(static::TESTER_NAME);
@@ -283,6 +284,15 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         // Assert
         $this->assertTrue($customerResponse->getIsSuccess(), 'Customer response must be successful.');
         $this->assertSame(static::TESTER_NAME, $customerTransfer->getLastName(), 'Last name was not saved.');
-        $this->tester->assertPasswordsEqual($customerTransfer->getPassword(), static::TESTER_NEW_PASSWORD);
+        // Password hash is stripped from the response transfer to prevent leakage into session/Redis.
+        $this->assertNull($customerTransfer->getPassword(), 'Password hash must not be present in the response transfer.');
+        // Verify the new password was actually persisted by authenticating with it.
+        $authTransfer = (new CustomerTransfer())
+            ->setEmail($email)
+            ->setPassword(static::TESTER_NEW_PASSWORD);
+        $this->assertTrue(
+            $this->tester->getCustomerFacade()->tryAuthorizeCustomerByEmailAndPassword($authTransfer),
+            'New password must authenticate successfully after update.',
+        );
     }
 }

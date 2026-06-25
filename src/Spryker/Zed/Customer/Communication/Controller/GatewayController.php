@@ -99,7 +99,8 @@ class GatewayController extends AbstractGatewayController
 
         $result = new CustomerResponseTransfer();
         if ($isAuthorized === true) {
-            $result->setCustomerTransfer($this->getFacade()->getCustomer($customerTransfer));
+            // Credentials excluded: result is stored to session via CustomerClient::login().
+            $result->setCustomerTransfer($this->getFacade()->getCustomer($customerTransfer, true));
         }
 
         $result->setHasCustomer($isAuthorized);
@@ -119,6 +120,23 @@ class GatewayController extends AbstractGatewayController
         try {
             return $this->getFacade()
                 ->getCustomer($customerTransfer);
+        } catch (CustomerNotFoundException $e) {
+            return new CustomerTransfer();
+        }
+    }
+
+    /**
+     * Returns full customer data including the password hash for Symfony authentication providers.
+     * Must only be called from authentication contexts — never for general data retrieval.
+     *
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function customerForAuthenticationAction(CustomerTransfer $customerTransfer): CustomerTransfer
+    {
+        try {
+            return $this->getFacade()->getCustomer($customerTransfer, false);
         } catch (CustomerNotFoundException $e) {
             return new CustomerTransfer();
         }

@@ -253,6 +253,22 @@ class CustomerClient extends AbstractClient implements CustomerClientInterface
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function getCustomerForAuthentication(CustomerTransfer $customerTransfer): CustomerTransfer
+    {
+        return $this->getFactory()
+            ->createZedCustomerStub()
+            ->getAuthenticationCustomer($customerTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
      * @return \Generated\Shared\Transfer\CustomerResponseTransfer
      */
     public function updateCustomer(CustomerTransfer $customerTransfer)
