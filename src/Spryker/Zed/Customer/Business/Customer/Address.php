@@ -568,11 +568,9 @@ class Address implements AddressInterface
      */
     protected function entityToCustomerTransfer(SpyCustomer $entity)
     {
-        $customerTransfer = new CustomerTransfer();
-        $customerTransfer->fromArray($entity->toArray(), true);
-        $customerTransfer->setPassword(null);
+        $addressTransfer = new CustomerTransfer();
 
-        return $customerTransfer;
+        return $addressTransfer->fromArray($entity->toArray(), true);
     }
 
     /**

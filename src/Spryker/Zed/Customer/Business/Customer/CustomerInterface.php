@@ -26,7 +26,7 @@ interface CustomerInterface
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function get(CustomerTransfer $customerTransfer, bool $isSecure = true);
+    public function get(CustomerTransfer $customerTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer

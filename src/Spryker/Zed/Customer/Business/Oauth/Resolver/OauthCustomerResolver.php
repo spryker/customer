@@ -51,8 +51,6 @@ class OauthCustomerResolver implements OauthCustomerResolverInterface
                 ->setMessages($restrictionResponseTransfer->getMessages());
         }
 
-        $customerTransfer->setPassword(null);
-
         return (new OauthCustomerResolveResponseTransfer())
             ->setIsSuccessful(true)
             ->setCustomer($customerTransfer);

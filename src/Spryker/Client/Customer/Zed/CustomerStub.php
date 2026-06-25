@@ -301,12 +301,4 @@ class CustomerStub implements CustomerStubInterface
 
         return $oauthCustomerResolveResponseTransfer;
     }
-
-    public function getAuthenticationCustomer(CustomerTransfer $customerTransfer): CustomerTransfer
-    {
-        /** @var \Generated\Shared\Transfer\CustomerTransfer $customerTransfer */
-        $customerTransfer = $this->zedStub->call('/customer/gateway/customer-for-authentication', $customerTransfer);
-
-        return $customerTransfer;
-    }
 }

@@ -157,17 +157,14 @@ interface CustomerFacadeInterface
     /**
      * Specification:
      * - Retrieves customer information with customer addresses by customer ID from persistent storage.
-     * - Excludes credentials (password hash) from the returned transfer when `$isSecure` is true (default).
-     * - Pass `$isSecure = false` only in authentication contexts that require credential validation.
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     * @param bool $isSecure
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function getCustomer(CustomerTransfer $customerTransfer, bool $isSecure = true);
+    public function getCustomer(CustomerTransfer $customerTransfer);
 
     /**
      * Specification:

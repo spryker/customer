@@ -200,11 +200,11 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function getCustomer(CustomerTransfer $customerTransfer, bool $isSecure = true)
+    public function getCustomer(CustomerTransfer $customerTransfer)
     {
         return $this->getFactory()
             ->createCustomer()
-            ->get($customerTransfer, $isSecure);
+            ->get($customerTransfer);
     }
 
     /**
