@@ -20,6 +20,7 @@ use Generated\Shared\Transfer\MessageTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Collection\ObjectCollection;
 use Spryker\Service\Container\Attributes\Stack;
 use Spryker\Service\UtilText\UtilTextService;
@@ -143,7 +144,10 @@ class Customer implements CustomerInterface
      */
     protected function attachAddresses(CustomerTransfer $customerTransfer, SpyCustomer $customerEntity)
     {
-        $addresses = $customerEntity->getAddresses();
+        // Pass a non-null Criteria to bypass Propel's instance-pool cached relation:
+        // FPM workers persist the instance pool across requests, so a SpyCustomer pooled
+        // before its address row existed would otherwise return a stale, empty collection.
+        $addresses = $customerEntity->getAddresses(new Criteria());
         $addressesTransfer = $this->entityCollectionToTransferCollection($addresses, $customerEntity);
         $customerTransfer->setAddresses($addressesTransfer);
 
