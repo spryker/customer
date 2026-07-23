@@ -476,4 +476,18 @@ interface CustomerClientInterface
      * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
      */
     public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
+
+    /**
+     * Specification:
+     * - Retrieves customer information by customer email including the password hash.
+     * - Must only be used in authentication contexts that require credential validation.
+     * - Use getCustomerByEmail() for all other customer data retrieval.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function getCustomerForAuthentication(CustomerTransfer $customerTransfer): CustomerTransfer;
 }

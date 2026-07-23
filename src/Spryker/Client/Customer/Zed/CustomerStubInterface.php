@@ -155,4 +155,6 @@ interface CustomerStubInterface
     public function findCustomerByReference(CustomerTransfer $customerTransfer): CustomerResponseTransfer;
 
     public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
+
+    public function getAuthenticationCustomer(CustomerTransfer $customerTransfer): CustomerTransfer;
 }

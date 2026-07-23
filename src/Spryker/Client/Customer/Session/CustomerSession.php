@@ -102,13 +102,15 @@ class CustomerSession implements CustomerSessionInterface
      */
     public function setCustomer(CustomerTransfer $customerTransfer)
     {
+        $sessionCustomerTransfer = $this->createSessionCustomerTransfer($customerTransfer);
+
         $this->sessionClient->set(
             static::SESSION_KEY,
-            $customerTransfer,
+            $sessionCustomerTransfer,
         );
 
         foreach ($this->customerSessionSetPlugins as $customerSessionSetPlugin) {
-            $customerSessionSetPlugin->execute($customerTransfer);
+            $customerSessionSetPlugin->execute($sessionCustomerTransfer);
         }
 
         $this->invalidateCustomerTransferCache();
@@ -120,12 +122,21 @@ class CustomerSession implements CustomerSessionInterface
     {
         $this->sessionClient->set(
             static::SESSION_KEY,
-            $customerTransfer,
+            $this->createSessionCustomerTransfer($customerTransfer),
         );
 
         $this->invalidateCustomerTransferCache();
 
         return $customerTransfer;
+    }
+
+    protected function createSessionCustomerTransfer(CustomerTransfer $customerTransfer): CustomerTransfer
+    {
+        $customerData = $customerTransfer->modifiedToArray(true, true);
+
+        unset($customerData[CustomerTransfer::PASSWORD]);
+
+        return (new CustomerTransfer())->fromArray($customerData, true);
     }
 
     public function findCustomerRawData(): ?CustomerTransfer

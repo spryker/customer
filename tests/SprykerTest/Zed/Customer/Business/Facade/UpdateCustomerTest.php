@@ -283,6 +283,10 @@ class UpdateCustomerTest extends AbstractCustomerFacadeTest
         // Assert
         $this->assertTrue($customerResponse->getIsSuccess(), 'Customer response must be successful.');
         $this->assertSame(static::TESTER_NAME, $customerTransfer->getLastName(), 'Last name was not saved.');
-        $this->tester->assertPasswordsEqual($customerTransfer->getPassword(), static::TESTER_NEW_PASSWORD);
+
+        // Password is not returned in the update response to avoid exposing password hashes.
+        // Reload the customer from persistence with isSecure=false to verify the new password hash.
+        $customerWithPassword = $this->tester->getCustomerFacade()->getCustomer($customerTransfer, false);
+        $this->tester->assertPasswordsEqual($customerWithPassword->getPassword(), static::TESTER_NEW_PASSWORD);
     }
 }

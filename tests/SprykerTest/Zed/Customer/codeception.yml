@@ -67,3 +67,12 @@ suites:
                 - \SprykerTest\Zed\Application\Helper\ApplicationHelper
                 - \SprykerTest\Shared\Customer\Helper\CustomerDataHelper
                 - \SprykerTest\Shared\Store\Helper\StoreDataHelper
+
+    Persistence:
+        path: Persistence
+        actor: CustomerPersistenceTester
+        modules:
+            enabled:
+                - Asserts
+                - \SprykerTest\Shared\Testify\Helper\Environment
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper

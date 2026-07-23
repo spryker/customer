@@ -6,7 +6,7 @@ parameters:
             # API Platform Storefront classes depend on Generated\Api\Storefront\* resources
             # which are intentionally excluded from generation
             # (see config/GlueStorefront/packages/spryker_api_platform.php).
-            - src/Spryker/Glue/Customer/Api
+            - '*/Glue/Customer/Api/*'
     ignoreErrors:
         - '#Instantiated class .+NativePasswordEncoder not found.#'
         - '#Method .+Customer::getPasswordEncoder\(\) should return .+PasswordEncoderInterface but returns .+NativePasswordEncoder.#'

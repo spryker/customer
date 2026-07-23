@@ -17,6 +17,7 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\LocaleTransfer;
 use Generated\Shared\Transfer\MailTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
+use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
@@ -124,10 +125,11 @@ class Customer implements CustomerInterface
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function get(CustomerTransfer $customerTransfer)
+    public function get(CustomerTransfer $customerTransfer, bool $isSecure = true)
     {
         $customerEntity = $this->getCustomer($customerTransfer);
-        $customerTransfer->fromArray($customerEntity->toArray(), true);
+        $allowedSensitiveColumns = $isSecure ? [] : [SpyCustomerTableMap::COL_PASSWORD];
+        $customerTransfer->fromArray($customerEntity->toArray(allowedSensitiveColumns: $allowedSensitiveColumns), true);
 
         $customerTransfer = $this->attachAddresses($customerTransfer, $customerEntity);
         $customerTransfer = $this->attachLocale($customerTransfer, $customerEntity);
@@ -544,14 +546,15 @@ class Customer implements CustomerInterface
             }
 
             $updatedPasswordCustomerTransfer = $customerResponseTransfer->getCustomerTransfer();
-            $customerTransfer->setNewPassword($updatedPasswordCustomerTransfer->getNewPassword())
-                ->setPassword($updatedPasswordCustomerTransfer->getPassword());
+            $customerTransfer->setNewPassword($updatedPasswordCustomerTransfer->getNewPassword());
         }
 
         $customerResponseTransfer->setCustomerTransfer($customerTransfer);
 
         $customerEntity = $this->getCustomer($customerTransfer);
-        $customerEntity->fromArray($customerTransfer->modifiedToArray());
+        $modifiedData = $customerTransfer->modifiedToArray();
+        unset($modifiedData[CustomerTransfer::PASSWORD]);
+        $customerEntity->fromArray($modifiedData);
 
         if ($customerTransfer->getLocale() !== null) {
             $this->addLocaleByLocaleName($customerEntity, $customerTransfer->getLocale()->getLocaleName());
@@ -573,6 +576,7 @@ class Customer implements CustomerInterface
         $customerEntity->save();
 
         $customerTransfer->fromArray($customerEntity->toArray(), true);
+        $customerTransfer->setPassword(null);
 
         return $customerResponseTransfer;
     }
@@ -675,6 +679,7 @@ class Customer implements CustomerInterface
         $changedRows = $customerEntity->save();
 
         $customerTransfer->fromArray($customerEntity->toArray(), true);
+        $customerTransfer->setPassword(null);
 
         $customerResponseTransfer
             ->setIsSuccess($changedRows > 0)
