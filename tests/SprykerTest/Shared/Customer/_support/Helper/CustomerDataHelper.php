@@ -49,6 +49,10 @@ class CustomerDataHelper extends Module
      */
     protected const CONFIG_KEY_IS_MAIL_FACADE_MOCK_ENABLED = 'isMailFacadeMockEnabled';
 
+    protected const int DEFAULT_TRANSFER_ID_CUSTOMER = 1;
+
+    protected const string CUSTOMER_REFERENCE_TEMPLATE = 'DE--%d';
+
     /**
      * @param array $override
      *
@@ -90,6 +94,30 @@ class CustomerDataHelper extends Module
         });
 
         return $customerResponseTransfer->getCustomerTransfer();
+    }
+
+    /**
+     * Builds an authenticated-customer transfer WITHOUT persisting it — for boot-free / DB-less
+     * lanes. Use {@see haveCustomer()} when the customer must exist in the database.
+     *
+     * `idCustomer` and `customerReference` are seeded here rather than in customer.databuilder.xml
+     * because the shared builder must leave them null for the persisting path, where the database
+     * assigns both. The reference is derived from the id so overriding one keeps the other consistent.
+     *
+     * @param array<string, mixed> $override
+     */
+    public function haveCustomerTransfer(array $override = []): CustomerTransfer
+    {
+        $idCustomer = $override[CustomerTransfer::ID_CUSTOMER] ?? static::DEFAULT_TRANSFER_ID_CUSTOMER;
+        $override += [
+            CustomerTransfer::ID_CUSTOMER => $idCustomer,
+            CustomerTransfer::CUSTOMER_REFERENCE => sprintf(static::CUSTOMER_REFERENCE_TEMPLATE, $idCustomer),
+        ];
+
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $customerTransfer */
+        $customerTransfer = (new CustomerBuilder($override))->build();
+
+        return $customerTransfer;
     }
 
     public function haveConfirmedCustomer(array $override = []): CustomerTransfer
