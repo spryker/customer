@@ -17,14 +17,10 @@ resource:
               summary: 'Confirm customer registration'
               description: 'Validates the registration key and activates the customer account. Returns the confirmed customer data on success.'
               responses:
-                  200:
+                  201:
                       description: 'Customer registration confirmed successfully. Returns customer data.'
-                  404:
-                      description: 'Customer not found with the provided reference.'
-                  409:
-                      description: 'Customer registration has already been confirmed.'
                   422:
-                      description: 'Invalid or expired registration key.'
+                      description: 'Invalid or expired registration key (covers unknown keys and already-confirmed accounts).'
 
     provider: Spryker\Glue\Customer\Api\Storefront\Provider\CustomersConfirmRegistrationStorefrontProvider
     processor: Spryker\Glue\Customer\Api\Storefront\Processor\CustomersConfirmRegistrationStorefrontProcessor
