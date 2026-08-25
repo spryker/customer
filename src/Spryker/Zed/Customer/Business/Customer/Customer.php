@@ -288,12 +288,7 @@ class Customer implements CustomerInterface
         return $utilTextService->generateRandomString(32);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     *
-     * @return void
-     */
-    protected function sendPasswordRestoreToken(CustomerTransfer $customerTransfer)
+    protected function sendPasswordRestoreToken(CustomerTransfer $customerTransfer): MailTransfer
     {
         $customerTransfer = $this->get($customerTransfer);
         $restorePasswordLink = $this->customerConfig
@@ -313,6 +308,8 @@ class Customer implements CustomerInterface
         $mailTransfer->setStoreName($customerTransfer->getStoreName());
 
         $this->mailFacade->handleMail($mailTransfer);
+
+        return $mailTransfer;
     }
 
     /**
@@ -450,9 +447,13 @@ class Customer implements CustomerInterface
         $customerEntity->save();
 
         $customerTransfer->fromArray($customerEntity->toArray(), true);
-        $this->sendPasswordRestoreToken($customerTransfer);
+        $mailTransfer = $this->sendPasswordRestoreToken($customerTransfer);
 
         $customerResponseTransfer->setCustomerTransfer($customerTransfer);
+
+        if ($mailTransfer->getMailResponse() !== null && !$mailTransfer->getMailResponse()->getIsSuccess()) {
+            $customerResponseTransfer->setIsSuccess(false);
+        }
 
         return $customerResponseTransfer;
     }

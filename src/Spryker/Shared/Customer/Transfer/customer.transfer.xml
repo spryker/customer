@@ -9,6 +9,7 @@
         <property name="templates" type="MailTemplate[]" singular="template"/>
         <property name="recipients" type="MailRecipient[]" singular="recipient"/>
         <property name="storeName" type="string"/>
+        <property name="mailResponse" type="MailResponse"/>
     </transfer>
 
     <transfer name="Address">
@@ -319,5 +320,9 @@
     <transfer name="OauthCustomerRestrictionResponse" strict="true">
         <property name="isRestricted" type="bool"/>
         <property name="messages" type="Message[]" singular="message"/>
+    </transfer>
+
+    <transfer name="MailResponse">
+        <property name="isSuccess" type="bool"/>
     </transfer>
 </transfers>
