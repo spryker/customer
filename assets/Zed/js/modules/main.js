@@ -6,7 +6,13 @@
 'use strict';
 
 $(document).ready(function () {
-    $('#customer_date_of_birth').datepicker({
+    const dateOfBirth = $('#customer_date_of_birth');
+
+    if (dateOfBirth.is('[data-spryker-picker]')) {
+        return;
+    }
+
+    dateOfBirth.datepicker({
         dateFormat: 'yy-mm-dd',
         changeMonth: true,
         numberOfMonths: 3,

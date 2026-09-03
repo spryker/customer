@@ -9,6 +9,7 @@ namespace Spryker\Zed\Customer\Communication\Form;
 
 use DateTime;
 use Spryker\Zed\Customer\CustomerConfig;
+use Spryker\Zed\Gui\Communication\Form\Type\DatePickerType;
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -114,6 +115,21 @@ class CustomerForm extends AbstractType
      * @var string
      */
     protected const FIELD_STORE_NAME = 'store_name';
+
+    /**
+     * @var string
+     */
+    protected const DATE_PICKER_DATE_TODAY = 'today';
+
+    /**
+     * @var string
+     */
+    protected const FORMAT_DATE = 'dd.MM.yyyy';
+
+    /**
+     * @var string
+     */
+    protected const LEGACY_DATE_OF_BIRTH_FIELD_CLASS = 'datepicker safe-datetime';
 
     public function getBlockPrefix(): string
     {
@@ -366,19 +382,55 @@ class CustomerForm extends AbstractType
      */
     protected function addDateOfBirthField(FormBuilderInterface $builder)
     {
-        $builder->add(static::FIELD_DATE_OF_BIRTH, DateType::class, [
-            'label' => 'Date of birth',
-            'widget' => 'single_text',
-            'required' => false,
-            'attr' => [
-                'class' => 'datepicker safe-datetime',
-            ],
-        ]);
+        $builder->add(
+            static::FIELD_DATE_OF_BIRTH,
+            $this->getDateOfBirthFieldType(),
+            $this->getDateOfBirthFieldOptions(),
+        );
 
         $builder->get(static::FIELD_DATE_OF_BIRTH)
             ->addModelTransformer($this->createDateTimeModelTransformer());
 
         return $this;
+    }
+
+    protected function getDateOfBirthFieldType(): string
+    {
+        if ($this->isGuiDatePickerTypeAvailable()) {
+            return DatePickerType::class;
+        }
+
+        return DateType::class;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getDateOfBirthFieldOptions(): array
+    {
+        $options = [
+            'label' => 'Date of birth',
+            'required' => false,
+        ];
+
+        if ($this->isGuiDatePickerTypeAvailable()) {
+            return $options + [
+                'max_date' => static::DATE_PICKER_DATE_TODAY,
+                'format' => static::FORMAT_DATE,
+            ];
+        }
+
+        return $options + [
+            'widget' => 'single_text',
+            'attr' => [
+                'class' => static::LEGACY_DATE_OF_BIRTH_FIELD_CLASS,
+            ],
+        ];
+    }
+
+    protected function isGuiDatePickerTypeAvailable(): bool
+    {
+        return class_exists(DatePickerType::class);
     }
 
     /**
