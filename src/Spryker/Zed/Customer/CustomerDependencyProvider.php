@@ -135,6 +135,13 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @var string
      */
+    public const PLUGINS_CUSTOMER_VALIDATOR = 'PLUGINS_CUSTOMER_VALIDATOR';
+
+    public const PLUGINS_ADDRESS_VALIDATOR = 'PLUGINS_ADDRESS_VALIDATOR';
+
+    /**
+     * @var string
+     */
     public const SUB_REQUEST_HANDLER = 'SUB_REQUEST_HANDLER';
 
     public const string PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY = 'PLUGINS_OAUTH_CUSTOMER_AUTHENTICATION_STRATEGY';
@@ -163,6 +170,8 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addCustomerService($container);
         $container = $this->addCustomerPostDeletePlugins($container);
         $container = $this->addCustomerPreUpdatePlugins($container);
+        $container = $this->addCustomerValidatorPlugins($container);
+        $container = $this->addAddressValidatorPlugins($container);
         $container = $this->addStorageRedisClient($container);
         $container = $this->addOauthCustomerAuthenticationStrategyPlugins($container);
         $container = $this->addOauthCustomerPostResolvePlugins($container);
@@ -433,6 +442,40 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         });
 
         return $container;
+    }
+
+    protected function addCustomerValidatorPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_CUSTOMER_VALIDATOR, function () {
+            return $this->getCustomerValidatorPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface>
+     */
+    protected function getCustomerValidatorPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addAddressValidatorPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_ADDRESS_VALIDATOR, function () {
+            return $this->getAddressValidatorPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface>
+     */
+    protected function getAddressValidatorPlugins(): array
+    {
+        return [];
     }
 
     protected function addCustomerPreUpdatePlugins(Container $container): Container

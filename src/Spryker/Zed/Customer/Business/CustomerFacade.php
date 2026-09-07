@@ -7,8 +7,12 @@
 
 namespace Spryker\Zed\Customer\Business;
 
+use Generated\Shared\Transfer\AddressCollectionTransfer;
+use Generated\Shared\Transfer\AddressCriteriaTransfer;
+use Generated\Shared\Transfer\AddressResponseTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
@@ -43,6 +47,23 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
         return $this->getFactory()
             ->createCustomerReader()
             ->getCustomerCollection($customerCollectionTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
+     */
+    public function getCustomerCollectionByCollectionCriteria(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): CustomerCollectionTransfer {
+        return $this->getFactory()
+            ->createCustomerReader()
+            ->getCustomerCollectionByCollectionCriteria($customerCollectionCriteriaTransfer);
     }
 
     /**
@@ -372,6 +393,22 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\AddressCriteriaTransfer $addressCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\AddressCollectionTransfer
+     */
+    public function getAddressCollection(AddressCriteriaTransfer $addressCriteriaTransfer): AddressCollectionTransfer
+    {
+        return $this->getFactory()
+            ->createAddressReader()
+            ->getAddressCollection($addressCriteriaTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
      *
      * @return bool
@@ -600,7 +637,7 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
      *
      * @api
      *
-     * @return array
+     * @return array<string>
      */
     public function getAllSalutations(): array
     {
@@ -706,5 +743,21 @@ class CustomerFacade extends AbstractFacade implements CustomerFacadeInterface
         return $this->getFactory()
             ->createOauthCustomerResolver()
             ->resolveCustomer($oauthCustomerResolveRequestTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
+     *
+     * @return \Generated\Shared\Transfer\AddressResponseTransfer
+     */
+    public function validateAddress(AddressTransfer $addressTransfer): AddressResponseTransfer
+    {
+        return $this->getFactory()
+            ->createAddressValidator()
+            ->validateAddress($addressTransfer);
     }
 }

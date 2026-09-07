@@ -7,8 +7,12 @@
 
 namespace Spryker\Zed\Customer\Business;
 
+use Generated\Shared\Transfer\AddressCollectionTransfer;
+use Generated\Shared\Transfer\AddressCriteriaTransfer;
+use Generated\Shared\Transfer\AddressResponseTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
@@ -37,6 +41,36 @@ interface CustomerFacadeInterface
 
     /**
      * Specification:
+     * - Retrieves a collection of customers.
+     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.customerIds` to filter by customer ids.
+     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.customerReferences` to filter by customer references.
+     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.emails` to filter by emails.
+     * - Combines all conditions with AND.
+     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.searchTerms.{email, firstName, lastName}` to
+     *   filter by a partial match, combining the search terms with OR.
+     * - Excludes anonymized customers unless `CustomerCollectionCriteriaTransfer.customerConditions.hasAnonymizedAt`
+     *   is set to `true`.
+     * - Uses `CustomerCollectionCriteriaTransfer.sortCollection.sort.field` to set the 'order by' field.
+     * - Uses `CustomerCollectionCriteriaTransfer.sortCollection.sort.isAscending` to set ascending/descending order.
+     * - Supported sort fields are `customerReference`, `createdAt`, `email`, `firstName`, `lastName`, `registered`;
+     *   unsupported fields are ignored.
+     * - Uses `CustomerCollectionCriteriaTransfer.pagination.{page, maxPerPage}` to paginate results.
+     * - Requires `pagination.page` and `pagination.maxPerPage` when `pagination` is set.
+     * - Returns `CustomerCollectionTransfer` filled with found customers and populated pagination.
+     * - Does not populate the addresses of the returned customers; use `findCustomerByReference()` for that.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerCollectionTransfer
+     */
+    public function getCustomerCollectionByCollectionCriteria(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): CustomerCollectionTransfer;
+
+    /**
+     * Specification:
      * - Checks if provided email address exists in persistent storage.
      *
      * @api
@@ -53,6 +87,8 @@ interface CustomerFacadeInterface
      * - Validates provided customer email information.
      * - Encrypts provided plain text password.
      * - Assigns current locale to customer if it is not set already.
+     * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface} plugin stack.
+     * - Returns `CustomerResponseTransfer` with `isSuccess = false` and the collected errors without storing anything when a plugin rejects the customer.
      * - Generates customer reference for customer.
      * - Stores customer data.
      *
@@ -70,6 +106,8 @@ interface CustomerFacadeInterface
      * - Validates provided customer email information.
      * - Encrypts provided plain text password.
      * - Assigns current locale to customer if it is not set already.
+     * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface} plugin stack.
+     * - Returns `CustomerResponseTransfer` with `isSuccess = false` and the collected errors without storing anything when a plugin rejects the customer.
      * - Generates customer reference for customer.
      * - Stores customer data.
      * - Sends registration confirmation link via email using a freshly generated registration key.
@@ -188,6 +226,8 @@ interface CustomerFacadeInterface
      * - Encrypts provided plain text password before update.
      * - Identifies customer by either customer ID, customer email, or password restoration key.
      * - Validates customer email information.
+     * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface} plugin stack.
+     * - Returns `CustomerResponseTransfer` with `isSuccess = false` and the collected errors without updating anything when a plugin rejects the customer.
      * - Updates customer data which is set in provided transfer object (including password property - dismantles newPassword property).
      * - Sends password restoration email if SendPasswordToken property is set in the provided transfer object.
      *
@@ -256,6 +296,8 @@ interface CustomerFacadeInterface
      * Specification:
      * - Updates customer address using provided transfer object.
      * - Sets address as default address based on provided default address flags.
+     * - Does not execute the {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface}
+     *   plugin stack; expects {@link \Spryker\Zed\Customer\Business\CustomerFacadeInterface::validateAddress()} to be executed beforehand.
      *
      * @api
      *
@@ -269,6 +311,8 @@ interface CustomerFacadeInterface
      * Specification:
      * - Creates customer address using provided transfer object.
      * - Sets address as default address based on provided default address flags.
+     * - Does not execute the {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface}
+     *   plugin stack, expects {@link \Spryker\Zed\Customer\Business\CustomerFacadeInterface::validateAddress()} to be executed beforehand.
      *
      * @api
      *
@@ -282,6 +326,8 @@ interface CustomerFacadeInterface
      * Specification:
      * - Creates customer address using provided transfer object.
      * - Sets address as default address based on provided default address flags.
+     * - Does not execute the {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface}
+     *   plugin stack, expects {@link \Spryker\Zed\Customer\Business\CustomerFacadeInterface::validateAddress()} to be executed beforehand.
      *
      * @api
      *
@@ -314,6 +360,32 @@ interface CustomerFacadeInterface
      * @return \Generated\Shared\Transfer\AddressTransfer|null
      */
     public function findCustomerAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer;
+
+    /**
+     * Specification:
+     * - Retrieves a collection of customer addresses.
+     * - Uses `AddressCriteriaTransfer.addressConditions.uuids` to filter by address uuids.
+     * - Uses `AddressCriteriaTransfer.addressConditions.addressIds` to filter by address ids.
+     * - Uses `AddressCriteriaTransfer.addressConditions.customerIds` to filter by owning customer ids.
+     * - Combines all conditions with AND.
+     * - Uses `AddressCriteriaTransfer.sortCollection.sort.field` to set the 'order by' field.
+     * - Uses `AddressCriteriaTransfer.sortCollection.sort.isAscending` to set ascending/descending order.
+     * - Supported sort fields are `createdAt`, `updatedAt`, `firstName`, `lastName`, `city`, `zipCode`;
+     *   unsupported fields are ignored.
+     * - Uses `AddressCriteriaTransfer.pagination.{page, maxPerPage}` to paginate results.
+     * - Returns `AddressCollectionTransfer` filled with found addresses and populated pagination.
+     * - Does not populate the default billing and shipping address flags on the returned addresses.
+     * - Returns an empty collection when `addressConditions.uuids` is set but `spy_customer_address.uuid`
+     *   is absent, which is the case unless a module contributing the address uuid schema extension is
+     *   installed; filtering by uuid requires that extension.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AddressCriteriaTransfer $addressCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\AddressCollectionTransfer
+     */
+    public function getAddressCollection(AddressCriteriaTransfer $addressCriteriaTransfer): AddressCollectionTransfer;
 
     /**
      * Specification:
@@ -534,7 +606,7 @@ interface CustomerFacadeInterface
      *
      * @api
      *
-     * @return array
+     * @return array<string>
      */
     public function getAllSalutations(): array;
 
@@ -638,4 +710,31 @@ interface CustomerFacadeInterface
      * @return \Generated\Shared\Transfer\OauthCustomerResolveResponseTransfer
      */
     public function resolveCustomer(OauthCustomerResolveRequestTransfer $oauthCustomerResolveRequestTransfer): OauthCustomerResolveResponseTransfer;
+
+    /**
+     * Specification:
+     * - Requires `AddressTransfer.firstName` to be set.
+     * - Requires `AddressTransfer.lastName` to be set.
+     * - Validates customer address first name pattern using `CustomerConfig::getCustomerNamePattern()`.
+     * - Validates customer address last name pattern using `CustomerConfig::getCustomerNamePattern()`.
+     * - Validates customer address salutation against the `salutation` column value set when `AddressTransfer.salutation` is set.
+     * - Validates customer address first name, last name, address1, address2, address3, company, city,
+     *   zip code, phone and comment lengths against the `spy_customer_address` column widths.
+     * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface} plugin stack.
+     * - Executes every check regardless of preceding failures and collects all errors.
+     * - Does not persist anything.
+     * - Expects to be executed before {@link \Spryker\Zed\Customer\Business\CustomerFacadeInterface::createAddress()}
+     *   or {@link \Spryker\Zed\Customer\Business\CustomerFacadeInterface::updateAddressAndCustomerDefaultAddresses()},
+     *   neither of which reports validation errors.
+     * - Returns `AddressResponseTransfer` with `isSuccess = true` and no errors when every check passes.
+     * - Returns `AddressResponseTransfer` with `isSuccess = false` and `CustomerError` entries holding
+     *   glossary keys as messages otherwise.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
+     *
+     * @return \Generated\Shared\Transfer\AddressResponseTransfer
+     */
+    public function validateAddress(AddressTransfer $addressTransfer): AddressResponseTransfer;
 }

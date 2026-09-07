@@ -185,6 +185,7 @@ class Customer implements CustomerInterface
 
         $customerResponseTransfer = $this->createCustomerResponseTransfer();
         $customerResponseTransfer = $this->validateCustomerEmail($customerResponseTransfer, $customerEntity);
+        $customerResponseTransfer = $this->validateCustomer($customerTransfer, $customerResponseTransfer);
 
         if ($customerResponseTransfer->getIsSuccess() !== true) {
             return $customerResponseTransfer;
@@ -537,6 +538,10 @@ class Customer implements CustomerInterface
         if ($this->preValidateCustomerEmail($customerTransfer, $customerResponseTransfer)->getIsSuccess() === false) {
             return $customerResponseTransfer;
         }
+
+        if ($this->validateCustomer($customerTransfer, $customerResponseTransfer)->getIsSuccess() === false) {
+            return $customerResponseTransfer;
+        }
         $customerTransfer = $this->executePreUpdatePlugins($customerTransfer, $customerResponseTransfer);
 
         if ($customerTransfer->getNewPassword()) {
@@ -607,6 +612,13 @@ class Customer implements CustomerInterface
         $customerResponseTransfer->setIsSuccess($isSuccess);
 
         return $customerResponseTransfer;
+    }
+
+    protected function validateCustomer(
+        CustomerTransfer $customerTransfer,
+        CustomerResponseTransfer $customerResponseTransfer
+    ): CustomerResponseTransfer {
+        return $this->customerPluginExecutor->executeCustomerValidatorPlugins($customerTransfer, $customerResponseTransfer);
     }
 
     /**

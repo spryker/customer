@@ -17,6 +17,7 @@ use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\LocaleTransfer;
 use Spryker\Zed\Customer\Business\CustomerFacadeInterface;
 use Spryker\Zed\Customer\CustomerDependencyProvider;
 use Spryker\Zed\Customer\Dependency\Facade\CustomerToMailBridge;
@@ -62,6 +63,8 @@ class CustomerDataHelper extends Module
      */
     public function haveCustomer(array $override = []): CustomerTransfer
     {
+        $override = $this->addInstalledLocaleName($override);
+
         /** @var \Generated\Shared\Transfer\CustomerTransfer $customerTransfer */
         $customerTransfer = (new CustomerBuilder($override))
             ->withBillingAddress()
@@ -187,6 +190,22 @@ class CustomerDataHelper extends Module
         });
 
         return $addressTransfer;
+    }
+
+    /**
+     * @param array<string, mixed> $override
+     *
+     * @return array<string, mixed>
+     */
+    protected function addInstalledLocaleName(array $override): array
+    {
+        if (isset($override[LocaleTransfer::LOCALE_NAME])) {
+            return $override;
+        }
+
+        $override[LocaleTransfer::LOCALE_NAME] = $this->getLocator()->locale()->facade()->getCurrentLocaleName();
+
+        return $override;
     }
 
     protected function ensureCustomerWithReferenceDoesNotExist(CustomerTransfer $customerTransfer): void

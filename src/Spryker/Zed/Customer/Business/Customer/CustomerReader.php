@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\Customer\Business\Customer;
 
+use Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
@@ -54,6 +55,12 @@ class CustomerReader implements CustomerReaderInterface
         $customerCollectionTransfer = $this->hydrateCustomersWithAddresses($customerCollectionTransfer);
 
         return $customerCollectionTransfer;
+    }
+
+    public function getCustomerCollectionByCollectionCriteria(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): CustomerCollectionTransfer {
+        return $this->customerRepository->getCustomerCollectionByCollectionCriteria($customerCollectionCriteriaTransfer);
     }
 
     public function findCustomerByReference(string $customerReference): CustomerResponseTransfer

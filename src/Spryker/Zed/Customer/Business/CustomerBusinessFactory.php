@@ -16,6 +16,10 @@ use Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaverInterface;
 use Spryker\Zed\Customer\Business\Checkout\CustomerOrderSaverWithMultiShippingAddress;
 use Spryker\Zed\Customer\Business\Customer\Address;
+use Spryker\Zed\Customer\Business\Customer\AddressReader;
+use Spryker\Zed\Customer\Business\Customer\AddressReaderInterface;
+use Spryker\Zed\Customer\Business\Customer\AddressValidator;
+use Spryker\Zed\Customer\Business\Customer\AddressValidatorInterface;
 use Spryker\Zed\Customer\Business\Customer\Checker\PasswordResetExpirationChecker;
 use Spryker\Zed\Customer\Business\Customer\Checker\PasswordResetExpirationCheckerInterface;
 use Spryker\Zed\Customer\Business\Customer\Customer;
@@ -46,6 +50,8 @@ use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorI
 use Spryker\Zed\Customer\Business\Sales\CustomerOrderHydrator;
 use Spryker\Zed\Customer\Business\StrategyResolver\OrderSaverStrategyResolver;
 use Spryker\Zed\Customer\Business\StrategyResolver\OrderSaverStrategyResolverInterface;
+use Spryker\Zed\Customer\Business\Validator\AddressFieldValidator;
+use Spryker\Zed\Customer\Business\Validator\AddressFieldValidatorInterface;
 use Spryker\Zed\Customer\Business\Validator\CustomerAddressCheckoutSalutationValidator;
 use Spryker\Zed\Customer\Business\Validator\CustomerAddressCheckoutSalutationValidatorInterface;
 use Spryker\Zed\Customer\Business\Validator\CustomerCheckoutSalutationValidator;
@@ -104,12 +110,51 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+    public function createAddressValidator(): AddressValidatorInterface
+    {
+        return new AddressValidator(
+            $this->createAddressFieldValidator(),
+            $this->createCustomerPluginExecutor(),
+        );
+    }
+
+    public function createAddressFieldValidator(): AddressFieldValidatorInterface
+    {
+        return new AddressFieldValidator(
+            $this->getRepository(),
+            $this->getConfig(),
+        );
+    }
+
+    public function createAddressReader(): AddressReaderInterface
+    {
+        return new AddressReader($this->getRepository());
+    }
+
     public function createCustomerPluginExecutor(): CustomerPluginExecutorInterface
     {
         return new CustomerPluginExecutor(
             $this->getPostCustomerRegistrationPlugins(),
             $this->getCustomerPostDeletePlugins(),
+            $this->getCustomerValidatorPlugins(),
+            $this->getAddressValidatorPlugins(),
         );
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface>
+     */
+    public function getCustomerValidatorPlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_VALIDATOR);
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\AddressValidatorPluginInterface>
+     */
+    public function getAddressValidatorPlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_ADDRESS_VALIDATOR);
     }
 
     public function createCustomerPasswordPolicyValidator(): CustomerPasswordPolicyValidatorInterface

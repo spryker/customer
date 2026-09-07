@@ -59,6 +59,8 @@ interface Messages
      */
     public const CUSTOMER_ADDRESS_DELETE_FAILED = 'customer.address.delete.failed';
 
+    public const string CUSTOMER_STORE_REQUIRED_FOR_PASSWORD_TOKEN = 'customer.store.required_for_password_token';
+
     /**
      * @var string
      */

@@ -8,15 +8,20 @@
 namespace Spryker\Zed\Customer\Persistence;
 
 use ArrayObject;
+use Generated\Shared\Transfer\AddressCollectionTransfer;
 use Generated\Shared\Transfer\AddressCriteriaFilterTransfer;
+use Generated\Shared\Transfer\AddressCriteriaTransfer;
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
+use Generated\Shared\Transfer\CustomerCriteriaSearchTermsTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\FilterTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
+use Orm\Zed\Customer\Persistence\Map\SpyCustomerAddressTableMap;
 use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery;
@@ -32,6 +37,8 @@ use Spryker\Zed\Propel\PropelFilterCriteria;
  */
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
+    protected const string ADDRESS_UUID_FILTER_METHOD = 'filterByUuid_In';
+
     public function getCustomerCollection(CustomerCollectionTransfer $customerCollectionTransfer): CustomerCollectionTransfer
     {
         $customerQuery = $this->getFactory()
@@ -58,13 +65,17 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerEntityToCustomer($customerEntity->toArray());
     }
 
+    /**
+     * @module Country
+     */
     public function findAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer
     {
         /** @var \Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery $customerAddressQuery */
         $customerAddressQuery = $this->getFactory()
             ->createSpyCustomerAddressQuery()
             ->filterByFkCustomer($addressTransfer->getFkCustomer())
-            ->joinWithCountry();
+            ->joinWithCountry()
+            ->leftJoinWithRegion();
 
         $customerAddressEntities = $customerAddressQuery->find();
 
@@ -146,6 +157,9 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         return $paginatedCustomerQuery;
     }
 
+    /**
+     * @param array<array<string, mixed>> $customers
+     */
     public function hydrateCustomerListWithCustomers(CustomerCollectionTransfer $customerListTransfer, array $customers): void
     {
         $customerCollection = new ArrayObject();
@@ -161,11 +175,16 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         $customerListTransfer->setCustomers($customerCollection);
     }
 
+    /**
+     * @module Country
+     */
     public function findCustomerAddressById(int $idCustomerAddress): ?AddressTransfer
     {
         $customerAddressEntity = $this->getFactory()
             ->createSpyCustomerAddressQuery()
             ->filterByIdCustomerAddress($idCustomerAddress)
+            ->joinWithCountry()
+            ->leftJoinWithRegion()
             ->findOne();
 
         if (!$customerAddressEntity) {
@@ -177,6 +196,9 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->mapCustomerAddressEntityToAddressTransfer($customerAddressEntity, new AddressTransfer());
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAllSalutations(): array
     {
         return SpyCustomerTableMap::getValueSet(SpyCustomerTableMap::COL_SALUTATION);
@@ -258,10 +280,16 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             ->count() === 0;
     }
 
+    /**
+     * @module Country
+     */
     protected function buildAddressConditionsByCriteria(
         AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer
     ): SpyCustomerAddressQuery {
-        $addressQuery = $this->getFactory()->createSpyCustomerAddressQuery()->joinWithCountry();
+        $addressQuery = $this->getFactory()
+            ->createSpyCustomerAddressQuery()
+            ->joinWithCountry()
+            ->leftJoinWithRegion();
         if ($addressCriteriaFilterTransfer->getIdCustomerAddress()) {
             $addressQuery->filterByIdCustomerAddress($addressCriteriaFilterTransfer->getIdCustomerAddress());
         }
@@ -297,26 +325,214 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
 
         if ($customerCriteriaFilterTransfer->getSearchTerms()) {
-            $orNeeded = false;
-            if ($customerCriteriaFilterTransfer->getSearchTerms()->getEmail()) {
-                $query->filterByEmail(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getEmail()), Criteria::LIKE);
-                $orNeeded = true;
-            }
-            if ($customerCriteriaFilterTransfer->getSearchTerms()->getFirstName()) {
-                if ($orNeeded) {
-                    $query->_or();
-                }
-                $query->filterByFirstName(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getFirstName()), Criteria::LIKE);
-                $orNeeded = true;
-            }
-            if ($customerCriteriaFilterTransfer->getSearchTerms()->getLastName()) {
-                if ($orNeeded) {
-                    $query->_or();
-                }
-                $query->filterByLastName(sprintf('%%%s%%', $customerCriteriaFilterTransfer->getSearchTerms()->getLastName()), Criteria::LIKE);
-            }
+            $query = $this->applySearchTermsToQuery($query, $customerCriteriaFilterTransfer->getSearchTerms());
         }
 
         return $query;
+    }
+
+    /**
+     * The terms are OR-combined: a customer matches when ANY of the provided terms matches.
+     */
+    protected function applySearchTermsToQuery(
+        SpyCustomerQuery $query,
+        CustomerCriteriaSearchTermsTransfer $customerCriteriaSearchTermsTransfer
+    ): SpyCustomerQuery {
+        $orNeeded = false;
+
+        if ($customerCriteriaSearchTermsTransfer->getEmail()) {
+            $query->filterByEmail(sprintf('%%%s%%', $customerCriteriaSearchTermsTransfer->getEmail()), Criteria::LIKE);
+            $orNeeded = true;
+        }
+
+        if ($customerCriteriaSearchTermsTransfer->getFirstName()) {
+            if ($orNeeded) {
+                $query->_or();
+            }
+            $query->filterByFirstName(sprintf('%%%s%%', $customerCriteriaSearchTermsTransfer->getFirstName()), Criteria::LIKE);
+            $orNeeded = true;
+        }
+
+        if ($customerCriteriaSearchTermsTransfer->getLastName()) {
+            if ($orNeeded) {
+                $query->_or();
+            }
+            $query->filterByLastName(sprintf('%%%s%%', $customerCriteriaSearchTermsTransfer->getLastName()), Criteria::LIKE);
+        }
+
+        return $query;
+    }
+
+    public function getCustomerCollectionByCollectionCriteria(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): CustomerCollectionTransfer {
+        $customerCollectionTransfer = new CustomerCollectionTransfer();
+        $paginationTransfer = $customerCollectionCriteriaTransfer->getPagination();
+
+        $query = $this->buildCustomerQueryByConditions($customerCollectionCriteriaTransfer);
+        $query = $this->applyCustomerSortToQuery($query, $customerCollectionCriteriaTransfer->getSortCollection());
+        $query = $this->applyPagination($query, $paginationTransfer);
+        $query->setFormatter(ArrayFormatter::class);
+
+        $this->hydrateCustomerListWithCustomers($customerCollectionTransfer, $query->find()->getData());
+
+        return $customerCollectionTransfer->setPagination($paginationTransfer);
+    }
+
+    protected function buildCustomerQueryByConditions(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): SpyCustomerQuery {
+        $customerConditionsTransfer = $customerCollectionCriteriaTransfer->getCustomerConditions();
+
+        $query = $this->getFactory()->createSpyCustomerQuery(
+            null,
+            null,
+            $customerConditionsTransfer?->getHasAnonymizedAt() ?? false,
+        );
+
+        if ($customerConditionsTransfer === null) {
+            return $query;
+        }
+
+        if ($customerConditionsTransfer->getCustomerIds()) {
+            $query->filterByIdCustomer_In($customerConditionsTransfer->getCustomerIds());
+        }
+
+        if ($customerConditionsTransfer->getCustomerReferences()) {
+            $query->filterByCustomerReference_In($customerConditionsTransfer->getCustomerReferences());
+        }
+
+        if ($customerConditionsTransfer->getEmails()) {
+            $query->addUsingAlias(SpyCustomerTableMap::COL_EMAIL, $customerConditionsTransfer->getEmails(), Criteria::IN);
+        }
+
+        if ($customerConditionsTransfer->getSearchTerms()) {
+            $query = $this->applySearchTermsToQuery($query, $customerConditionsTransfer->getSearchTerms());
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param \ArrayObject<int, \Generated\Shared\Transfer\SortTransfer> $sortCollection
+     */
+    protected function applyCustomerSortToQuery(SpyCustomerQuery $query, ArrayObject $sortCollection): SpyCustomerQuery
+    {
+        $sortableFieldMap = $this->getFactory()->getConfig()->getCustomerCollectionSortableFieldMap();
+
+        foreach ($sortCollection as $sortTransfer) {
+            $column = $sortableFieldMap[$sortTransfer->getField()] ?? null;
+
+            if ($column === null) {
+                continue;
+            }
+
+            $query->orderBy($column, $sortTransfer->getIsAscending() === false ? Criteria::DESC : Criteria::ASC);
+        }
+
+        return $query;
+    }
+
+    public function getAddressCollection(AddressCriteriaTransfer $addressCriteriaTransfer): AddressCollectionTransfer
+    {
+        $addressCollectionTransfer = new AddressCollectionTransfer();
+        $paginationTransfer = $addressCriteriaTransfer->getPagination();
+
+        $query = $this->buildAddressQueryByConditions($addressCriteriaTransfer);
+        $query = $this->applyAddressSortToQuery($query, $addressCriteriaTransfer->getSortCollection());
+        $query = $this->applyAddressPagination($query, $paginationTransfer);
+
+        $customerMapper = $this->getFactory()->createCustomerMapper();
+
+        foreach ($query->find() as $addressEntity) {
+            $addressCollectionTransfer->addAddress(
+                $customerMapper->mapCustomerAddressEntityToAddressTransfer($addressEntity, new AddressTransfer()),
+            );
+        }
+
+        return $addressCollectionTransfer->setPagination($paginationTransfer);
+    }
+
+    /**
+     * @module Country
+     */
+    protected function buildAddressQueryByConditions(AddressCriteriaTransfer $addressCriteriaTransfer): SpyCustomerAddressQuery
+    {
+        $query = $this->getFactory()
+            ->createSpyCustomerAddressQuery()
+            ->joinWithCountry()
+            ->leftJoinWithRegion();
+        $addressConditionsTransfer = $addressCriteriaTransfer->getAddressConditions();
+
+        if ($addressConditionsTransfer === null) {
+            return $query;
+        }
+
+        if ($addressConditionsTransfer->getUuids() && method_exists($query, static::ADDRESS_UUID_FILTER_METHOD)) {
+            $query->filterByUuid_In($addressConditionsTransfer->getUuids());
+        }
+
+        if ($addressConditionsTransfer->getAddressIds()) {
+            $query->filterByIdCustomerAddress_In($addressConditionsTransfer->getAddressIds());
+        }
+
+        if ($addressConditionsTransfer->getCustomerIds()) {
+            $query->filterByFkCustomer_In($addressConditionsTransfer->getCustomerIds());
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param \ArrayObject<int, \Generated\Shared\Transfer\SortTransfer> $sortCollection
+     */
+    protected function applyAddressSortToQuery(
+        SpyCustomerAddressQuery $query,
+        ArrayObject $sortCollection
+    ): SpyCustomerAddressQuery {
+        $sortableFieldMap = $this->getFactory()->getConfig()->getAddressCollectionSortableFieldMap();
+        $tiebreakerDirection = Criteria::ASC;
+
+        foreach ($sortCollection as $sortTransfer) {
+            $column = $sortableFieldMap[$sortTransfer->getField()] ?? null;
+
+            if ($column === null) {
+                continue;
+            }
+
+            $direction = $sortTransfer->getIsAscending() === false ? Criteria::DESC : Criteria::ASC;
+
+            $query->orderBy($column, $direction);
+            $tiebreakerDirection = $direction;
+        }
+
+        return $query->orderBy(SpyCustomerAddressTableMap::COL_ID_CUSTOMER_ADDRESS, $tiebreakerDirection);
+    }
+
+    protected function applyAddressPagination(
+        SpyCustomerAddressQuery $query,
+        ?PaginationTransfer $paginationTransfer = null
+    ): SpyCustomerAddressQuery {
+        if (!$paginationTransfer) {
+            return $query;
+        }
+
+        $paginationModel = $query->paginate(
+            $paginationTransfer->requirePage()->getPage(),
+            $paginationTransfer->requireMaxPerPage()->getMaxPerPage(),
+        );
+
+        $paginationTransfer->setNbResults($paginationModel->getNbResults());
+        $paginationTransfer->setFirstIndex($paginationModel->getFirstIndex());
+        $paginationTransfer->setLastIndex($paginationModel->getLastIndex());
+        $paginationTransfer->setFirstPage($paginationModel->getFirstPage());
+        $paginationTransfer->setLastPage($paginationModel->getLastPage());
+        $paginationTransfer->setNextPage($paginationModel->getNextPage());
+        $paginationTransfer->setPreviousPage($paginationModel->getPreviousPage());
+
+        /** @var \Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery $paginatedQuery */
+        $paginatedQuery = $paginationModel->getQuery();
+
+        return $paginatedQuery;
     }
 }

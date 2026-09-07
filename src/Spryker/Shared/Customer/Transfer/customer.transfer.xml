@@ -47,6 +47,8 @@
         <property name="middleName" type="string"/>
         <property name="cellPhone" type="string"/>
         <property name="isFromExternalService" type="bool" description="When the address is received from an external service like PayPal this must be marked as such when entering the system."/>
+        <property name="createdAt" type="string"/>
+        <property name="updatedAt" type="string"/>
     </transfer>
 
     <transfer name="Addresses">
@@ -168,6 +170,7 @@
         <property name="idCountry" type="int"/>
         <property name="name" type="string"/>
         <property name="iso2Code" type="string"/>
+        <property name="regions" type="Region[]" singular="region"/>
     </transfer>
 
     <transfer name="Locale">
@@ -213,10 +216,52 @@
         <property name="fkCustomer" type="int"/>
     </transfer>
 
+    <transfer name="AddressCriteria" strict="true">
+        <property name="addressConditions" type="AddressConditions"/>
+        <property name="sortCollection" type="Sort[]" singular="sort"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="AddressConditions" strict="true">
+        <property name="uuids" type="string[]" singular="uuid"/>
+        <property name="addressIds" type="int[]" singular="idCustomerAddress"/>
+        <property name="customerIds" type="int[]" singular="idCustomer"/>
+    </transfer>
+
+    <transfer name="AddressCollection" strict="true">
+        <property name="addresses" type="Address[]" singular="address"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="AddressResponse" strict="true">
+        <property name="isSuccess" type="bool"/>
+        <property name="address" type="Address"/>
+        <property name="errors" type="CustomerError[]" singular="error"/>
+    </transfer>
+
     <transfer name="CustomerCriteria">
         <property name="customerReference" type="string"/>
         <property name="idCustomer" type="int"/>
         <property name="withExpanders" type="bool"/>
+    </transfer>
+
+    <transfer name="CustomerCollectionCriteria" strict="true">
+        <property name="customerConditions" type="CustomerConditions"/>
+        <property name="sortCollection" type="Sort[]" singular="sort"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="CustomerConditions" strict="true">
+        <property name="customerIds" type="int[]" singular="idCustomer"/>
+        <property name="customerReferences" type="string[]" singular="customerReference"/>
+        <property name="emails" type="string[]" singular="email"/>
+        <property name="searchTerms" type="CustomerCriteriaSearchTerms"/>
+        <property name="hasAnonymizedAt" type="bool"/>
+    </transfer>
+
+    <transfer name="Sort">
+        <property name="field" type="string"/>
+        <property name="isAscending" type="bool"/>
     </transfer>
 
     <transfer name="AuthorizationRequest">
@@ -324,5 +369,23 @@
 
     <transfer name="MailResponse">
         <property name="isSuccess" type="bool"/>
+    </transfer>
+
+    <transfer name="Region">
+        <property name="idRegion" type="int"/>
+        <property name="fkCountry" type="int"/>
+        <property name="iso2Code" type="string"/>
+    </transfer>
+
+    <transfer name="RegionCollection" strict="true">
+        <property name="regions" type="Region[]" singular="region"/>
+    </transfer>
+
+    <transfer name="RegionCriteria" strict="true">
+        <property name="regionConditions" type="RegionConditions"/>
+    </transfer>
+
+    <transfer name="RegionConditions" strict="true">
+        <property name="iso2Codes" type="string[]" singular="iso2Code"/>
     </transfer>
 </transfers>

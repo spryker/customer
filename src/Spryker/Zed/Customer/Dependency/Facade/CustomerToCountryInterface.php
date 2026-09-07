@@ -9,6 +9,8 @@ namespace Spryker\Zed\Customer\Dependency\Facade;
 
 use Generated\Shared\Transfer\CountryCollectionTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
+use Generated\Shared\Transfer\RegionCollectionTransfer;
+use Generated\Shared\Transfer\RegionCriteriaTransfer;
 
 interface CustomerToCountryInterface
 {
@@ -17,4 +19,6 @@ interface CustomerToCountryInterface
     public function getAvailableCountries(): CountryCollectionTransfer;
 
     public function getCountryByIso2Code(string $iso2Code): CountryTransfer;
+
+    public function getRegionCollection(RegionCriteriaTransfer $regionCriteriaTransfer): RegionCollectionTransfer;
 }

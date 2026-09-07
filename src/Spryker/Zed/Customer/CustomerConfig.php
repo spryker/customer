@@ -7,7 +7,11 @@
 
 namespace Spryker\Zed\Customer;
 
+use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\SequenceNumberSettingsTransfer;
+use Orm\Zed\Customer\Persistence\Map\SpyCustomerAddressTableMap;
+use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Spryker\Shared\Customer\CustomerConstants;
 use Spryker\Shared\SequenceNumber\SequenceNumberConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
@@ -17,6 +21,8 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
  */
 class CustomerConfig extends AbstractBundleConfig
 {
+    protected const string PATTERN_CUSTOMER_NAME = '/^[^:\/<>]+$/';
+
     /**
      * @api
      *
@@ -381,6 +387,65 @@ class CustomerConfig extends AbstractBundleConfig
     public function isCustomerEmailValidationCaseSensitive(): bool
     {
         return static::IS_CUSTOMER_EMAIL_VALIDATION_CASE_SENSITIVE;
+    }
+
+    /**
+     * Specification:
+     * - Returns the sortable fields of the customer collection, mapping each publicly accepted field
+     *   name to the database column that `CustomerCollectionCriteriaTransfer.sortCollection` orders by.
+     * - Acts as the allow list for sorting: Propel interpolates ORDER BY identifiers straight into SQL,
+     *   so a caller-supplied sort field MUST be resolved through this map and never passed through.
+     *
+     * @api
+     *
+     * @return array<string, string>
+     */
+    public function getCustomerCollectionSortableFieldMap(): array
+    {
+        return [
+            CustomerTransfer::CUSTOMER_REFERENCE => SpyCustomerTableMap::COL_CUSTOMER_REFERENCE,
+            CustomerTransfer::CREATED_AT => SpyCustomerTableMap::COL_CREATED_AT,
+            CustomerTransfer::EMAIL => SpyCustomerTableMap::COL_EMAIL,
+            CustomerTransfer::FIRST_NAME => SpyCustomerTableMap::COL_FIRST_NAME,
+            CustomerTransfer::LAST_NAME => SpyCustomerTableMap::COL_LAST_NAME,
+            CustomerTransfer::REGISTERED => SpyCustomerTableMap::COL_REGISTERED,
+        ];
+    }
+
+    /**
+     * Specification:
+     * - Returns the sortable fields of the customer address collection, mapping each publicly accepted
+     *   field name to the database column that `AddressCriteriaTransfer.sortCollection` orders by.
+     * - Acts as the allow list for sorting: Propel interpolates ORDER BY identifiers straight into SQL,
+     *   so a caller-supplied sort field MUST be resolved through this map and never passed through.
+     *
+     * @api
+     *
+     * @return array<string, string>
+     */
+    public function getAddressCollectionSortableFieldMap(): array
+    {
+        return [
+            AddressTransfer::FIRST_NAME => SpyCustomerAddressTableMap::COL_FIRST_NAME,
+            AddressTransfer::LAST_NAME => SpyCustomerAddressTableMap::COL_LAST_NAME,
+            AddressTransfer::ZIP_CODE => SpyCustomerAddressTableMap::COL_ZIP_CODE,
+        ];
+    }
+
+    /**
+     * Specification:
+     * - Returns the regular expression a customer's or an address's first and last name must match.
+     * - Excludes the characters that turn a stored name into markup or a path when it is later rendered
+     *   or logged, mirroring the guard the storefront address form applies to the same two fields.
+     * - A project that accepts a different alphabet overrides this rather than the validator.
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getCustomerNamePattern(): string
+    {
+        return static::PATTERN_CUSTOMER_NAME;
     }
 
     /**

@@ -12,6 +12,8 @@ use Generated\Shared\Transfer\AddressCriteriaFilterTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\RegionConditionsTransfer;
+use Generated\Shared\Transfer\RegionCriteriaTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerAddress;
 use Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface;
@@ -475,6 +477,26 @@ class Address implements AddressInterface
         return $oldAddressTransfer;
     }
 
+    protected function retrieveFkRegion(AddressTransfer $addressTransfer): ?int
+    {
+        $regionCode = $addressTransfer->getRegion();
+
+        if (!$regionCode) {
+            return null;
+        }
+
+        $regionCriteriaTransfer = (new RegionCriteriaTransfer())
+            ->setRegionConditions(
+                (new RegionConditionsTransfer())->addIso2Code($regionCode),
+            );
+
+        $regionTransfers = $this->countryFacade
+            ->getRegionCollection($regionCriteriaTransfer)
+            ->getRegions();
+
+        return $regionTransfers->count() > 0 ? $regionTransfers[0]->getIdRegion() : null;
+    }
+
     /**
      * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
      *
@@ -605,6 +627,7 @@ class Address implements AddressInterface
 
         $fkCountry = $this->retrieveFkCountry($addressTransfer);
         $addressEntity->setFkCountry($fkCountry);
+        $addressEntity->setFkRegion($this->retrieveFkRegion($addressTransfer));
 
         $addressEntity->setCustomer($customer);
         $addressEntity->save();
@@ -641,6 +664,7 @@ class Address implements AddressInterface
         $addressEntity->fromArray($addressTransfer->modifiedToArray());
         $addressEntity->setCustomer($customer);
         $addressEntity->setFkCountry($fkCountry);
+        $addressEntity->setFkRegion($this->retrieveFkRegion($addressTransfer));
         $addressEntity->save();
 
         return $addressEntity;

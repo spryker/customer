@@ -7,9 +7,12 @@
 
 namespace Spryker\Zed\Customer\Persistence;
 
+use Generated\Shared\Transfer\AddressCollectionTransfer;
 use Generated\Shared\Transfer\AddressCriteriaFilterTransfer;
+use Generated\Shared\Transfer\AddressCriteriaTransfer;
 use Generated\Shared\Transfer\AddressesTransfer;
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\CustomerCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CustomerCollectionTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CustomerCriteriaTransfer;
@@ -25,15 +28,24 @@ interface CustomerRepositoryInterface
 
     public function findAddressByAddressData(AddressTransfer $addressTransfer): ?AddressTransfer;
 
+    /**
+     * @return array<string>
+     */
     public function getAllSalutations(): array;
 
     public function getCustomerCollectionByCriteria(
         CustomerCriteriaFilterTransfer $customerCriteriaFilterTransfer
     ): CustomerCollectionTransfer;
 
+    public function getCustomerCollectionByCollectionCriteria(
+        CustomerCollectionCriteriaTransfer $customerCollectionCriteriaTransfer
+    ): CustomerCollectionTransfer;
+
     public function findAddressByCriteria(AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer): ?AddressTransfer;
 
     public function getAddressesByCriteria(AddressCriteriaFilterTransfer $addressCriteriaFilterTransfer): AddressesTransfer;
+
+    public function getAddressCollection(AddressCriteriaTransfer $addressCriteriaTransfer): AddressCollectionTransfer;
 
     public function findCustomerByCriteria(CustomerCriteriaTransfer $customerCriteriaTransfer): ?CustomerTransfer;
 

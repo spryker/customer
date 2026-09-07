@@ -56,11 +56,25 @@ class CustomerMapper implements CustomerMapperInterface
         $addressTransfer->setCountry($countryTransfer);
         $addressTransfer->setIso2Code($countryTransfer->getIso2Code());
 
-        return $addressTransfer;
+        return $this->mapRegionCode($customerAddressEntity, $addressTransfer);
     }
 
     public function mapCountryEntityToCountryTransfer(SpyCountry $countryEntity, CountryTransfer $countryTransfer): CountryTransfer
     {
         return $countryTransfer->fromArray($countryEntity->toArray(), true);
+    }
+
+    protected function mapRegionCode(
+        SpyCustomerAddress $customerAddressEntity,
+        AddressTransfer $addressTransfer
+    ): AddressTransfer {
+        /** @var \Orm\Zed\Country\Persistence\SpyRegion|null $regionEntity */
+        $regionEntity = $customerAddressEntity->getRegion();
+
+        if ($regionEntity === null) {
+            return $addressTransfer;
+        }
+
+        return $addressTransfer->setRegion($regionEntity->getIso2Code());
     }
 }
