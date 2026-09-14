@@ -339,14 +339,14 @@ class CustomerForm extends AbstractType
             'choices' => $choices,
             'help' => 'Used to provide context in email templates.',
             'constraints' => [
-                new Callback([
-                    'callback' => function ($object, ExecutionContextInterface $context) {
+                new Callback(
+                    callback: function ($object, ExecutionContextInterface $context) {
                         $form = $context->getRoot();
                         if ($form[self::FIELD_SEND_PASSWORD_TOKEN]->getData() === true && !$object) {
                             $context->buildViolation('This field is required.')->addViolation();
                         }
                     },
-                ]),
+                ),
             ],
         ]);
 
@@ -394,6 +394,9 @@ class CustomerForm extends AbstractType
         return $this;
     }
 
+    /**
+     * @phpstan-return class-string<\Symfony\Component\Form\FormTypeInterface>
+     */
     protected function getDateOfBirthFieldType(): string
     {
         if ($this->isGuiDatePickerTypeAvailable()) {
@@ -448,8 +451,8 @@ class CustomerForm extends AbstractType
 
         $customerQuery = $this->getQueryContainer()->queryCustomers();
 
-        $emailConstraints[] = new Callback([
-            'callback' => function ($email, ExecutionContextInterface $context) use ($customerQuery, $currentEmail) {
+        $emailConstraints[] = new Callback(
+            callback: function ($email, ExecutionContextInterface $context) use ($customerQuery, $currentEmail) {
                 if ($currentEmail !== null && $email === $currentEmail) {
                     return;
                 }
@@ -458,7 +461,7 @@ class CustomerForm extends AbstractType
                     $context->addViolation('Email is already used');
                 }
             },
-        ]);
+        );
 
         return $emailConstraints;
     }

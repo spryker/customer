@@ -80,14 +80,14 @@ class CustomerUpdateForm extends CustomerForm
                 'disabled' => true,
             ],
             'constraints' => [
-                new Callback([
-                    'callback' => function ($object, ExecutionContextInterface $context) {
+                new Callback(
+                    callback: function ($object, ExecutionContextInterface $context) {
                         $form = $context->getRoot();
                         if ($form[self::FIELD_SEND_PASSWORD_TOKEN]->getData() === true && !$object) {
                             $context->buildViolation('This field is required.')->addViolation();
                         }
                     },
-                ]),
+                ),
             ]]);
 
         return $this;

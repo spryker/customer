@@ -43,7 +43,7 @@ class AddressController extends AbstractController
      */
     public function editAction(Request $request)
     {
-        $idCustomer = $request->query->getInt(CustomerConstants::PARAM_ID_CUSTOMER);
+        $idCustomer = (int)$request->query->get(CustomerConstants::PARAM_ID_CUSTOMER, 0);
         $idCustomerAddress = $this->castId($request->query->get(CustomerConstants::PARAM_ID_CUSTOMER_ADDRESS));
 
         if (!$idCustomer) {
