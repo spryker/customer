@@ -13,6 +13,7 @@ use Orm\Zed\Customer\Persistence\Base\SpyCustomerQuery as BaseSpyCustomerQuery;
 use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Connection\ConnectionInterface;
+use Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'spy_customer' table.
@@ -67,16 +68,25 @@ abstract class AbstractSpyCustomerQuery extends BaseSpyCustomerQuery
      * @param string $comparison
      * @param bool $ignoreCase
      *
+     * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
+     *
      * @return self
      */
     public function filterByEmail($email = null, $comparison = Criteria::EQUAL, bool $ignoreCase = true): self
     {
-        $query = parent::filterByEmail($email, $comparison);
+        if (is_string($email) && ($comparison === Criteria::LIKE || $comparison === Criteria::ILIKE)) {
+            $email = str_replace('*', '%', $email);
+        }
 
-        if ($ignoreCase === false) {
-            /** @var \Propel\Runtime\ActiveQuery\Criterion\BasicCriterion $criterion */
-            $criterion = $query->getCriterion(SpyCustomerTableMap::COL_EMAIL);
-            $criterion->setIgnoreCase(false);
+        if (is_array($email) && !in_array($comparison, [Criteria::IN, Criteria::NOT_IN], true)) {
+            throw new AmbiguousComparisonException('$email of type array requires one of [Criteria::IN, Criteria::NOT_IN] as comparison criteria.');
+        }
+
+        $query = $this->addUsingAlias(SpyCustomerTableMap::COL_EMAIL, $email, $comparison);
+        $criterion = $query->getCriterion(SpyCustomerTableMap::COL_EMAIL);
+
+        if (method_exists($criterion, 'setIgnoreCase')) {
+            $criterion->setIgnoreCase($ignoreCase);
         }
 
         return $query;
