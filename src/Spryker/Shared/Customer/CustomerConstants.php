@@ -96,4 +96,13 @@ interface CustomerConstants
      * @var string
      */
     public const REGISTRATION_CONFIRMATION_TOKEN_URL = 'CUSTOMER:REGISTRATION_CONFIRMATION_TOKEN_URL';
+
+    /**
+     * Specification:
+     * - Bcrypt cost factor used to hash customer passwords.
+     * - Keep the production-grade default; lower it only in test environments where hashing dominates runtime.
+     *
+     * @api
+     */
+    public const string PASSWORD_HASH_COST = 'CUSTOMER:PASSWORD_HASH_COST';
 }

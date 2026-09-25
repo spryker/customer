@@ -50,11 +50,6 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class Customer implements CustomerInterface
 {
     /**
-     * @var int
-     */
-    protected const BCRYPT_FACTOR = 12;
-
-    /**
      * @var string
      */
     protected const BCRYPT_SALT = '';
@@ -921,12 +916,12 @@ class Customer implements CustomerInterface
 
     protected function getPasswordEncoder(): PasswordEncoderInterface
     {
-        return new NativePasswordEncoder(null, null, static::BCRYPT_FACTOR);
+        return new NativePasswordEncoder(null, null, $this->customerConfig->getPasswordHashCost());
     }
 
     public function createPasswordHasher(): PasswordHasherInterface
     {
-        return new NativePasswordHasher(null, null, static::BCRYPT_FACTOR);
+        return new NativePasswordHasher(null, null, $this->customerConfig->getPasswordHashCost());
     }
 
     /**

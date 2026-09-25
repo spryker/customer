@@ -21,6 +21,8 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
  */
 class CustomerConfig extends AbstractBundleConfig
 {
+    protected const int DEFAULT_PASSWORD_HASH_COST = 12;
+
     protected const string PATTERN_CUSTOMER_NAME = '/^[^:\/<>]+$/';
 
     /**
@@ -454,5 +456,18 @@ class CustomerConfig extends AbstractBundleConfig
     protected function getUniqueIdentifierSeparator()
     {
         return '-';
+    }
+
+    /**
+     * Specification:
+     * - Returns the bcrypt cost factor used to hash customer passwords.
+     *
+     * @api
+     *
+     * @return int
+     */
+    public function getPasswordHashCost(): int
+    {
+        return $this->get(CustomerConstants::PASSWORD_HASH_COST, static::DEFAULT_PASSWORD_HASH_COST);
     }
 }
