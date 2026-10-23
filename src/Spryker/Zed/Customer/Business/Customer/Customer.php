@@ -64,6 +64,8 @@ class Customer implements CustomerInterface
      */
     protected const GLOSSARY_KEY_CUSTOMER_REGISTRATION_SUCCESS = 'customer.registration.success';
 
+    protected const string MESSAGE_TYPE_ERROR = 'error';
+
     /**
      * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface $customerReferenceGenerator
@@ -538,6 +540,10 @@ class Customer implements CustomerInterface
             return $customerResponseTransfer;
         }
         $customerTransfer = $this->executePreUpdatePlugins($customerTransfer, $customerResponseTransfer);
+
+        if ($customerResponseTransfer->getIsSuccess() === false) {
+            return $customerResponseTransfer;
+        }
 
         if ($customerTransfer->getNewPassword()) {
             $customerResponseTransfer = $this->updatePassword(clone $customerTransfer);
@@ -1067,16 +1073,51 @@ class Customer implements CustomerInterface
         foreach ($this->customerPreUpdatePlugins as $customerPreUpdatePlugin) {
             $customerTransfer = $customerPreUpdatePlugin->preUpdate($customerTransfer);
 
-            if ($customerTransfer->getMessage() === null) {
+            if ($customerTransfer->getMessage() === null && $customerTransfer->getMessageType() === null) {
                 continue;
             }
 
-            $customerResponseTransfer->addMessage(
-                (new MessageTransfer())->setValue($customerTransfer->getMessage()),
-            );
+            $this->addPreUpdatePluginMessage($customerTransfer, $customerResponseTransfer);
         }
 
         return $customerTransfer;
+    }
+
+    protected function addPreUpdatePluginMessage(CustomerTransfer $customerTransfer, CustomerResponseTransfer $customerResponseTransfer): void
+    {
+        $message = $customerTransfer->getMessage();
+        $messageType = $customerTransfer->getMessageType();
+
+        $customerTransfer
+            ->setMessage(null)
+            ->setMessageType(null);
+
+        if ($messageType === static::MESSAGE_TYPE_ERROR) {
+            $this->addPreUpdatePluginError($message, $customerResponseTransfer);
+
+            return;
+        }
+
+        if ($message === null) {
+            return;
+        }
+
+        $customerResponseTransfer->addMessage(
+            (new MessageTransfer())
+                ->setValue($message)
+                ->setType($messageType),
+        );
+    }
+
+    protected function addPreUpdatePluginError(?string $message, CustomerResponseTransfer $customerResponseTransfer): void
+    {
+        $customerResponseTransfer->setIsSuccess(false);
+
+        if ($message === null) {
+            return;
+        }
+
+        $customerResponseTransfer->addError((new CustomerErrorTransfer())->setMessage($message));
     }
 
     protected function shouldSkipPreUpdatePlugins(CustomerTransfer $customerTransfer): bool

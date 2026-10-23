@@ -228,6 +228,9 @@ interface CustomerFacadeInterface
      * - Validates customer email information.
      * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerValidatorPluginInterface} plugin stack.
      * - Returns `CustomerResponseTransfer` with `isSuccess = false` and the collected errors without updating anything when a plugin rejects the customer.
+     * - Executes {@link \Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface} plugin stack.
+     * - Adds `CustomerTransfer.message` set by a pre-update plugin to `CustomerResponseTransfer.messages` with `CustomerTransfer.messageType` as the message type.
+     * - When a pre-update plugin sets `CustomerTransfer.messageType = error`, adds the message (when set) to `CustomerResponseTransfer.errors`, executes the rest of the plugin stack and returns `isSuccess = false` without updating anything, also when the message is not set.
      * - Updates customer data which is set in provided transfer object (including password property - dismantles newPassword property).
      * - Sends password restoration email if SendPasswordToken property is set in the provided transfer object.
      *
