@@ -25,6 +25,10 @@ class CustomerConfig extends AbstractBundleConfig
 
     protected const string PATTERN_CUSTOMER_NAME = '/^[^:\/<>]+$/';
 
+    protected const int PASSWORD_CHANGE_ATTEMPT_LIMIT = 5;
+
+    protected const int PASSWORD_CHANGE_ATTEMPT_LIMIT_TTL_SECONDS = 900;
+
     /**
      * @api
      *
@@ -156,6 +160,32 @@ class CustomerConfig extends AbstractBundleConfig
     public function isCustomerPasswordResetExpirationEnabled(): bool
     {
         return static::PASSWORD_RESET_EXPIRATION_IS_ENABLED;
+    }
+
+    /**
+     * Specification:
+     * - Returns the maximum number of password change attempts per customer in one fixed window.
+     * - Counts every attempt, also an attempt with the correct current password.
+     * - The window starts at the first attempt and ends after `getPasswordChangeAttemptLimitTtl()` seconds.
+     * - Returns `0` when no limit is applied. A negative value also disables the limit.
+     *
+     * @api
+     */
+    public function getPasswordChangeAttemptLimit(): int
+    {
+        return static::PASSWORD_CHANGE_ATTEMPT_LIMIT;
+    }
+
+    /**
+     * Specification:
+     * - Returns the length of the password change attempt limit window in seconds, counted from the first attempt in the window.
+     * - A value below `60` is raised to `60` seconds by `SecurityBlockerClient::incrementAttemptCount()`.
+     *
+     * @api
+     */
+    public function getPasswordChangeAttemptLimitTtl(): int
+    {
+        return static::PASSWORD_CHANGE_ATTEMPT_LIMIT_TTL_SECONDS;
     }
 
     /**

@@ -8,6 +8,7 @@
 namespace Spryker\Zed\Customer\Business;
 
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
+use Spryker\Client\SecurityBlocker\SecurityBlockerClientInterface;
 use Spryker\Service\Customer\CustomerServiceInterface;
 use Spryker\Shared\Customer\KeyGenerator\CustomerInvalidationKeyGenerator;
 use Spryker\Shared\Customer\KeyGenerator\KeyGeneratorInterface;
@@ -38,6 +39,8 @@ use Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutor;
 use Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface;
 use Spryker\Zed\Customer\Business\Invalidation\CustomerInvalidatorInterface;
 use Spryker\Zed\Customer\Business\Invalidation\StorageCustomerInvalidator;
+use Spryker\Zed\Customer\Business\Limiter\PasswordChangeLimiter;
+use Spryker\Zed\Customer\Business\Limiter\PasswordChangeLimiterInterface;
 use Spryker\Zed\Customer\Business\Model\CustomerOrderSaver as ObsoleteCustomerOrderSaver;
 use Spryker\Zed\Customer\Business\Model\PreConditionChecker;
 use Spryker\Zed\Customer\Business\Oauth\Resolver\OauthCustomerResolver;
@@ -88,9 +91,18 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->createPasswordResetExpirationChecker(),
             $this->createCustomerPluginExecutor(),
             $this->getCustomerPreUpdatePlugins(),
+            $this->createPasswordChangeLimiter(),
         );
 
         return $customer;
+    }
+
+    public function createPasswordChangeLimiter(): PasswordChangeLimiterInterface
+    {
+        return new PasswordChangeLimiter(
+            $this->getSecurityBlockerClient(),
+            $this->getConfig(),
+        );
     }
 
     public function createPasswordResetExpirationChecker(): PasswordResetExpirationCheckerInterface
@@ -450,6 +462,11 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
     public function getStorageRedisClient()
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_STORAGE_REDIS);
+    }
+
+    public function getSecurityBlockerClient(): SecurityBlockerClientInterface
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::CLIENT_SECURITY_BLOCKER);
     }
 
     public function createOauthCustomerResolver(): OauthCustomerResolverInterface

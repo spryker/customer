@@ -90,6 +90,8 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
      */
     public const CLIENT_STORAGE_REDIS = 'CLIENT_STORAGE_REDIS';
 
+    public const string CLIENT_SECURITY_BLOCKER = 'CLIENT_SECURITY_BLOCKER';
+
     /**
      * @uses \Spryker\Zed\Http\Communication\Plugin\Application\HttpApplicationPlugin::SERVICE_SUB_REQUEST
      *
@@ -173,6 +175,7 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addCustomerValidatorPlugins($container);
         $container = $this->addAddressValidatorPlugins($container);
         $container = $this->addStorageRedisClient($container);
+        $container = $this->addSecurityBlockerClient($container);
         $container = $this->addOauthCustomerAuthenticationStrategyPlugins($container);
         $container = $this->addOauthCustomerPostResolvePlugins($container);
         $container = $this->addOauthCustomerRestrictionPlugins($container);
@@ -501,6 +504,15 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
             return new CustomerToStorageRedisClientBridge(
                 $container->getLocator()->storageRedis()->client(),
             );
+        });
+
+        return $container;
+    }
+
+    protected function addSecurityBlockerClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_SECURITY_BLOCKER, function (Container $container) {
+            return $container->getLocator()->securityBlocker()->client();
         });
 
         return $container;

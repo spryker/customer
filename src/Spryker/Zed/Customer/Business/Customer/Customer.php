@@ -32,6 +32,7 @@ use Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface;
 use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface;
 use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
 use Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface;
+use Spryker\Zed\Customer\Business\Limiter\PasswordChangeLimiterInterface;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestoredPasswordConfirmationMailTypePlugin;
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestorePasswordMailTypePlugin;
@@ -66,6 +67,8 @@ class Customer implements CustomerInterface
 
     protected const string MESSAGE_TYPE_ERROR = 'error';
 
+    protected const string GLOSSARY_KEY_PASSWORD_CHANGE_LIMIT_EXCEEDED = 'customer.password.change_limit_exceeded';
+
     /**
      * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface $customerReferenceGenerator
@@ -79,6 +82,7 @@ class Customer implements CustomerInterface
      * @param \Spryker\Zed\Customer\Business\Customer\Checker\PasswordResetExpirationCheckerInterface $passwordResetExpirationChecker
      * @param \Spryker\Zed\Customer\Business\Executor\CustomerPluginExecutorInterface $customerPluginExecutor
      * @param array<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface> $customerPreUpdatePlugins
+     * @param \Spryker\Zed\Customer\Business\Limiter\PasswordChangeLimiterInterface $passwordChangeLimiter
      *
      * @see \Spryker\Zed\Customer\CustomerDependencyProvider::getCustomerPreUpdatePlugins()
      */
@@ -99,7 +103,8 @@ class Customer implements CustomerInterface
         protected CustomerPasswordPolicyValidatorInterface $customerPasswordPolicyValidator,
         protected PasswordResetExpirationCheckerInterface $passwordResetExpirationChecker,
         protected CustomerPluginExecutorInterface $customerPluginExecutor,
-        protected array $customerPreUpdatePlugins
+        protected array $customerPreUpdatePlugins,
+        protected PasswordChangeLimiterInterface $passwordChangeLimiter
     ) {
     }
 
@@ -675,6 +680,13 @@ class Customer implements CustomerInterface
     public function updatePassword(CustomerTransfer $customerTransfer)
     {
         $customerEntity = $this->getCustomer($customerTransfer);
+
+        if (!$this->passwordChangeLimiter->reserveAttempt($customerEntity->getIdCustomer())) {
+            return $this->addErrorToCustomerResponseTransfer(
+                new CustomerResponseTransfer(),
+                static::GLOSSARY_KEY_PASSWORD_CHANGE_LIMIT_EXCEEDED,
+            );
+        }
 
         $customerResponseTransfer = $this->getCustomerPasswordInvalidResponse($customerEntity, $customerTransfer);
         if (!$customerResponseTransfer->getIsSuccess()) {

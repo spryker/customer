@@ -390,4 +390,14 @@
     <transfer name="RegionConditions" strict="true">
         <property name="iso2Codes" type="string[]" singular="iso2Code"/>
     </transfer>
+
+    <transfer name="SecurityCheckAttemptContext" strict="true">
+        <property name="type" type="string"/>
+        <property name="identifier" type="string"/>
+        <property name="ttl" type="int"/>
+    </transfer>
+
+    <transfer name="SecurityCheckAttemptResponse" strict="true">
+        <property name="numberOfAttempts" type="int"/>
+    </transfer>
 </transfers>
