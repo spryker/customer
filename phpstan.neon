@@ -16,3 +16,4 @@ parameters:
         - { message: '#Method .+Customer::getPasswordEncoder\(\) has invalid return type Symfony\\Component\\Security\\Core\\Encoder\\PasswordEncoderInterface.#', path: '%rootDir%/../../../src/Spryker/Customer/src/Spryker/Zed/Customer/Business/Customer/Customer.php' }
         -
             identifier: missingType.iterableValue
+        - '#PHPDoc tag @SuppressWarnings has invalid value#'
