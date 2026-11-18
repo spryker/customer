@@ -19,6 +19,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * Used in YAML security expressions:
  *   is_granted('CUSTOMER_OWNER', request.attributes.get('customerReference'))
  *
+ * @deprecated Use the ownership condition on the operation's permission grant (securityOwnership) instead.
+ *
  * @extends \Symfony\Component\Security\Core\Authorization\Voter\Voter<string, string>
  */
 class CustomerOwnershipVoter extends Voter
