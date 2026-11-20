@@ -146,6 +146,30 @@ class GetCustomerCollectionByCollectionCriteriaTest extends AbstractCustomerFaca
         $this->assertContains($customerMatchedByFirstName->getCustomerReferenceOrFail(), $customerReferences);
     }
 
+    public function testGetCustomerCollectionByCollectionCriteriaFiltersByCustomerReferenceSearchTerm(): void
+    {
+        // Arrange
+        $matchingCustomer = $this->tester->haveCustomer([CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD]);
+        $otherCustomer = $this->tester->haveCustomer([CustomerTransfer::PASSWORD => static::VALUE_VALID_PASSWORD]);
+
+        $customerCollectionCriteriaTransfer = (new CustomerCollectionCriteriaTransfer())
+            ->setCustomerConditions(
+                (new CustomerConditionsTransfer())->setSearchTerms(
+                    (new CustomerCriteriaSearchTermsTransfer())->setCustomerReference($matchingCustomer->getCustomerReferenceOrFail()),
+                ),
+            );
+
+        // Act
+        $customerCollectionTransfer = $this->tester->getCustomerFacade()->getCustomerCollectionByCollectionCriteria(
+            $customerCollectionCriteriaTransfer,
+        );
+
+        // Assert
+        $customerReferences = $this->extractCustomerReferences($customerCollectionTransfer);
+        $this->assertContains($matchingCustomer->getCustomerReferenceOrFail(), $customerReferences);
+        $this->assertNotContains($otherCustomer->getCustomerReferenceOrFail(), $customerReferences);
+    }
+
     public function testGetCustomerCollectionByCollectionCriteriaExcludesAnonymizedCustomersByDefault(): void
     {
         // Arrange

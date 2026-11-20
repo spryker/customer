@@ -138,6 +138,8 @@ class CustomerConfig extends AbstractBundleConfig
      */
     protected const PASSWORD_RESET_EXPIRATION_IS_ENABLED = false;
 
+    protected const int CUSTOMER_SUGGESTION_LIMIT = 20;
+
     /**
      * @api
      *
@@ -499,5 +501,16 @@ class CustomerConfig extends AbstractBundleConfig
     public function getPasswordHashCost(): int
     {
         return $this->get(CustomerConstants::PASSWORD_HASH_COST, static::DEFAULT_PASSWORD_HASH_COST);
+    }
+
+    /**
+     * Specification:
+     * - Returns the maximum number of customers the Back Office customer suggestion returns for one search.
+     *
+     * @api
+     */
+    public function getCustomerSuggestionLimit(): int
+    {
+        return static::CUSTOMER_SUGGESTION_LIMIT;
     }
 }

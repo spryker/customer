@@ -328,6 +328,10 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             $query = $this->applySearchTermsToQuery($query, $customerCriteriaFilterTransfer->getSearchTerms());
         }
 
+        if ($customerCriteriaFilterTransfer->getLimit()) {
+            $query->limit($customerCriteriaFilterTransfer->getLimit());
+        }
+
         return $query;
     }
 
@@ -358,6 +362,14 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
                 $query->_or();
             }
             $query->filterByLastName(sprintf('%%%s%%', $customerCriteriaSearchTermsTransfer->getLastName()), Criteria::LIKE);
+            $orNeeded = true;
+        }
+
+        if ($customerCriteriaSearchTermsTransfer->getCustomerReference()) {
+            if ($orNeeded) {
+                $query->_or();
+            }
+            $query->filterByCustomerReference(sprintf('%%%s%%', $customerCriteriaSearchTermsTransfer->getCustomerReference()), Criteria::LIKE);
         }
 
         return $query;

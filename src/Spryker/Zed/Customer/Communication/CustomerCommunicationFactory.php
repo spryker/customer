@@ -14,6 +14,8 @@ use Spryker\Zed\Customer\Communication\Form\CustomerUpdateForm;
 use Spryker\Zed\Customer\Communication\Form\DataProvider\AddressFormDataProvider;
 use Spryker\Zed\Customer\Communication\Form\DataProvider\CustomerFormDataProvider;
 use Spryker\Zed\Customer\Communication\Form\DataProvider\CustomerUpdateFormDataProvider;
+use Spryker\Zed\Customer\Communication\Reader\CustomerSuggestionReader;
+use Spryker\Zed\Customer\Communication\Reader\CustomerSuggestionReaderInterface;
 use Spryker\Zed\Customer\Communication\Table\AddressTable;
 use Spryker\Zed\Customer\Communication\Table\CustomerTable;
 use Spryker\Zed\Customer\Communication\Table\PluginExecutor\CustomerTableExpanderPluginExecutor;
@@ -196,5 +198,10 @@ class CustomerCommunicationFactory extends AbstractCommunicationFactory
     public function getRouterFacade(): CustomerToRouterFacadeInterface
     {
         return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_ROUTER);
+    }
+
+    public function createCustomerSuggestionReader(): CustomerSuggestionReaderInterface
+    {
+        return new CustomerSuggestionReader($this->getFacade(), $this->getConfig());
     }
 }

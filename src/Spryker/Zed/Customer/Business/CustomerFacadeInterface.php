@@ -46,7 +46,7 @@ interface CustomerFacadeInterface
      * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.customerReferences` to filter by customer references.
      * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.emails` to filter by emails.
      * - Combines all conditions with AND.
-     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.searchTerms.{email, firstName, lastName}` to
+     * - Uses `CustomerCollectionCriteriaTransfer.customerConditions.searchTerms.{email, firstName, lastName, customerReference}` to
      *   filter by a partial match, combining the search terms with OR.
      * - Excludes anonymized customers unless `CustomerCollectionCriteriaTransfer.customerConditions.hasAnonymizedAt`
      *   is set to `true`.
@@ -616,6 +616,9 @@ interface CustomerFacadeInterface
     /**
      * Specification:
      * - Retrieves filtered customers using CustomerCriteriaFilterTransfer.
+     * - Uses `CustomerCriteriaFilterTransfer.searchTerms.{email, firstName, lastName, customerReference}` to filter by a
+     *   partial match, combining the search terms with OR.
+     * - Returns at most `CustomerCriteriaFilterTransfer.limit` customers when it is set.
      *
      * @api
      *
